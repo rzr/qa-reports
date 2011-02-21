@@ -123,6 +123,10 @@ module ApplicationHelper
     html.html_safe
   end
 
+  def report_url(s)
+      url_for :controller=>'reports',:action=>'view', :release_version=>s.release_version, :target=>s.target, :testtype=>s.testtype, :hwproduct=>s.hwproduct, :id=>s.id
+  end
+
   def format_date_to_human_readable(date)
     date ? date.strftime('%d %B %Y') : 'n/a'
   end
@@ -169,5 +173,9 @@ module ApplicationHelper
     if request.host.include? "qa-reports.meego.com"
       render :partial => 'shared/clicktale_bottom'
     end
+  end
+
+  def form_ajax_error_msg(cls)
+    "<div style=\"display:none\" class=\"error #{cls}\">&nbsp;</div>".html_safe
   end
 end

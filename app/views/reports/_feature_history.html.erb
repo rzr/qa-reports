@@ -22,18 +22,14 @@
 # 02110-1301 USA
 #
 %>
-
-<table class="index_month">
-  <tr>
-    <td colspan="3" class="index_month_title"><strong><%= month %></strong></td>
-  </tr>
-
-  <% @sessions[month].each do |s| %>
-  <tr class="<%= cycle "odd", "even" %>">
-      <td class="date"><%=s.format_date%></td>
-      <td class="report_name"><a href="<%=report_url s%>"><%=s.title%></a></td>
-      <td class="graph"><%= s.small_graph_img_tag(@max_cases) %></td>
-    </tr>
-  <% end %>
-</table>
-
+<% feature = feature_history %>
+<tbody>
+<tr class="feature_name" id="test-set-<%=feature.id%>">
+	<td colspan="8">
+        <%= print_title_link(feature.name)%>
+	</td>
+</tr>
+</tbody>
+<tbody>
+<%= render :partial => "testcase_history", :collection => feature.meego_test_cases %>
+</tbody>

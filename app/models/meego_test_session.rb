@@ -49,6 +49,8 @@ class MeegoTestSession < ActiveRecord::Base
   validate :allowed_filename_extensions, :on => :create
   validate :save_uploaded_files, :on => :create
 
+  validate :validate_labels
+
   #after_create :save_uploaded_files
   after_destroy :remove_uploaded_files
 
@@ -75,7 +77,8 @@ class MeegoTestSession < ActiveRecord::Base
   end
 
   def testtype
-    read_attribute(:testtype).try(:capitalize)
+    s = read_attribute(:testtype)
+    s.gsub(/\b\w/) { $&.upcase } if s
   end
 
   def hwproduct=(hwproduct)
@@ -84,7 +87,8 @@ class MeegoTestSession < ActiveRecord::Base
   end
 
   def hwproduct
-    read_attribute(:hwproduct).try(:capitalize)
+    s = read_attribute(:hwproduct)
+    s.gsub(/\b\w/) { $&.upcase } if s
   end
 
   def prev_summary
@@ -330,6 +334,33 @@ class MeegoTestSession < ActiveRecord::Base
   def updated_by(user)
     self.editor = user
     self.save
+  end
+
+  # Check that the target and release_version given as parameters
+  # exist in label tables. Test session tables allow anything, but
+  # if using other than what's in the label tables, the results
+  # won't show up
+  def validate_labels
+    if target.blank?
+      errors.add :target, "can't be blank"
+    else
+      label = TargetLabel.find(:first, :conditions => {:normalized => target.downcase})
+      if not label
+        valid_targets = TargetLabel.labels.join(",")
+        errors.add :target, "Incorrect target '#{target}'. Valid ones are #{valid_targets}."
+      end
+    end
+
+    if release_version.blank?
+      errors.add :release_version, "can't be blank"
+    else
+      label = VersionLabel.find(:first, :conditions => {:normalized => release_version.downcase})
+      if not label
+        valid_versions = VersionLabel.versions.join(",")
+        errors.add :release_version, "Incorrect release version '#{release_version}'. Valid ones are #{valid_versions}."
+      end
+    end
+
   end
 
   def generate_defaults!
