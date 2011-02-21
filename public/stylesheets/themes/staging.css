@@ -1,0 +1,11 @@
+/* This CSS overrides screen.css in order to provide Staging theme for Meego QA Reports */
+
+#badge {
+	background: transparent no-repeat left top url('/images/staging/testing_environment_badge.png');
+	width: 259px;
+	height: 39px;
+	position: absolute;
+	top: 0;
+	left: 15px;
+	z-index: 9999;
+}

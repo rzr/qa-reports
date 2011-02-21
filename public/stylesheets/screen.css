@@ -917,7 +917,7 @@ div.formError, #error, form .error {
     display: block;
     height: 0;
     clear:both;
-    visibility: hidden;}
+    visibility:hidden;}
 
 .remove_list_item {
     display: inline-block;
@@ -1059,7 +1059,8 @@ div.formError, #error, form .error {
     margin-right: auto;
     margin-left: auto;
     padding-right: 30px;
-    padding-left: 30px;}
+    padding-left: 30px;
+    position:relative;}
 
 #header {
     border-bottom: 7px solid #ed0089;
@@ -1068,13 +1069,12 @@ div.formError, #error, form .error {
     position: relative;}
 
 #upper_header_wrap {
-	border-bottom: 1px solid #eee;
-	}
+	border-bottom: 1px solid #eee;}
 
 #upper_header {
 	font-size: 11px;
 	font-family: arial, sans-serif;
-	overflow:hidden;}
+	overflow:visible;}
 
 #upper_header a {
 	text-decoration:none;
