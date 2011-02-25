@@ -77,6 +77,10 @@ after "deploy:setup" do
 
 end
 
+after "deploy:update_code" do
+  run "rake barista:brew"
+end
+
 after "deploy:symlink" do
   # Remove local directories
   run "rm -fr #{current_path}/public/reports"
