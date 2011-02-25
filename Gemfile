@@ -7,6 +7,8 @@ gem 'devise', '1.1.3'
 gem 'fastercsv'
 gem 'rack', :git => "https://github.com/rack/rack.git" # Use next release when available
 gem "will_paginate", "3.0.pre"
+gem 'barista'
+gem 'therubyracer'
 
 group :production do
   gem 'newrelic_rpm'
