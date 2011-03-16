@@ -1,5 +1,8 @@
 source 'http://rubygems.org'
 
+gem 'mongo'
+gem 'bson_ext'
+
 gem 'rails', '3.0.4'
 gem 'mysql2'
 gem 'nokogiri'

@@ -68,6 +68,8 @@ GEM
     arel (2.0.9)
     arrayfields (4.7.4)
     bcrypt-ruby (2.1.4)
+    bson (1.2.4)
+    bson_ext (1.2.4)
     builder (2.1.2)
     capistrano (2.5.19)
       highline
@@ -136,6 +138,8 @@ GEM
       arrayfields (>= 4.7.4)
       fattr (>= 2.1.0)
     mime-types (1.16)
+    mongo (1.2.4)
+      bson (>= 1.2.4)
     mysql2 (0.2.6)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -223,6 +227,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext
   capistrano
   capistrano-ext
   capybara!
@@ -233,6 +238,7 @@ DEPENDENCIES
   fastercsv
   launchy
   metric_fu!
+  mongo
   mysql2
   newrelic_rpm
   nokogiri
