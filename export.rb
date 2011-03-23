@@ -57,6 +57,7 @@ sessions.each do |s|
     "created_at" => s.created_at.utc,
     "updated_at" => s.updated_at.utc,
     "tested_at" => s.tested_at.utc,
+    "weeknum" => Date.parse(s.tested_at.to_date.to_s).cweek(),
 
     "total_cases" => s.total_cases,
     "total_pass" => s.total_passed,
@@ -65,6 +66,8 @@ sessions.each do |s|
 
     "features" => sets,
   }
+  
+  
 
   coll.update({"qa_id" => s.id}, data, :upsert => true)
 end
