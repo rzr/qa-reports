@@ -8,13 +8,13 @@ require 'net/https'
 require 'fastercsv'
 require 'mongo'
 
-FROMDATE = "2011-01-01"
+FROMDATE = "2010-09-01"
 
 BUGZILLA_CONFIG = { 'server' => 'bugs.meego.com',
                     'port' => 443,
                     'use_ssl' => true }
 
-BUGZILLA_CONFIG['uri'] = "/buglist.cgi?bugidtype=include&classification=MeeGo%20Platform&columnlist=short_desc%2Cbug_status%2Copendate%2Cresolution&query_format=advanced&ctype=csv&chfield=%5BBug%20creation%5D&chfieldto=Now&chfieldfrom="
+BUGZILLA_CONFIG['uri'] = "/buglist.cgi?bugidtype=include&columnlist=short_desc%2Cbug_status%2Copendate%2Cresolution&query_format=advanced&ctype=csv&chfield=%5BBug%20creation%5D&chfieldto=Now&chfieldfrom="
 uri = BUGZILLA_CONFIG['uri'] + FROMDATE
 
 content = ""
