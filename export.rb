@@ -7,7 +7,7 @@ require 'mongo'
 db   = Mongo::Connection.new.db('qadash-db')
 coll = db.collection('reports')
 
-sessions = MeegoTestSession.find(:all)
+sessions = MeegoTestSession.where(:published => 1)
 
 sessions.each do |s|
   sets = []
