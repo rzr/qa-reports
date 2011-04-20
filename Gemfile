@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'mongo'
 gem 'bson_ext'
+gem 'rest-client'
 
 gem 'rails', '3.0.4'
 gem 'mysql2'
