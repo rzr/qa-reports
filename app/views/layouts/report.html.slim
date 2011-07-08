@@ -62,6 +62,7 @@ html
 
     javascript:
       var BUGZILLA_URI = "#{BUGZILLA_CONFIG['link_uri']}";
+    = javascript_include_tag 'applicationCoffee'
     = javascript_include_tag 'application'
     = yield :view_specific_js
     = javascript_include_tag 'layoutReport'
