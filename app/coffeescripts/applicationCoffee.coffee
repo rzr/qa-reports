@@ -401,4 +401,243 @@ handleResultEdit = ->
 
 
 
+  handleResultSubmit = ->
+  $form = $(this)
+
+  data = $form.serialize()
+  url = $form.attr("action")
+
+  $node = $form.closest("td")
+  $node.addClass("edit").removeClass("pass fail na").click handleResultEdit
+
+  $span = $node.find("span")
+  result = $form.find("select").val()
+
+  if result == "1"
+    $node.addClass "pass"
+    $span.text "Pass"
+  else if result == "-1"
+    $node.addClass "fail"
+    $span.text "Fail"
+  else
+    $node.addClass "na"
+    $span.text "N/A"
+
+  $form.detach()
+  $span.show()
+  $.post url, data
+  false
+
+handleCommentEdit = ->
+  $node = $(this)
+  $div = $node.find("div.content")
+  return false  if $div.is(":hidden")
+
+  $testcase = $node.closest(".testcase")
+  $form = $("#comment_edit_form form").clone()
+  $field = $form.find(".comment_field")
+
+  attachment_url = $div.find(".note_attachment").attr("href") or ""
+  attachment_filename = attachment_url.split("/").pop()
+
+  $current_attachment = $form.find("div.attachment:not(.add)")
+  $add_attachment = $form.find("div.attachment.add")
+
+  if attachment_url == "" or attachment_filename == ""
+    $current_attachment.hide()
+  else
+    $add_attachment.hide()
+
+    $attachment_link = $current_attachment.find("#attachment_link")
+    $attachment_link.attr "href", attachment_url
+    $attachment_link.html attachment_filename
+
+    $current_attachment.find("input").attr "value", attachment_filename
+
+    $current_attachment.find(".delete").click ->
+      $attachment_field = $(this).closest(".field")
+      $current_attachment = $attachment_field.find("div.attachment:not(.add)")
+      $add_attachment = $attachment_field.find("div.attachment.add")
+
+      $current_attachment.hide()
+      $current_attachment.find("input").attr "value", ""
+      $add_attachment.show()
+
+  id = $testcase.attr("id").substring(9)
+  $form.find(".id_field").val id
+
+  markup = $testcase.find(".comment_markup").text()
+  $field.autogrow()
+  $field.val markup
+
+  $form.submit handleCommentFormSubmit
+  $form.find(".cancel").click ->
+    $form.detach()
+    $div.show()
+    $node.click handleCommentEdit
+    $node.addClass "edit"
+    false
   
+  $node.unbind "click"
+  $node.removeClass "edit"
+  $div.hide()
+  $form.insertAfter $div
+  $field.change()
+  $field.focus()
+  false
+
+handleCommentFormSubmit = ->
+  $form = $(this)
+  $testcase = $form.closest(".testcase")
+  $div = $testcase.find(".testcase_notes div.content")
+  markup = $form.find(".comment_field").val()
+  data = $form.serialize()
+  url = $form.attr("action")
+  $testcase.find(".comment_markup").text markup
+  html = formatMarkup(markup)
+  $div.html html
+  $form.hide()
+  $div.show()
+  $testcase.find(".testcase_notes").click(handleCommentEdit).addClass "edit"
+  options = 
+    datatype: "xml"
+    success: (responseText, statusText, xhr, $form) ->
+      $testcase.find(".testcase_notes").html responseText
+      fetchBugzillaInfo()
+  
+  $form.ajaxSubmit options
+  false
+
+handleTitleEdit = ->
+  $button = $(this)
+  $content = $button.children("h1").find("span.content")
+  return false  if $content.is(":hidden")
+
+  title = $content.text()
+  $form = $("#title_edit_form form").clone()
+
+  $field = $form.find(".title_field")
+  $field.val title
+
+  $form.data "original", $content
+  $form.data "button", $button
+
+  $button.removeClass "editable_text"
+  $form.submit handleTitleEditSubmit
+  $form.find(".save").click ->
+    $form.submit()
+    false
+  
+  $form.find(".cancel").click ->
+    $form.detach()
+    $content.show()
+    $button.addClass "editable_text"
+    false
+  
+  $content.hide()
+  $form.insertAfter $content
+  $field.focus()
+  false
+
+handleTitleEditSubmit = ->
+  $form = $(this)
+  $content = $form.data("original")
+  title = $form.find(".title_field").val()
+  $content.text title
+
+  data = $form.serialize()
+  action = $form.attr("action")
+  $button = $form.data("button")
+  $.post action, data, ->
+  
+  $button.addClass "editable_text"
+  $form.detach()
+  $content.show()
+  false
+
+handleDateEdit = ->
+  $button = $(this)
+  $content = $button.find("span.content").first()
+  $raw = $content.next("span.editmarkup")
+  return false  if $content.is(":hidden")
+
+  data = $raw.text()
+  $form = $("#date_edit_form form").clone()
+  $field = $form.find(".date_field")
+  $field.val data
+
+  $form.data("original", $content).data("raw", $raw).data "button", $button
+  $form.submit handleDateEditSubmit
+  $form.find(".save").click ->
+    $form.submit()
+    false
+  
+  $form.find(".cancel").click ->
+    $form.detach()
+    $content.show()
+    $button.addClass "editable_text"
+    false
+  
+  $content.hide()
+  $form.insertAfter $content
+  $field.focus()
+  addDateSelector $field
+  $button.removeClass "editable_text"
+  false
+
+handleDateEditSubmit = ->
+  $form = $(this)
+  $content = $form.data("original")
+  $raw = $form.data("raw")
+  data = $form.find(".date_field").val()
+  $raw.text data
+
+  data = $form.serialize()
+  action = $form.attr("action")
+  $button = $form.data("button")
+  $.post action, data, (data) ->
+    $content.text data
+  
+  $button.addClass "editable_text"
+  $form.detach()
+  $content.show()
+  false
+
+handleEditButton = ->
+  $button = $(this)
+  $div = $button.data("content")
+  return false  if $div.is(":hidden")
+
+  $raw = $button.data("raw")
+  fieldName = $div.attr("id")
+  text = $.trim($raw.text())
+  $form = $($("#txt_edit_form form").clone())
+  $area = $($form.find("textarea"))
+  $area.attr "name", "meego_test_session[" + fieldName + "]"
+  $area.autogrow()
+  $area.val text
+  
+  $form.data "original", $div
+  $form.data "markup", $raw
+  $form.data "button", $button
+  $form.submit handleTextEditSubmit
+  $form.find(".save").click ->
+    $form.submit()
+    false
+  
+  $form.find(".cancel").click ->
+    $form.detach()
+    $div.show()
+    $button.addClass "editable_text"
+    false
+  
+  $button.removeClass "editable_text"
+  $div.hide()
+  $form.insertAfter $div
+  $area.change()
+  $area.focus()
+  false
+
+
+
+
