@@ -15,7 +15,7 @@ Barista.configure do |c|
   # c.register :tests, :root => Rails.root.join('test', 'coffeescript'), :output_prefix => 'test'
 
   # Disable wrapping in a closure:
-  # c.bare = true
+  c.bare = true
   # ... or ...
   # c.bare!
 
