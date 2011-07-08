@@ -34,8 +34,4 @@
 
 - content_for :view_specific_js do
   = javascript_include_tag 'jqModal.js'
-  coffee:
-    $(document).ready ->
-      filterResults "tr.result_pass", "passing tests"
-      fetchBugzillaInfo()
-      $("#delete-dialog").jqm(modal: true).jqmAddTrigger "#delete-button"
+  = javascript_include_tag 'reportViewReady'
