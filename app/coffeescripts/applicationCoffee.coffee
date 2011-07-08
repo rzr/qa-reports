@@ -616,7 +616,7 @@ handleEditButton = ->
   $area.attr "name", "meego_test_session[" + fieldName + "]"
   $area.autogrow()
   $area.val text
-  
+
   $form.data "original", $div
   $form.data "markup", $raw
   $form.data "button", $button
@@ -638,6 +638,171 @@ handleEditButton = ->
   $area.focus()
   false
 
+removeAttachment = (report, fileName, callback) ->
+  $.post "/ajax_remove_attachment", 
+    id: report
+    name: fileName
+  , (data, status) ->
+    callback.call this  if data.ok == 1 and callback?
 
+toggleRemoveTestCase = (eventObject) ->
+  $testCaseRow = $(eventObject.target).closest(".testcase")
+  id = $testCaseRow.attr("id").split("-").pop()
 
+  if $testCaseRow.hasClass("removed")
+    restoreTestCase id, ->
+    
+    linkTestCaseButtons $testCaseRow
+  else
+    removeTestCase id, ->
+    
+    unlinkTestCaseButtons $testCaseRow
+
+  $nftRows = $(".testcase-nft-" + id.toString())
+  if $nftRows.length == 0
+    $testCaseRow.toggleClass "removed"
+  else
+    $nftRows.toggleClass "removed"
+
+  $testCaseRow.find(".testcase_name").toggleClass "removed"
+  $testCaseRow.find(".testcase_name a").toggleClass "remove_list_item"
+  $testCaseRow.find(".testcase_name a").toggleClass "undo_remove_list_item"
+  $testCaseRow.find(".testcase_notes").toggleClass "edit"
+  $testCaseRow.find(".testcase_result").toggleClass "edit"
+
+removeTestCase = (id, callback) ->
+  $.post "/ajax_remove_testcase", id: id, (data, status) ->
+    callback.call this  if data.ok == 1 and callback?
+
+restoreTestCase = (id, callback) ->
+  $.post "/ajax_restore_testcase", id: id, (data, status) ->
+    callback.call this  if data.ok == 1 and callback?
+
+(($) ->
+  # auto-growing text areas
+  $.fn.autogrow = (options) ->
+    @filter("textarea").each ->
+      $this = $(this)
+      minHeight = $this.height()
+      lineHeight = $this.css("lineHeight")
+      shadow = $("<div></div>").css(
+        position: "absolute"
+        top: -10000
+        left: -10000
+        width: $(this).width() - parseInt($this.css("paddingLeft")) - parseInt($this.css("paddingRight"))
+        fontSize: $this.css("fontSize")
+        fontFamily: $this.css("fontFamily")
+        lineHeight: $this.css("lineHeight")
+        resize: "none"
+      ).appendTo(document.body)
+      update = ->
+        times = (string, number) ->
+          _res = ""
+          i = 0
+          
+          while i < number
+            _res = _res + string
+            i++
+          _res
+        
+        val = @value.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/&/g, "&amp;").replace(/\n$/, "<br/>&nbsp;").replace(/\n/g, "<br/>").replace(RegExp(" {2,}", "g"), (space) ->
+          times("&nbsp;", space.length - 1) + " "
+        )
+        shadow.html val
+        $(this).css "height", Math.max(shadow.height() + 20, minHeight)
+      
+      $(this).change(update).keyup(update).keydown update
+      update.apply this
+    
+    this
+) jQuery
+
+handleTextEditSubmit = ->
+  $form = $(this)
+  $original = $form.data("original")
+  $markup = $form.data("markup")
+  $area = $form.find("textarea")
+  text = $area.val()
+
+  $button = $form.data("button")
+  $button.addClass "editable_text"
+
+  if $markup.text() == text
+    $form.detach()
+    $original.show()
+    return false
+
+  $markup.text text
+  data = $form.serialize()
+  action = $form.attr("action")
+  $.post action, data, ->
+  
+  $original.html formatMarkup(text)
+  $form.detach()
+  $original.show()
+  fetchBugzillaInfo()
+  false
+
+applyBugzillaInfo = (node, info) ->
+  $node = $(node)
+  if info == undefined
+    $node.addClass "invalid"
+  else
+    status = info.status
+    if status == "RESOLVED" or status == "VERIFIED"
+      $node.addClass "resolved"
+      status = info.resolution
+    else
+      $node.addClass "unresolved"
+    text = info.summary
+    unless $node.closest("td.testcase_notes").length == 0
+      text = text + " (" + status + ")"
+      $node.attr "title", text
+    else if $node.hasClass("bugzilla_append")
+      text = text + " (" + status + ")"
+      $node.after "<span> - " + text + "</span>"
+    else
+      $node.text text
+      $node.attr "title", status
+  $node.removeClass "fetch"
+
+fetchBugzillaInfo = ->
+  bugIds = []
+  searchUrl = "/fetch_bugzilla_data"
+  links = $(".bugzilla.fetch")
+
+  links.each (i, node) ->
+    id = $.trim($(node).text())
+    if id of bugzillaCache
+      applyBugzillaInfo node, bugzillaCache[id]
+    else
+      bugIds.push id  if $.inArray(id, bugIds) == -1
+  
+  return  if bugIds.length == 0
+  
+  $.get searchUrl, "bugids[]=" + bugIds.toString(), (csv) ->
+    data = CSVToArray(csv)
+    hash = []
+    i = 1
+    
+    while i < data.length
+      row = data[i]
+      id = row[0]
+      summary = row[1]
+      status = row[2]
+      resolution = row[3]
+      hash[id.toString()] = 
+        summary: row[1]
+        status: row[2]
+        resolution: row[3]
+      i++
+
+    $(".bugzilla.fetch").each (i, node) ->
+      id = $.trim($(node).text())
+      if id of bugzillaCache
+        info = bugzillaCache[id]
+      else
+        info = hash[id]
+        bugzillaCache[id] = info  unless info == undefined
+      applyBugzillaInfo node, info
 
