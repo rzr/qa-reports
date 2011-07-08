@@ -1,6 +1,6 @@
 on_ready_steps = ->
   renderSeriesGraphs ".serial_canvas"
-  
+
   updateTemplateImage = (params) ->
     attachment_url = params.t.text
     attachment_filename = attachment_url.split("/").pop()
