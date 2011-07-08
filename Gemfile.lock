@@ -69,6 +69,8 @@ GEM
     activesupport (3.0.7)
     arel (2.0.9)
     arrayfields (4.7.4)
+    barista (1.2.1)
+      coffee-script (~> 2.2)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     capistrano (2.5.19)
@@ -245,6 +247,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-import
+  barista
   capistrano
   capistrano-ext
   capybara!
