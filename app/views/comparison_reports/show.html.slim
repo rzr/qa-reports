@@ -37,8 +37,7 @@
       = render :partial => "feature", :collection => @comparison_report.features
 
 - content_for :view_specific_js do
-  javascript:
-    $(document).ready(function(){
-    filterResults("tr.testcase:not(.has_changes)", "unchanged tests");
-    fetchBugzillaInfo();
-    });
+  coffee:
+    $(document).ready ->
+      filterResults "tr.testcase:not(.has_changes)", "unchanged tests"
+      fetchBugzillaInfo()
