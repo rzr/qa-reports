@@ -68,7 +68,7 @@ class ReportGroupViewModel
 
   def find_all_reports
     MeegoTestSession.published.
-      includes(:version_label, :meego_test_cases).
+      includes(:version_label).
       where(@params).order("tested_at DESC, created_at DESC")
   end
 
@@ -80,9 +80,12 @@ class ReportGroupViewModel
   end
 
   def find_report_range(range)
-    MeegoTestSession.published.includes(:version_label, :meego_test_cases).
+    reports = MeegoTestSession.published.includes(:version_label).
       where(@params).
       limit(range.count).offset(range.begin).
       order("tested_at DESC, created_at DESC")
+    
+    MeegoTestSession.load_case_counts_for_reports! reports
   end
 end
+

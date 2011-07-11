@@ -94,6 +94,10 @@ class MeegoTestSession < ActiveRecord::Base
          })
   end
 
+  def self.fetch_for_comparison(id)
+    find(id, :include => {:meego_test_cases => [:feature, :meego_test_session]})
+  end
+
   def self.testsets
     published.select("DISTINCT testset").order("testset").map(&:testset)
   end
@@ -164,6 +168,19 @@ class MeegoTestSession < ActiveRecord::Base
 
   def self.release_versions
     VersionLabel.find(:all, :order => "sort_order ASC").map &:label
+  end
+
+  def self.load_case_counts_for_reports!(reports)
+    result_counts = MeegoTestCase.select([:meego_test_session_id, :result, :count]).
+      where(:meego_test_session_id => reports).group(:meego_test_session_id, :result).count(:result)
+    
+    reports.map! do |report|
+      report.total_passed = result_counts[[report.id, MeegoTestCase::PASS]]
+      report.total_failed = result_counts[[report.id, MeegoTestCase::FAIL]]
+      report.total_na     = result_counts[[report.id, MeegoTestCase::NA]]
+      report.total_cases  = report.total_passed + report.total_failed + report.total_na
+      report
+    end
   end
 
   def self.latest_release_version
