@@ -1,3 +1,4 @@
+
 bugzillaCache = []
 
 activateSuggestionLinks = (target) ->
@@ -779,7 +780,7 @@ fetchBugzillaInfo = ->
       bugIds.push id  if $.inArray(id, bugIds) == -1
   
   return  if bugIds.length == 0
-  
+
   $.get searchUrl, "bugids[]=" + bugIds.toString(), (csv) ->
     data = CSVToArray(csv)
     hash = []
@@ -806,3 +807,215 @@ fetchBugzillaInfo = ->
         bugzillaCache[id] = info  unless info == undefined
       applyBugzillaInfo node, info
 
+
+setTableLoaderSize = (tableID, loaderID) ->
+  t = $(tableID)
+  h = t.height()
+  $(loaderID).height h
+
+
+CSVToArray = (strData, strDelimiter) ->
+  strDelimiter = (strDelimiter or ",")
+  objPattern = new RegExp(("(\\" + strDelimiter + "|\\r?\\n|\\r|^)" + "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" + "([^\"\\" + strDelimiter + "\\r\\n]*))"), "gi")
+  arrData = [ [] ]
+  arrMatches = null
+  while arrMatches = objPattern.exec(strData)
+    strMatchedDelimiter = arrMatches[1]
+    arrData.push []  if strMatchedDelimiter.length and (strMatchedDelimiter != strDelimiter)
+    if arrMatches[2]
+      strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"), "\"")
+    else
+      strMatchedValue = arrMatches[3]
+    arrData[arrData.length - 1].push strMatchedValue
+  arrData
+
+
+
+jQuery ($) ->
+  dragenter = (e) ->
+    e.stopPropagation()
+    e.preventDefault()
+    $("#dropbox").addClass "draghover"
+    false
+  dragover = (e) ->
+    e.stopPropagation()
+    e.preventDefault()
+    $("#dropbox").addClass "draghover"
+    false
+  dragleave = (e) ->
+    e.stopPropagation()
+    e.preventDefault()
+    $("#dropbox").removeClass "draghover"
+    false
+  drop = (e) ->
+    e.stopPropagation()
+    e.preventDefault()
+    $("#dropbox").removeClass "draghover"
+    $("#dropbox").addClass "dropped"
+
+    if typeof e.originalEvent.dataTransfer == "undefined"
+      files = e.originalEvent.target.files
+    else
+      files = e.originalEvent.dataTransfer.files
+    handleFiles files
+    false
+
+  handleFiles = (files) ->
+    i = 0
+    
+    while i < files.length
+      file = files[i]
+      file_extension = file.name.split(".").pop().toLowerCase()
+      allowed_extensions = [ "xml", "csv" ]
+      if file.fileSize < 1048576 and jQuery.inArray(file_extension, allowed_extensions) != -1
+        if firstdrop
+          $("#dropbox").text ""
+          firstdrop = false
+        file.id = "file" + fileid
+        fileid = fileid + 1
+        source = $("script[name=attachment]").html()
+        template = Handlebars.compile(source)
+        data = 
+          filename: file.name
+          fileid: file.id
+        
+        result = template(data)
+        $("#dropbox").append result
+        queue.push file
+      i++
+    sendItemInQueue()
+
+  handleAjaxResponse = ->
+    if @readyState == 4
+      $("form input[type=submit]").removeAttr "disabled"
+      response = JSON.parse(@responseText)
+      tag = "#" + response.fileid
+      $(tag + " input").attr "value", response.url
+      $(tag + " img").hide()
+      sendItemInQueue()
+      
+  sendItemInQueue = ->
+    if queue.length > 0
+      file = queue.pop()
+      xhr = new XMLHttpRequest()
+      xhr.open "post", "/upload_report/", true
+      xhr.onreadystatechange = handleAjaxResponse
+      xhr.setRequestHeader "Content-Type", "application/octet-stream"
+      xhr.setRequestHeader "If-Modified-Since", "Mon, 26 Jul 1997 05:00:00 GMT"
+      xhr.setRequestHeader "Cache-Control", "no-cache"
+      xhr.setRequestHeader "X-Requested-With", "XMLHttpRequest"
+      xhr.setRequestHeader "X-File-Name", file.fileName
+      xhr.setRequestHeader "X-File-Size", file.fileSize
+      xhr.setRequestHeader "X-File-Type", file.type
+      xhr.setRequestHeader "X-File-Id", file.id
+      xhr.send file
+      $("form input[type=submit]").attr "disabled", "true"
+  firstdrop = true
+  fileid = 1
+  queue = []
+  if typeof window.FileReader == "function"
+    $("#only_browse").remove()
+    $("#dragndrop_and_browse").show()
+    $("#dropbox").bind("dragenter", dragenter).bind("dragover", dragover).bind("dragleave", dragleave).bind "drop", drop
+  else
+    $("#dragndrop_and_browse").remove()
+    
+
+formatMarkup = (s) ->
+  s = htmlEscape s
+
+  lines = s.split '\n'
+  html = ""
+  ul = false
+  for line in lines
+    line = $.trim line
+    if ul and not /^\*/.test line
+      html += "</ul>"
+      ul = false
+    else if line == ""
+      html += "<br>"
+    
+    if line == ""
+      continue
+    
+    line = line.replace(/'''''(.+?)'''''/g, "<b><i>$1</i></b>")
+    line = line.replace(/'''(.+?)'''/g, "<b>$1</b>")
+    line = line.replace(/''(.+?)''/g, "<i>$1</i>")
+    line = line.replace(/http\:\/\/([^\/]+)\/show_bug\.cgi\?id=(\d+)/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"http://$1/show_bug.cgi?id=$2\">$2</a>")
+    line = line.replace(/\[\[(http[s]?:\/\/.+?) (.+?)\]\]/g, "<a href=\"$1\">$2</a>")
+    line = line.replace(/\[\[(\d+)\]\]/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"" + BUGZILLA_URI + "$1\">$1</a>")
+
+    line = line.replace(/^====\s*(.+)\s*====$/, "<h5>$1</h5>")
+    line = line.replace(/^===\s*(.+)\s*===$/, "<h4>$1</h4>")
+    line = line.replace(/^==\s*(.+)\s*==$/, "<h3>$1</h3>")
+    match = /^\*(.+)$/.exec(line)
+
+    if match
+      if not ul
+        html += "<ul>"
+        ul = true
+      html += "<li>" + match[1] + "</li>"
+    else if not /^<h/.test(line)
+      html += line + "<br/>"
+    else
+      html += line
+
+  return html
+
+filterResults = (rowsToHide, typeText) ->
+  updateToggle = ($tbody, $this) ->
+    count = $tbody.find("tr:hidden").length
+    if count > 0
+      $this.text("+ see " + count + " " + typeText)
+    else
+      $this.text("- hide " + typeText)
+    
+    if $tbody.find(rowsToHide).length == 0
+      $this.hide()
+
+  updateToggles = ->
+    $("a.see_all_toggle").each ->
+      $tbody = $(this).parents("tbody").next("tbody")
+      updateToggle($tbody, $(this))
+
+  $(".see_history_button").click ->
+    $("#detailed_functional_test_results").hide()
+    $history.show()
+    $history.find(".see_history_button").addClass "active"
+    false
+
+  $(".see_all_button").click ->
+    $("a.sort_btn").removeClass "active"
+    $(this).addClass "active"
+    $(rowsToHide).show()
+    updateToggles()
+    false
+
+  $(".see_only_failed_button").click ->
+    $("a.sort_btn").removeClass "active"
+    $(this).addClass "active"
+    $(rowsToHide).hide()
+    updateToggles()
+    false
+
+  updateToggles()
+
+  $("a.see_all_toggle").each ->
+    $(this).click (index, item) ->
+      $this = $(this)
+      $tbody = $this.parents("tbody").next("tbody")
+      $tbody.find(rowsToHide).toggle
+      updateToggle($tbody, $this)
+      false
+  
+  $detail  = $("table.detailed_results").first()
+  $history = $("table.detailed_results.history")
+  $history.find(".see_all_button").click ->
+    $history.hide()
+    $detail.show()
+    $detail.find(".see_all_button").click()
+  $history.find(".see_only_failed_button").click ->
+    $history.hide()
+    $detail.show()
+    $detail.find(".see_only_failed_buttton").click()
+    
