@@ -8,6 +8,7 @@ class SummaryShow
     @report = report
   end
 
+  # better name?
   def percentage(attribute)
     "%i%%" % ( @report.send(attribute) * 100 ).round
   end
