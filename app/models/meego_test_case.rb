@@ -59,20 +59,5 @@ class MeegoTestCase < ActiveRecord::Base
     end
   end
 
-  # Move to to Result module if used from multiple places
-  RESULT_NAMES = {"fail"     => FAIL,
-                  "na"       => NA,
-                  "pass"     => PASS,
-                  "measured" => MEASURED}
-
-  #TODO: move to test case?
-  def self.map_result(result)
-    RESULT_NAMES[result.downcase] || NA
-  end
-
-  def self.result_as_string(result)
-    RESULT_NAMES.invert[result] || RESULT_NAMES.invert(NA)
-  end
-
 end
 

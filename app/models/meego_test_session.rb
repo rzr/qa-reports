@@ -44,8 +44,6 @@ class MeegoTestSession < ActiveRecord::Base
 
   has_many :features,         :dependent => :destroy, :order => "id DESC"
   has_many :meego_test_cases, :autosave => false,     :order => "id DESC"
-
-# are these used?
   has_many :test_cases,       :class_name => "MeegoTestCase", :autosave => false,     :order => "id DESC"
   has_many :passed,           :class_name => "MeegoTestCase", :conditions => { :result => MeegoTestCase::PASS     }
   has_many :failed,           :class_name => "MeegoTestCase", :conditions => { :result => MeegoTestCase::FAIL     }
@@ -338,6 +336,22 @@ class MeegoTestSession < ActiveRecord::Base
   def format_year
     tested_at.strftime("%Y")
   end
+
+  RESULT_NAMES = {"fail"     => MeegoTestCase::FAIL,
+                  "na"       => MeegoTestCase::NA,
+                  "pass"     => MeegoTestCase::PASS,
+                  "measured" => MeegoTestCase::MEASURED}
+
+  #TODO: move to test case?
+  def self.map_result(result)
+    RESULT_NAMES[result.downcase] || MeegoTestCase::NA
+  end
+
+  def self.result_as_string(result)
+    RESULT_NAMES.invert[result] || RESULT_NAMES.invert(MeegoTestCase::NA)
+  end
+
+
 
   def update_report_result(user, params, published = true)
     tmp = ReportFactory.new.build(params)
