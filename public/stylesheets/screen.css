@@ -1292,6 +1292,10 @@ div.formError, #error, form .error {
     height: 1.0833em;
     margin-right: -1px;}
 
+#version_navi #report_filters {
+    float: right;
+}
+
 a#csv_report_link {
     padding-left: 400px;}
 /* @end */
@@ -1473,11 +1477,13 @@ td em {
     font-weight: normal;
     font-style: normal; }
 
-td.inc em{
-    background-image: url(../images/inc.png); }
+td.inc em {
+    background-image: url(../images/inc.png);
+    white-space:nowrap; }
 
-td.dec em{
-    background-image: url(../images/dec.png); }
+td.dec em {
+    background-image: url(../images/dec.png);
+    white-space:nowrap; }
 
 .th_feature {
     width: 30%;}
