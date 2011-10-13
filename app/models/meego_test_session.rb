@@ -129,20 +129,6 @@ class MeegoTestSession < ActiveRecord::Base
     prev_session
   end
 
-  def self.load_case_counts_for_reports!(reports)
-    result_counts = MeegoTestCase.select([:meego_test_session_id, :result, :count]).
-      where(:meego_test_session_id => reports).group(:meego_test_session_id, :result).count(:result)
-
-    reports.map! do |report|
-      report.total_passed   = result_counts[[report.id, MeegoTestCase::PASS]]
-      report.total_failed   = result_counts[[report.id, MeegoTestCase::FAIL]]
-      report.total_na       = result_counts[[report.id, MeegoTestCase::NA]]
-      report.total_measured = result_counts[[report.id, MeegoTestCase::MEASURED]]
-      report.total_cases    = report.total_passed + report.total_failed + report.total_na + report.total_measured
-      report
-    end
-  end
-
   ###############################################
   # Test session navigation                     #
   ###############################################
