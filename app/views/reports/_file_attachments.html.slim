@@ -10,7 +10,10 @@
 
     ul.file_list class="item_list attachment #{'editing' if @editing}"
       span.file_list_ready
-          = render :partial => "reports/file_attachment_list", :locals => {:report => @report, :files => @report.attachments}
+        li
+          a.remove_list_item
+          a.filename
+/          = render :partial => "reports/file_attachment_list", :locals => {:report => @report, :files => @report.attachments}
 
     - if @editing
         a.upload_button.small_btn + Add attachment

@@ -79,8 +79,8 @@ class UploadController < ApplicationController
     if session.errors.empty? && session.save
       session.update_attribute(:editor, current_user)
       expire_caches_for(session)
-      html_content = render_to_string :partial => 'reports/result_file_list.html.slim', :locals => {:files => session.result_files}
-      render :json => { :html_content => html_content}
+#      html_content = render_to_string :partial => 'reports/result_file_list.html.slim', :locals => {:files => session.result_files}
+      render :json => { :file_list_ready => session.result_files.map{ |file| { :filename => file.filename, :url => file.pretty_url } }}
     else
       render :json => { :errors => session.errors[:result_files]}, :status => :unprocessable_entity
     end

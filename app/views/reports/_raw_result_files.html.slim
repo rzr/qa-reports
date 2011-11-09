@@ -4,15 +4,16 @@ li#result_file_list_item_template style="display:none"
   span.progress_bar
 
 h2#raw_result_files Original Result Files
- 
-	
-/ TODO change all functionality to serve file merging	
+
+
+/ TODO change all functionality to serve file merging
 - if result_files.present? || @editing
   div#result_file_drag_drop_area
 
     ul.file_list class="item_list attachment #{'editing' if @editing}"
       span.file_list_ready
-        = render :partial => "reports/result_file_list", :locals => {:files => result_files}
+        li
+          a.filename
 
     - if @editing
         a.upload_button.small_btn + Merge result file
@@ -28,3 +29,5 @@ h2#raw_result_files Original Result Files
             #{session_key}
 - else
   | No result files available
+javascript:
+  var result_files = #{{ {:file_list_ready => result_files.map{ |file| { :filename => file.filename, :url => file.pretty_url } }}.to_json}};

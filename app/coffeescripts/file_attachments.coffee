@@ -64,7 +64,8 @@ $(document).ready ->
           onComplete: (id, fileName, response) ->
               $(@element).find("#file_upload#{id}").remove()
               if response.status == 200
-                $(@element).find(".file_list_ready").html(response.data.html_content)
+                directives = file_list_ready: 'filename@href': -> @url
+                $(@element).find(".file_list_ready").render response.data, directives
               else
                 $(@element).find(".formError").show().text(response.data.errors.toString())
 

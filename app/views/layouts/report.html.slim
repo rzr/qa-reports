@@ -15,6 +15,7 @@ html
     = javascript_include_tag 'bluff/bluff-min.js'
     = javascript_include_tag 'dygraph-combined.js'
     = javascript_include_tag 'string'
+    = javascript_include_tag 'jquery.transparency.min.js'
     = yield :view_specific_js_head
     = google_analytics_tag
 
@@ -83,7 +84,7 @@ html
         #nft_series_history_graph style="width:770px; height:270px;"
         .nft_graph_options
           div
-            h3 
+            h3
               | Legend
             input name="serial_values" value="0" type="checkbox" checked="checked"
             span.max Max

@@ -33,6 +33,10 @@ on_ready_steps = ->
     $('#test_result_overview tr:odd').addClass('odd')
     $('#test_result_overview tr:even').addClass('even')
 
+    # Render result files list
+    directives = file_list_ready: 'filename@href': -> @url
+    $('#result_file_drag_drop_area .file_list_ready').render result_files, directives
+
 # IE hack
 if typeof G_vmlCanvasManager != 'undefined'
     $(window).load on_ready_steps
