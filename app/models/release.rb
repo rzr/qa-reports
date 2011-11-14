@@ -1,13 +1,12 @@
 class Release < ActiveRecord::Base
-
-  scope :in_sort_order, order("sort_order ASC")
+  default_scope order(:sort_order)
 
   def self.names
-    in_sort_order.map(&:name)
+    all.map(&:name)
   end
 
   def self.latest
-    in_sort_order.first
+    first
   end
 
 end

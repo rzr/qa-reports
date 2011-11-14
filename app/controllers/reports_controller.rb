@@ -92,8 +92,6 @@ class ReportsController < ApplicationController
 
   def update
     @report = MeegoTestSession.find(params[:id])
-    params[:report][:release_id] = Release.find_by_name(params.delete(:release)[:name]).id if params[:release].present?
-    params[:report][:profile_id] = Profile.find_by_name(params.delete(:profile)[:name]).id if params[:profile].present?
     @report.update_attributes(params[:report]) # Doesn't check for failure
     @report.update_attribute(:editor, current_user)
 
@@ -140,12 +138,12 @@ class ReportsController < ApplicationController
   end
 
   def populate_edit_fields
-    @build_diff       = []
-    @profiles         = Profile.names
-    @release_versions = Release.in_sort_order.map { |release| release.name }
-    @testsets         = MeegoTestSession.release(release.name).testsets
-    @products         = MeegoTestSession.release(release.name).popular_products
-    @build_ids        = MeegoTestSession.release(release.name).popular_build_ids
+    @build_diff = []
+    @profiles   = Profile.all
+    @releases   = Release.all
+    @testsets   = MeegoTestSession.release(release.name).testsets
+    @products   = MeegoTestSession.release(release.name).popular_products
+    @build_ids  = MeegoTestSession.release(release.name).popular_build_ids
   end
 
   protected

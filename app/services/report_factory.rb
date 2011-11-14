@@ -8,11 +8,8 @@ class ReportFactory
   def build(params)
     @errors = {}
 
-    params[:release] ||= Release.find_by_name params.delete(:release_version) if params[:release_version]
-    params[:profile] ||= Profile.find_by_name params.delete(:target) if params[:target]
-
     begin
-      generate_title(params)
+      params[:tested_at] ||= Time.now.to_s
       parse_result_files(params)
       test_session = MeegoTestSession.new(params)
       copy_template_values(test_session)
@@ -34,14 +31,6 @@ class ReportFactory
   end
 
   private
-
-  def generate_title(params)
-    params[:tested_at] = Time.now.to_s unless params[:tested_at].present?
-
-    tested_at = DateTime.parse(params[:tested_at]).strftime('%Y-%m-%d')
-    title_values = [params[:profile].try(:name), params[:product], params[:testset], tested_at]
-    params[:title] ||= "%s Test Report: %s %s %s" % title_values
-  end
 
   def parse_result_files(params)
     features = {}

@@ -315,7 +315,7 @@ class MeegoTestSession < ActiveRecord::Base
 
   def generate_defaults!
     time                 = tested_at || Time.now
-    self.title           ||= "%s Test Report: %s %s %s" % [profile.name, product_label, testset_label, time.strftime('%Y-%m-%d')]
+    self.title           ||= "%s Test Report: %s %s %s" % [profile.name, product, testset, time.strftime('%Y-%m-%d')]
     self.environment_txt = "* Product: " + product if self.environment_txt.empty?
   end
 
