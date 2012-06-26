@@ -44,7 +44,7 @@ class BugsController < ApplicationController
     rescue FasterCSV::MalformedCSVError => e
       logger.error e.message
       logger.info  "ERROR: MALFORMED BUGZILLA DATA"
-      logger.info  data
+      logger.info  content
       head :not_found
     end
   end
