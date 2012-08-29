@@ -1,5 +1,5 @@
 
-class FasterCSV
+class CSV
   class Row
     def has_valid_headers?
       # Check that all required headers are there
@@ -40,9 +40,9 @@ class CSVResultFileParser
     begin
       # TODO: Remove check when dropping support for version 1
       if is_new_format?(io) then
-        FasterCSV.parse(io, @FCSV_settings) {|row| parse_row(row) }
+        CSV.parse(io, @FCSV_settings) {|row| parse_row(row) }
       else
-        FasterCSV.parse(io, @FCSV_settings) {|row| parse_row_version_1(row) }
+        CSV.parse(io, @FCSV_settings) {|row| parse_row_version_1(row) }
       end
     rescue NoMethodError
       raise ParseError.new("unknown"), "Incorrect file format"
@@ -75,11 +75,11 @@ class CSVResultFileParser
 
   def parse_row_version_1(row)
     #TODO: Field names should be harmonized with result.xml
-    [0, 1].each { |field| raise ParseError.new("unknown"), "Incorrect file format" unless row[field] }
+    [0, 1].each { |field| raise ParseError.new("unknown"), "Incorrect file format: missing column #{field}" unless row[field] }
 
-    feature   = row[0].toutf8.strip
-    test_case = row[1].toutf8.strip
-    comment   = row[2].try(:toutf8).try(:strip) || ""
+    feature   = row[0].force_encoding('UTF-8').strip
+    test_case = row[1].force_encoding('UTF-8').strip
+    comment   = row[2].try(:force_encoding, 'UTF-8').try(:strip) || ""
 
     raise ParseError.new("unknown"), "Invalid test case result" if row.fields(:pass, :fail, :na).count("1") != 1
     result    = RESULT_MAPPING[row.fields(:pass, :fail, :na).index("1")]
@@ -100,13 +100,13 @@ class CSVResultFileParser
     # Check that we have a feature, a test case and some result
     raise ParseError.new("unknown"), "Incorrect file format. Feature or test case missing, or more than one or no result set for a case" unless row.has_valid_data?
 
-    feature  = row[:feature].toutf8.strip
-    testcase = row[:test_case].toutf8.strip
+    feature  = row[:feature].force_encoding('UTF-8').strip
+    testcase = row[:test_case].force_encoding('UTF-8').strip
 
     @features[feature] ||= {}
     @features[feature][testcase] = {
       :name                    => testcase,
-      :comment                 => row[:comment].try(:toutf8).try(:strip) || "",
+      :comment                 => row[:comment].try(:force_encoding, 'UTF-8').try(:strip) || "",
       :measurements_attributes => parse_measurements(row) || [],
       :result                  => RESULT_MAPPING[row.fields(:pass, :fail, :na, :measured).index("1")]
     }
@@ -118,9 +118,9 @@ class CSVResultFileParser
       # value. The XML approach puts a zero to value/target/failure if it's
       # missing, so that's what we want to do here as well
       [{
-         :name    => row[:measurement_name].toutf8.strip,
+         :name    => row[:measurement_name].force_encoding('UTF-8').strip,
          :value   => row[:value].try(:to_f),
-         :unit    => row[:unit].try(:toutf8).try(:strip) || "",
+         :unit    => row[:unit].try(:force_encoding, 'UTF-8').try(:strip) || "",
          :target  => row[:target].try(:to_f),
          :failure => row[:failure].try(:to_f),
 
