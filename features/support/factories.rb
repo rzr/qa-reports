@@ -52,7 +52,7 @@ FactoryGirl.define do
     product         "N900"
     published       true
     tested_at       Date.today
-    result_files    {|result_files| [result_files.association :result_file] }
+    result_files    {|result_files| [result_files.association(:result_file)] }
 
     factory :test_report, :class => MeegoTestSession do
       after_build { |report| report.features << FactoryGirl.build(:feature, :meego_test_session => report) }
@@ -137,6 +137,6 @@ FactoryGirl.define do
     product         "N900"
     published       true
     tested_at       "2011-08-06"
-    result_files    {|result_files| [result_files.association :result_file] }
+    result_files    {|result_files| [result_files.association(:result_file)] }
   end
 end

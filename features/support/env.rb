@@ -19,14 +19,15 @@ Spork.prefork do
 
   require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 
-  require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
-  require 'cucumber/rails/world'
-  require 'cucumber/rails/active_record'
-  require 'cucumber/web/tableish'
+  require 'cucumber/rails'
+  #require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
+  #require 'cucumber/rails/world'
+  #require 'cucumber/rails/active_record'
+  #require 'cucumber/web/tableish'
 
   require 'capybara/rails'
-  require 'capybara/cucumber'
-  require 'capybara/session'
+  #require 'capybara/cucumber'
+  #require 'capybara/session'
 
   # Uncomment the lines below to enabel debugging http://bashdb.sourceforge.net/ruby-debug.html
   # require 'ruby-debug'

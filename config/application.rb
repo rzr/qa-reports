@@ -2,10 +2,10 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 #TODO remove when updated to Rails 3.1 or greater
-require 'lib/ext-rails/active_record_association_collection' if Rails.version =~ /^3\.0/
+#require 'lib/ext-rails/active_record_association_collection' if Rails.version =~ /^3\.0/
 
 #TODO remove once slim or rails is updated
-require 'lib/ext-rails/actionview_cachehelper'
+#require 'lib/ext-rails/actionview_cachehelper'
 
 # If you have a Gemfile, require the gems listed there, including any gems
 # you've limited to :test, :development, or :production.
@@ -48,6 +48,9 @@ module Meegoqa
 
     # Observers for automatic exports. Needs server definition in config/exporter_config.yml
     config.active_record.observers = :meego_test_session_observer, :meego_test_case_observer
+
+    # Disable the asset pipeline
+    config.assets.enabled = false
 
   end
 end
