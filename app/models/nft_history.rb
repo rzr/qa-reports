@@ -246,7 +246,7 @@ class NftHistory
 
     # Clear the output buffer
     csvstr.replace("")
-    csv = FCSV.new(csvstr, :col_sep => ',')
+    csv = CSV.new(csvstr, :col_sep => ',')
     if mode == :serial
       csv << ["Date",
               "Max #{unit}",
