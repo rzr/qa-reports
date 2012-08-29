@@ -5,7 +5,7 @@ gem 'i18n', '0.6.0'
 gem 'mysql2'
 gem 'nokogiri', '~>1.3'
 gem 'devise'
-gem 'slim', '0.9.4' # templates break on newer versions
+gem 'slim'
 gem 'paperclip', '~>2.3.15'
 gem 'coffee-script', '~>2.2'
 gem 'therubyracer', '~>0.9.0', :require => false
