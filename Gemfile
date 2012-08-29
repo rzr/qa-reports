@@ -46,7 +46,6 @@ group :development, :test do
   gem 'cucumber'
   gem 'rcov', :require => false
   gem 'cucumber-rails', '~> 0.3.2' #newer ones fail
-  gem 'metric_fu', :git => "https://github.com/pyykkis/metric_fu.git"
   gem 'database_cleaner'
   gem 'factory_girl'
   gem "factory_girl_rails", "~> 1.1"
