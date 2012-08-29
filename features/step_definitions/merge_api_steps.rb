@@ -76,14 +76,14 @@ Given /^I have created a test report$/ do
 end
 
 When /^I merge with the latest report using multiple files$/ do
-  api_merge default_api_merge_opts
+  @response = api_merge default_api_merge_opts
 end
 
 When %r/^I merge the result file "([^"]*)" with report having id "([^"]*)"$/ do |file, id|
   assert file.present?, "filename is missing"
   params = default_api_merge_opts
   params[:result_files] = [Rack::Test::UploadedFile.new("features/resources/#{file}", "text/xml")]
-  api_merge params, id
+  @response = api_merge params, id
 end
 
 
@@ -91,25 +91,25 @@ When %r/^I merge with the latest report using result file "([^"]*)"$/ do |file|
   assert file.present?, "filename is missing"
   params = default_api_merge_opts
   params[:result_files] = [Rack::Test::UploadedFile.new("features/resources/#{file}", "text/xml")]
-  api_merge params
+  @response = api_merge params
 end
 
 When %r/^I merge with the latest report without defining a result file$/ do
   params = default_api_merge_opts
   params.delete(:result_files)
-  api_merge params
+  @response = api_merge params
 end
 
 When %r/^I merge with the latest report without defining an auth token$/ do
   params = default_api_merge_opts
   params.delete(:auth_token)
-  api_merge params
+  @response = api_merge params
 end
 
 When %r/^I merge with the latest report using multiple files including an invalid file$/ do
   params = default_api_merge_opts
   params[:result_files] << Rack::Test::UploadedFile.new("features/resources/invalid.csv", "text/csv")
-  api_merge params
+  @response = api_merge params
 end
 
 When %r/^I merge with a non\-existing report using result file "([^"]*)"$/ do |file|
@@ -121,19 +121,19 @@ Then %r/^the API responds with an error about "([^"]*)"$/ do |error|
 end
 
 Then %r/^the API responds ok$/ do
-  response.should be_success, "Expected: 200\nGot: #{response.code}, #{response.body}"
+  @response.status.should equal 200
 end
 
 When %r/^I merge with the latest report with an invalid auth token$/ do
   params = default_api_merge_opts
   params[:auth_token] = "invalidtoken"
-  api_merge params
+  @response = api_merge params
 end
 
 When %r/^I merge with the latest report using string as file parameter$/ do
   params = default_api_merge_opts
   params[:result_files] << "not_a_file"
-  api_merge params
+  @response = api_merge params
 end
 
 Given %r/^I have a report with$/ do |table|
@@ -148,7 +148,7 @@ When %r/^I merge with$/ do |table|
   file.flush
   params = default_api_merge_opts
   params[:result_files] = [Rack::Test::UploadedFile.new(file.path, "text/csv")]
-  api_merge params
+  @response = api_merge params
 end
 
 And %r/^I should see the report contain$/ do |table|

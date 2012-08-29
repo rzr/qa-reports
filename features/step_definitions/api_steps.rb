@@ -331,5 +331,5 @@ Then %r/^resulting JSON should match file "([^"]*)"$/ do |file1|
 end
 
 Then %r/^I get a "([^"]*)" response code$/ do |code|
-  @response.code.should == code
+  @response.status.should == code.to_i
 end
