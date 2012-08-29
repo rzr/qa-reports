@@ -13,6 +13,10 @@ Spork.prefork do
   # files.
 
   ENV["RAILS_ENV"] ||= "test"
+  env_no_proxy = (ENV['no_proxy'] || "").split(",")
+  env_no_proxy << "127.0.0.1"
+  ENV['no_proxy']=env_no_proxy.join(",")
+
   require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 
   require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
