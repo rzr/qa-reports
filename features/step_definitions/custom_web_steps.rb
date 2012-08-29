@@ -82,7 +82,7 @@ end
 
 When %r/^I scroll down the page$/ do
   page.evaluate_script('window.location.hash="footer";')
-  And %{I wait until all Ajax requests are complete}
+  step %{I wait until all Ajax requests are complete}
 end
 
 When %r/^I click the element "([^"]*)" within "([^"]*)"$/ do |element, selector|

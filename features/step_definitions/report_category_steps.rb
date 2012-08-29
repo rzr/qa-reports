@@ -25,7 +25,7 @@ Then %r/^reports from "([^"]*)" should be in the report list under "([^"]*)"$/ d
 end
 
 Then %r/^reports for "([^"]*)" should not be visible on the page$/ do |month_name|
-  Then %{I should not see "#{month_name}" within ".index_month"}
+  step %{I should not see "#{month_name}" within ".index_month"}
 end
 
 Then %r/^I should see a graph containing data for the most recent reports$/ do
