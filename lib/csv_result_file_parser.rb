@@ -28,7 +28,7 @@ class CSVResultFileParser
 
   def initialize
     @features = {}
-    @FCSV_settings = {
+    @CSV_settings = {
       :col_sep           => ',',
       :headers           => true,
       :header_converters => :symbol,
@@ -40,9 +40,9 @@ class CSVResultFileParser
     begin
       # TODO: Remove check when dropping support for version 1
       if is_new_format?(io) then
-        CSV.parse(io, @FCSV_settings) {|row| parse_row(row) }
+        CSV.parse(io, @CSV_settings) {|row| parse_row(row) }
       else
-        CSV.parse(io, @FCSV_settings) {|row| parse_row_version_1(row) }
+        CSV.parse(io, @CSV_settings) {|row| parse_row_version_1(row) }
       end
     rescue NoMethodError
       raise ParseError.new("unknown"), "Incorrect file format"
