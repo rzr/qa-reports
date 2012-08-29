@@ -66,7 +66,7 @@ class ApiController < ApplicationController
     end
 
     # Check the errors
-    if @test_session.errors.length > 0
+    if @test_session.errors.size > 0
       render :json => {:ok => '0', :errors => @test_session.errors}
       return
     end
