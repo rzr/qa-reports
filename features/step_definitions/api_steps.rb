@@ -31,26 +31,26 @@ end
 # are other methods for using deprecated parameters.
 When %r/^the client sends file "([^"]*)" via the REST API$/ do |file|
   # @default_api_opts defined in features/support/hooks.rb
-  api_import @default_api_opts.merge({
+  @response = api_import @default_api_opts.merge({
     "report.1" => Rack::Test::UploadedFile.new("#{file}", "text/xml")
   })
-  response.should be_success
+  @response.status.should == 200
 end
 
 # The first API had hwproduct and testtype
 When "the client sends a basic test result file with deprecated parameters" do
-  api_import @default_version_1_api_opts.merge({
+  @response = api_import @default_version_1_api_opts.merge({
     "report.1" => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   })
-  response.should be_success
+  @response.status.should == 200
 end
 
 # The 2nd API had "hardware"
 When "the client sends a basic test result file with deprecated product parameter" do
-  api_import @default_version_2_api_opts.merge({
+  @response = api_import @default_version_2_api_opts.merge({
     "report.1" => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   })
-  response.should be_success
+  @response.status.should == 200
 end
 
 When %r/^the client sends reports "([^"]*)" via the REST API to test set "([^"]*)" and product "([^"]*)"$/ do |files, testset, hardware|
@@ -64,17 +64,17 @@ When %r/^the client sends reports "([^"]*)" via the REST API to test set "([^"]*
   end
 
   api_import data
-  response.should be_success
+  @response.status.should == 200
 end
 
 When %r/^the client sends files with attachments$/ do
-  api_import @default_api_opts.merge({
+  @response = api_import @default_api_opts.merge({
       "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml"),
       "report.2"        => Rack::Test::UploadedFile.new("features/resources/bluetooth.xml", "text/xml"),
       "attachment.1"    => Rack::Test::UploadedFile.new("public/images/ajax-loader.gif", "image/gif"),
       "attachment.2"    => Rack::Test::UploadedFile.new("public/images/icon_alert.gif", "image/gif"),
   })
-  response.should be_success
+  @response.status.should == 200
 end
 
 # This is used in test session listing tests
@@ -89,37 +89,37 @@ When "the client sends three CSV files" do
 end
 
 When %r/^the client sends a request with string value instead of a file$/ do
-    api_import @default_api_opts.merge("report.1" => "Foo!")
+    @response = api_import @default_api_opts.merge("report.1" => "Foo!")
 end
 
 When %r/^the client sends a request without file$/ do
   @default_api_opts.delete("report.1")
-  api_import @default_api_opts
-  response.should be_success
+  @response = api_import @default_api_opts
+  @response.status.should == 200
 end
 
 When %r/^the client sends a request without a target profile$/ do
   @default_api_opts.delete("target")
-  api_import @default_api_opts
-  response.should be_success
+  @response = api_import @default_api_opts
+  @response.status.should == 200
 end
 
 When "the client sends a request with invalid release version" do
   @default_api_opts["release_version"] ="foo"
-  api_import @default_api_opts
-  response.should be_success
+  @response = api_import @default_api_opts
+  @response.status.should == 200
 end
 
 When "the client sends a request with invalid target profile" do
   @default_api_opts["target"] ="Foo"
-  api_import @default_api_opts
-  response.should be_success
+  @response = api_import @default_api_opts
+  @response.status.should == 200
 end
 
 When "the client sends a request with invalid product" do
   @default_api_opts["product"] ="N900/ce"
-  api_import @default_api_opts
-  response.should be_success
+  @response = api_import @default_api_opts
+  @response.status.should == 200
 end
 
 When "the client sends a request containing invalid extra parameter" do
@@ -155,17 +155,17 @@ When "the client sends a request with defined issue summary" do
 end
 
 When %r/^the client sends a request with optional parameter "([^"]*)" with value "([^"]*)"$/ do |opt, val|
-  api_import @default_api_opts.merge({
+  @response = api_import @default_api_opts.merge({
     "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml"),
     opt               => val
   })
 
-  response.should be_success
+  @response.status.should == 200
 end
 
 When "the client sends a request with all optional parameters defined" do
-  api_import @default_api_opts_all
-  response.should be_success
+  @response = api_import @default_api_opts_all
+  @response.status.should == 200
 end
 
 When %r/^I view the latest report "([^"]*)"/ do |report_string|
