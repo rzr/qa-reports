@@ -25,7 +25,6 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-spork'
   gem 'guard-migrate'
-  gem 'ruby-debug'
   gem 'capistrano'
   gem 'capistrano-ext'
 end
@@ -44,7 +43,6 @@ group :development, :test do
   gem 'capybara'
   gem 'spork', '~> 0.9.0.rc'
   gem 'cucumber'
-  gem 'rcov', :require => false
   gem 'cucumber-rails', '~> 0.3.2' #newer ones fail
   gem 'database_cleaner'
   gem 'factory_girl'
