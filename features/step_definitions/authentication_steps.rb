@@ -48,11 +48,11 @@ end
 
 Given %r/^I am logged in$/ do
   visit '/'
-  When "I log in with valid credentials"
+  step "I log in with valid credentials"
 end
 
 When %r/^I log out$/ do
-    click_link_or_button 'Sign out'
+  click_link_or_button 'Sign out'
 end
 
 Given %r/^I am at the registration page$/ do
@@ -68,10 +68,10 @@ When %r/^I sign up with unique email address$/ do
 end
 
 When %r/^I sign up with an already registered email address$/ do
-  When "I sign up with unique email address"
-  When "I log out"
-  Given "I am at the registration page"
-  When "I sign up with unique email address"
+  step "I sign up with unique email address"
+  step "I log out"
+  step "I am at the registration page"
+  step "I sign up with unique email address"
 end
 
 When %r/^I sign up with invalid name, email and password$/ do

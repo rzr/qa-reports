@@ -94,54 +94,54 @@ When %r/^I merge with the latest report using result file "([^"]*)"$/ do |file|
   api_merge params
 end
 
-When /^I merge with the latest report without defining a result file$/ do
+When %r/^I merge with the latest report without defining a result file$/ do
   params = default_api_merge_opts
   params.delete(:result_files)
   api_merge params
 end
 
-When /^I merge with the latest report without defining an auth token$/ do
+When %r/^I merge with the latest report without defining an auth token$/ do
   params = default_api_merge_opts
   params.delete(:auth_token)
   api_merge params
 end
 
-When /^I merge with the latest report using multiple files including an invalid file$/ do
+When %r/^I merge with the latest report using multiple files including an invalid file$/ do
   params = default_api_merge_opts
   params[:result_files] << Rack::Test::UploadedFile.new("features/resources/invalid.csv", "text/csv")
   api_merge params
 end
 
-When /^I merge with a non\-existing report using result file "([^"]*)"$/ do |file|
-  Then "I merge the result file \"#{file}\" with report having id \"1234567890\""
+When %r/^I merge with a non\-existing report using result file "([^"]*)"$/ do |file|
+  step "I merge the result file \"#{file}\" with report having id \"1234567890\""
 end
 
 Then %r/^the API responds with an error about "([^"]*)"$/ do |error|
-  Then %{the REST result "errors" contains "#{error}"}
+  step %{the REST result "errors" contains "#{error}"}
 end
 
-Then /^the API responds ok$/ do
+Then %r/^the API responds ok$/ do
   response.should be_success, "Expected: 200\nGot: #{response.code}, #{response.body}"
 end
 
-When /^I merge with the latest report with an invalid auth token$/ do
+When %r/^I merge with the latest report with an invalid auth token$/ do
   params = default_api_merge_opts
   params[:auth_token] = "invalidtoken"
   api_merge params
 end
 
-When /^I merge with the latest report using string as file parameter$/ do
+When %r/^I merge with the latest report using string as file parameter$/ do
   params = default_api_merge_opts
   params[:result_files] << "not_a_file"
   api_merge params
 end
 
-Given /^I have a report with$/ do |table|
+Given %r/^I have a report with$/ do |table|
   report = generate_report table
   report.save
 end
 
-When /^I merge with$/ do |table|
+When %r/^I merge with$/ do |table|
   csv = generate_csv generate_report(table)
   file = Tempfile.new ["tempresultcsv",".csv"]
   file << csv
@@ -151,7 +151,7 @@ When /^I merge with$/ do |table|
   api_merge params
 end
 
-And /^I should see the report contain$/ do |table|
+And %r/^I should see the report contain$/ do |table|
   report = MeegoTestSession.last
   test_cases = report.test_cases.to_a.map {|test_case| [test_case.feature.name, test_case.name, test_case.result] }
   expected_cases = table.hashes.map do |hash|

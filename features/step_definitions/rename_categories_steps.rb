@@ -26,7 +26,7 @@ When %r/^I have uploaded reports with profile "([^"]*)" having testset "([^"]*)"
 end
 
 When %r/^I click on the edit button$/ do
-  When "I press \"home_edit_link\""
+  step "I press \"home_edit_link\""
 end
 
 When %r/^I edit the testset name "([^"]*)" to "([^"]*)" for profile "([^"]*)"$/ do |orig_name, new_name, profile|
@@ -38,14 +38,14 @@ end
 
 When %r/^I press enter$/ do
   find("#report_navigation input").native.send_key("\n")
-  And "I wait until all Ajax requests are complete"
+  step "I wait until all Ajax requests are complete"
 end
 
 Then %r/^I should see testset "([^"]*)" for profile "([^"]*)"$/ do |testset, profile|
   visit('/')
   url = category_url(profile,testset)
   sel = "#report_navigation a.name[href='#{url}']"
-  Then %{I should see "#{testset}" within "#{sel}"}
+  step %{I should see "#{testset}" within "#{sel}"}
 end
 
 When %r/^I click done$/ do
@@ -61,10 +61,10 @@ When %r/^I press escape$/ do
 end
 
 When %r/^I rename the testset "([^"]*)" under profile "([^"]*)" to "([^"]*)"$/ do |orig_name, profile, new_name|
-  Then %{I click on the edit button}
-  And %{I edit the testset name "#{orig_name}" to "#{new_name}" for profile "#{profile}"}
-  And %{I press enter}
-  And %{I click done}
+  step %{I click on the edit button}
+  step %{I edit the testset name "#{orig_name}" to "#{new_name}" for profile "#{profile}"}
+  step %{I press enter}
+  step %{I click done}
 end
 
 When %r/^I view the group report for "([^"]*)"$/ do |path|
@@ -72,11 +72,11 @@ When %r/^I view the group report for "([^"]*)"$/ do |path|
 end
 
 Then %r/^I should see "([^"]*)" in test reports titles$/ do |title|
-  Then %{I should see "#{title}" within "#report_filtered_navigation .report_name"}
+  step %{I should see "#{title}" within "#report_filtered_navigation .report_name"}
 end
 
 Then %r/^I should not see "([^"]*)" in test reports titles$/ do |title|
-  Then %{I should not see "#{title}" within "#report_filtered_navigation .report_name"}
+  step %{I should not see "#{title}" within "#report_filtered_navigation .report_name"}
 end
 
 Then %r/^I should not see the edit button$/ do
@@ -91,8 +91,8 @@ When %r/^I edit the product name "([^"]*)" to "([^"]*)"$/ do |old_name, new_name
 end
 
 When %r/^I rename the product "([^"]*)" to "([^"]*)"$/ do |old_name, new_name|
-  Then %{I click on the edit button}
-  And %{I edit the product name "#{old_name}" to "#{new_name}"}
-  And %{I press enter}
-  And %{I click done}
+  step %{I click on the edit button}
+  step %{I edit the product name "#{old_name}" to "#{new_name}"}
+  step %{I press enter}
+  step %{I click done}
 end

@@ -10,7 +10,7 @@ Given %r/^I am a user with a REST authentication token$/ do
 end
 
 Given "the client has sent a request with a defined test objective" do
-  Given %{the client sends a request with defined test objective}
+  step %{the client sends a request with defined test objective}
   # Needed in order to get different time stamps for current - previous matching
   sleep 1
 end
@@ -20,11 +20,11 @@ def api_import( params )
 end
 
 When "the client sends a basic test result file" do
-  When %{the client sends file "features/resources/sim.xml" via the REST API}
+  step %{the client sends file "features/resources/sim.xml" via the REST API}
 end
 
 When "the client sends a report with tests without features" do
-  When %{the client sends file "spec/fixtures/no_features.xml" via the REST API}
+  step %{the client sends file "spec/fixtures/no_features.xml" via the REST API}
 end
 
 # Note: this must use the API parameters for the current API version. There
@@ -79,13 +79,13 @@ end
 
 # This is used in test session listing tests
 When "the client sends three CSV files" do
-  When %{the client sends file "features/resources/short1.csv" via the REST API}
-  When %{the client sends file "features/resources/short2.csv" via the REST API}
-  When %{the client sends file "features/resources/short3.csv" via the REST API}
+  step %{the client sends file "features/resources/short1.csv" via the REST API}
+  step %{the client sends file "features/resources/short2.csv" via the REST API}
+  step %{the client sends file "features/resources/short3.csv" via the REST API}
   # Update here, no need to have a step in the feature for this
-  And %{session "short1.csv" has been modified at "2011-01-01 01:01"}
-  And %{session "short2.csv" has been modified at "2011-02-01 01:01"}
-  And %{session "short3.csv" has been modified at "2011-03-01 01:01"}
+  step %{session "short1.csv" has been modified at "2011-01-01 01:01"}
+  step %{session "short2.csv" has been modified at "2011-02-01 01:01"}
+  step %{session "short3.csv" has been modified at "2011-03-01 01:01"}
 end
 
 When %r/^the client sends a request with string value instead of a file$/ do
@@ -123,35 +123,35 @@ When "the client sends a request with invalid product" do
 end
 
 When "the client sends a request containing invalid extra parameter" do
-  When %{the client sends a request with optional parameter "foobar" with value "1"}
+  step %{the client sends a request with optional parameter "foobar" with value "1"}
 end
 
 When "the client sends a request with a defined title" do
-  When %{the client sends a request with optional parameter "title" with value "My Test Report"}
+  step %{the client sends a request with optional parameter "title" with value "My Test Report"}
 end
 
 When "the client sends a request with defined test objective" do
-  When %{the client sends a request with optional parameter "objective_txt" with value "To notice regression"}
+  step %{the client sends a request with optional parameter "objective_txt" with value "To notice regression"}
 end
 
 When "the client sends a request with defined build information" do
-  When %{the client sends a request with optional parameter "build_txt" with value "foobar-image.bin"}
+  step %{the client sends a request with optional parameter "build_txt" with value "foobar-image.bin"}
 end
 
 When "the client sends a request with defined build ID" do
-  When %{the client sends a request with optional parameter "build_id_txt" with value "1234.78a"}
+  step %{the client sends a request with optional parameter "build_id_txt" with value "1234.78a"}
 end
 
 When "the client sends a request with defined environment information" do
-  When %{the client sends a request with optional parameter "environment_txt" with value "Laboratory environment"}
+  step %{the client sends a request with optional parameter "environment_txt" with value "Laboratory environment"}
 end
 
 When "the client sends a request with defined quality summary" do
-  When %{the client sends a request with optional parameter "qa_summary_txt" with value "Ready to ship"}
+  step %{the client sends a request with optional parameter "qa_summary_txt" with value "Ready to ship"}
 end
 
 When "the client sends a request with defined issue summary" do
-  When %{the client sends a request with optional parameter "issue_summary_txt" with value "No major issues found"}
+  step %{the client sends a request with optional parameter "issue_summary_txt" with value "No major issues found"}
 end
 
 When %r/^the client sends a request with optional parameter "([^"]*)" with value "([^"]*)"$/ do |opt, val|
@@ -177,11 +177,11 @@ When %r/^I view the latest report "([^"]*)"/ do |report_string|
 end
 
 When "I download a list of sessions with begin time given" do
-  When %{I download "/api/reports?limit_amount=1&begin_time=2011-01-10%2012:00"}
+  step %{I download "/api/reports?limit_amount=1&begin_time=2011-01-10%2012:00"}
 end
 
 When "I download a list of sessions without a begin time" do
-  When %{I download "/api/reports?limit_amount=1"}
+  step %{I download "/api/reports?limit_amount=1"}
 end
 
 When %r/^I download "([^"]*)"$/ do |file|
@@ -189,107 +189,107 @@ When %r/^I download "([^"]*)"$/ do |file|
 end
 
 When %r/^I view the (updated )?report$/ do |unused_param|
-  When %{I view the report "1.2/Core/Automated/N900"}
+  step %{I view the report "1.2/Core/Automated/N900"}
 end
 
 Then %r/^I should be able to view the latest created report$/ do
-  Then %{I view the latest report "1.2/Core/Automated/N900"}
+  step %{I view the latest report "1.2/Core/Automated/N900"}
 end
 
 Then %r/^I should be able to view the created report$/ do
-  Then %{I view the report "1.2/Core/Automated/N900"}
+  step %{I view the report "1.2/Core/Automated/N900"}
 end
 
 # For uploading multiple files (sim and bluetooth)
 Then %r/^I should see names of the two features/ do
-  Then %{I should see "SIM"}
-  And %{I should see "BT"}
+  step %{I should see "SIM"}
+  step %{I should see "BT"}
 end
 
 # For uploading attachments
 Then "I should see the uploaded attachments" do
   list = "#attachment_drag_drop_area .file_list"
-  Then %{I should see "ajax-loader.gif" within "#{list}"}
-  And %{I should see "icon_alert.gif" within "#{list}"}
+  step %{I should see "ajax-loader.gif" within "#{list}"}
+  step %{I should see "icon_alert.gif" within "#{list}"}
 end
 
 # Checking for a feature named N/A when had cases without a feature
 Then "I should see an unnamed feature section" do
-  Then %{I should see "N/A" within ".feature_name"}
+  step %{I should see "N/A" within ".feature_name"}
 end
 
 # Checking the amount of cases match when we sent the file with test
 # cases without features
 Then "I should see the correct amount of test cases without a feature" do
-  Then %{I should see "8" within "td.total"}
+  step %{I should see "8" within "td.total"}
 end
 
 Then "I should see the defined test objective" do
-  Then %{I should see "To notice regression"}
+  step %{I should see "To notice regression"}
 end
 
 Then "I should see the defined build information" do
-  Then %{I should see "foobar-image.bin"}
+  step %{I should see "foobar-image.bin"}
 end
 
 Then "I should see the defined build ID" do
-  Then %{I should see "1234.78a"}
+  step %{I should see "1234.78a"}
 end
 
 Then "I should see the defined environment information" do
-  Then %{I should see "Laboratory environment"}
+  step %{I should see "Laboratory environment"}
 end
 
 Then "I should see the defined quality summary" do
-  Then %{I should see "Ready to ship"}
+  step %{I should see "Ready to ship"}
 end
 
 Then "I should see the defined issue summary" do
-  Then %{I should see "No major issues found"}
+  step %{I should see "No major issues found"}
 end
 
 Then "I should see the objective of previous report" do
-  Then %{I should see the defined test objective}
+  step %{I should see the defined test objective}
 end
 
 Then "I should see the defined report title" do
-  Then %{I should see "My Test Report"}
+  step %{I should see "My Test Report"}
 end
 
 Then "the upload succeeds" do
-  Then %{the REST result "ok" is "1"}
+  step %{the REST result "ok" is "1"}
 end
 
 Then "the upload fails" do
-  Then %{the REST result "ok" is "0"}
+  step %{the REST result "ok" is "0"}
 end
 
 Then "the result complains about invalid file" do
-  Then %{the REST result "errors" is "Request contained invalid files: Invalid file attachment for field report.1"}
+  step %{the REST result "errors" is "Request contained invalid files: Invalid file attachment for field report.1"}
 end
 
 Then "the result complains about missing file" do
-  Then %{the REST result "errors|result_files" is "can't be blank"}
+  step %{the REST result "errors|result_files" is "can't be blank"}
 end
 
 Then "the result complains about missing target profile" do
-  Then %{the REST result "errors|target" is "can't be blank"}
+  step %{the REST result "errors|target" is "can't be blank"}
 end
 
 Then "the result complains about invalid release version" do
-  Then %{the REST result "errors|release_version" is "Incorrect release version 'foo'. Valid ones are 1.2,1.1,1.0."}
+  step %{the REST result "errors|release_version" is "Incorrect release version 'foo'. Valid ones are 1.2,1.1,1.0."}
 end
 
 Then "the result complains about invalid target profile" do
-  Then %{the REST result "errors|target" is "Incorrect target 'Foo'. Valid ones are: Core,Handset,Netbook,IVI,SDK."}
+  step %{the REST result "errors|target" is "Incorrect target 'Foo'. Valid ones are: Core,Handset,Netbook,IVI,SDK."}
 end
 
 Then "the result complains about invalid product" do
-  Then %{the REST result "errors|product" is "Incorrect product. Please use only characters A-Z, a-z, 0-9, spaces and these special characters: , : ; - _ ( )"}
+  step %{the REST result "errors|product" is "Incorrect product. Please use only characters A-Z, a-z, 0-9, spaces and these special characters: , : ; - _ ( )"}
 end
 
 Then "the result complains about invalid parameter" do
-  Then %{the REST result "errors" is "unknown attribute: foobar"}
+  step %{the REST result "errors" is "unknown attribute: foobar"}
 end
 
 Then %r/^the REST result "([^"]*)" is "([^"]*)"$/ do |key, value|
@@ -317,11 +317,11 @@ And %r/^session "([^"]*)" has been modified at "([^"]*)"$/ do |file, date|
 end
 
 Then "result should match the file with defined date" do
-  Then %{resulting JSON should match file "short2.csv"}
+  step %{resulting JSON should match file "short2.csv"}
 end
 
 Then "result should match the file with oldest date" do
-  Then %{resulting JSON should match file "short1.csv"}
+  step %{resulting JSON should match file "short1.csv"}
 end
 
 Then %r/^resulting JSON should match file "([^"]*)"$/ do |file1|

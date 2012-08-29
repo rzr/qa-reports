@@ -5,7 +5,7 @@ def find_testcase_row(tcname)
 end
 
 Given %r/^the report for "([^"]*)" exists on the service$/ do |file|
-  Given "I am a user with a REST authentication token"
+  step "I am a user with a REST authentication token"
 
   # @default_api_opts defined in features/support/hooks.rb
   api_import @default_api_opts.merge( "report.1" => Rack::Test::UploadedFile.new("features/resources/#{file}", "text/xml") )
@@ -34,7 +34,7 @@ When %r/^(?:|I )click the element "([^"]*)" for the test case "([^"]*)"$/ do |el
 end
 
 When %r/^(?:|I )delete all test cases/ do
-  When %{I follow "See all"}
+  step %{I follow "See all"}
 
   session = MeegoTestSession.find(current_url.split('/')[-2])
   session.meego_test_cases.each do |tc|
@@ -45,7 +45,7 @@ When %r/^(?:|I )delete all test cases/ do
 end
 
 Then %r/^the report should not contain a detailed test results section/ do
-  Then %{I should not see "Detailed Test Results"}
+  step %{I should not see "Detailed Test Results"}
 end
 
 result_value = {'Pass' => '1', 'Fail' => '-1', 'N/A' => '0'}
