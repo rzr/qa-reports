@@ -77,9 +77,9 @@ class CSVResultFileParser
     #TODO: Field names should be harmonized with result.xml
     [0, 1].each { |field| raise ParseError.new("unknown"), "Incorrect file format: missing column #{field}" unless row[field] }
 
-    feature   = row[0].force_encoding('UTF-8').strip
-    test_case = row[1].force_encoding('UTF-8').strip
-    comment   = row[2].try(:force_encoding, 'UTF-8').try(:strip) || ""
+    feature   = normalize_col row[0]
+    test_case = normalize_col row[1]
+    comment   = normalize_col(row[2]) || ""
 
     raise ParseError.new("unknown"), "Invalid test case result" if row.fields(:pass, :fail, :na).count("1") != 1
     result    = RESULT_MAPPING[row.fields(:pass, :fail, :na).index("1")]
@@ -92,6 +92,10 @@ class CSVResultFileParser
   # TODO: End removing here
   ############################################################################
 
+  def normalize_col(s)
+    s.gsub("\xa0"," ").force_encoding('UTF-8').strip if s
+  end
+
   def parse_row(row)
     # Check the headers - this is done for each row (since we want to parse
     # the file row by row), but naturally only the first check matters
@@ -100,13 +104,13 @@ class CSVResultFileParser
     # Check that we have a feature, a test case and some result
     raise ParseError.new("unknown"), "Incorrect file format. Feature or test case missing, or more than one or no result set for a case" unless row.has_valid_data?
 
-    feature  = row[:feature].force_encoding('UTF-8').strip
-    testcase = row[:test_case].force_encoding('UTF-8').strip
+    feature  = normalize_col row[:feature]
+    testcase = normalize_col row[:test_case]
 
     @features[feature] ||= {}
     @features[feature][testcase] = {
       :name                    => testcase,
-      :comment                 => row[:comment].try(:force_encoding, 'UTF-8').try(:strip) || "",
+      :comment                 => normalize_col(row[:comment]) || "",
       :measurements_attributes => parse_measurements(row) || [],
       :result                  => RESULT_MAPPING[row.fields(:pass, :fail, :na, :measured).index("1")]
     }
