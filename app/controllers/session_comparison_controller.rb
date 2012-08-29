@@ -1,4 +1,4 @@
-require 'lib/report_comparison'
+require 'report_comparison'
 
 class SessionComparisonController < ApplicationController
   layout "report"

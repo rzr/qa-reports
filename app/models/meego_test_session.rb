@@ -29,7 +29,7 @@ require 'file_storage'
 
 require 'graph'
 require 'nft'
-require 'lib/array_nested_hashing'
+require 'array_nested_hashing'
 
 #noinspection Rails3Deprecated
 class MeegoTestSession < ActiveRecord::Base

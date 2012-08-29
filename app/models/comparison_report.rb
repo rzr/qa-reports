@@ -1,5 +1,5 @@
 require 'report_comparison'
-require 'lib/array_nested_hashing'
+require 'array_nested_hashing'
 
 class ComparisonReport
   attr_reader :test_cases, :products
