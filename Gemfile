@@ -2,12 +2,12 @@ source 'http://rubygems.org'
 
 gem 'rails', '~>3.0.9'
 gem 'mysql2', '~>0.2.11' # 0.3 branch only works with rails 3.1
-gem 'nokogiri'
+gem 'nokogiri', '~>1.3'
 gem 'devise', '1.1.9'
-gem 'fastercsv'
-gem 'slim', '~>0.9.4'
+gem 'fastercsv', '~>1.5'
+gem 'slim', '0.9.4' # templates break on newer versions
 gem 'paperclip', '~>2.3.15'
-gem 'coffee-script'
+gem 'coffee-script', '~>2.2'
 gem 'therubyracer', '~>0.9.0', :require => false
 gem 'barista', '>= 0.5.0'
 gem 'rest-client', :require => 'rest_client'
