@@ -118,7 +118,7 @@ module CsvGenerator
 
     result = MeegoTestSession.find_by_sql([query, *values])
 
-    FasterCSV.generate(:col_sep => ';') do |csv|
+    CSV.generate(:col_sep => ';') do |csv|
       csv << CSV_HEADERS
 
       result.each do |row|
@@ -134,7 +134,7 @@ module CsvGenerator
   def self.generate_csv_report(release_version, target, testset, product, id)
     result = MeegoTestCase.find_by_sql([CSV_REPORT_QUERY, id])
 
-    FasterCSV.generate(:col_sep => ',') do |csv|
+    CSV.generate(:col_sep => ',') do |csv|
       csv << CSV_REPORT_HEADERS
 
       result.each do |row|

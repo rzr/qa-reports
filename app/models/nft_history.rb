@@ -20,7 +20,7 @@
 # 02110-1301 USA
 #
 
-require 'fastercsv'
+require 'csv'
 
 class NftHistory
   attr_reader :measurements, :start_date

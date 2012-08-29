@@ -1,4 +1,4 @@
-require 'faster_csv'
+require 'csv'
 
 def find_feature_row (feature_name)
   feature_name_cell = find(".feature_record a", :text => feature_name) # Locate the feature title cell
@@ -32,10 +32,10 @@ Then %r/^I should see the download link for the result file "([^"]*)"$/ do |resu
 end
 
 Then %r/I should see the imported data from "([^"]*)" and "([^"]*)" in the exported CSV.$/ do |file1, file2|
-  input = FasterCSV.read('features/resources/' + file1).drop(1) +
-          FasterCSV.read('features/resources/' + file2).drop(1)
+  input = CSV.read('features/resources/' + file1).drop(1) +
+          CSV.read('features/resources/' + file2).drop(1)
   expected = input.each{|list| list.insert(4, "0")} # Add Measured result value. It is generated in export even if not given in import
-  result = FasterCSV.parse(page.text, {:col_sep => ';'}).drop(1)
+  result = CSV.parse(page.text, {:col_sep => ';'}).drop(1)
   actual = result.map{ |item| (6..12).map{|field| item[field]}}
 
   actual.count.should == expected.count
@@ -45,9 +45,9 @@ Then %r/I should see the imported data from "([^"]*)" and "([^"]*)" in the expor
 end
 
 Then %r/I should see the imported test cases from "([^"]*)" in the exported CSV.$/ do |file|
-  input = FasterCSV.read('features/resources/' + file).drop(1)
+  input = CSV.read('features/resources/' + file).drop(1)
   expected = input.each{|list| list.insert(5, nil)} # Add Measured result value. It is generated in export even if not given in import
-  result = FasterCSV.parse(page.text, {:col_sep => ','}).drop(1)
+  result = CSV.parse(page.text, {:col_sep => ','}).drop(1)
   actual = result.map{ |item| (0..6).map{|field| item[field]}}
   actual.count.should == expected.count
   difference = actual - expected

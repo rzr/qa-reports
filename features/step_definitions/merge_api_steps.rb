@@ -34,7 +34,7 @@ def generate_csv(report)
   end
 #Feature,Test Case,Pass,Fail,NA,Comment,Measurement Name,Value,Unit,Target,Failure
 
-  FasterCSV.generate(:col_sep => ',') do |csv|
+  CSV.generate(:col_sep => ',') do |csv|
     csv << CSV_HEADERS
     rows.each do |row|
       csv << [row[:feature], row[:testcase], row[:pass], row[:fail], row[:na], row[:comment]]
