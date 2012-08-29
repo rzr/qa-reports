@@ -24,7 +24,7 @@
         dd
           = @report.editor.name
           br/
-          span.un= format_date_to_human_readable @report.updated_at
+          span.un = format_date_to_human_readable @report.updated_at
         = render :partial => 'editable_date'
 
     = render :partial => 'editable_text', :locals => {:anchor => 'test_objective', :title => "Test Objective", :field => 'objective'}
@@ -39,8 +39,8 @@
       h2#detailed_results
         | Detailed Test Results
         small
-          a href=url_for(:controller=>'csv_export', :action=>'export_report', :release_version=>@report.release.name, :target=>@report.profile.name, :testset=>@report.testset, :product=>@report.product, :id=>@report.id) Download as CSV
-        span.heading_actions= back_to_top
+          a(href=url_for(:controller=>'csv_export', :action=>'export_report', :release_version=>@report.release.name, :target=>@report.profile.name, :testset=>@report.testset, :product=>@report.product, :id=>@report.id)) Download as CSV
+        span.heading_actions = back_to_top
 
       table#detailed_functional_test_results.detailed_results
         #history_loader.loading
@@ -86,12 +86,12 @@
               th#th_build_test_case
                 span.sort
                   a.see_only_failed_button.sort_btn#detailed_case href="#" See only failed
-                  a.see_all_button.sort_btn#detailed_case href="#" See all
+                  a.see_all_button.sort_btn#detailed_case href="#" | See all
                   - if @history
-                    a.see_history_button.sort_btn#detailed_case.active href="#" See history
-                  a.see_the_same_build_button.sort_btn#detailed_case href="#"  See build
+                    a.see_history_button.sort_btn#detailed_case.active(href="#") See history
+                  a.see_the_same_build_button.sort_btn#detailed_case( href="#")  See build
               = build_id_headers(@build_diff)
-              th.th_build_result *#{@report.build_id}
+              th.th_build_result = "*#{@report.build_id}"
               th
                 div style="position:relative;"
 
@@ -100,17 +100,15 @@
     - if @report.has_nft?
       h2#detailed_nft_results
         | Non-functional Test Results
-        span.heading_actions= back_to_top
+        span.heading_actions = back_to_top
       table.non-functional_results.detailed_results
         thead
           tr
             th#th_nft_test_case
-              -if @history
+              - if @history
                 span.sort
-                  a.see_latest_button.sort_btn.active.nft_button href="#"
-                    | See latest
-                  a.see_nft_history_button.sort_btn.nft_button href="#"
-                    | See history
+                  a.see_latest_button.sort_btn.active.nft_button(href="#") See latest
+                  a.see_nft_history_button.sort_btn.nft_button(href="#") See history
             th.th_name Measurement
             th.th_measured Value
             th.th_target Target
