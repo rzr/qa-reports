@@ -8,8 +8,8 @@ Given %r/^the report for "([^"]*)" exists on the service$/ do |file|
   step "I am a user with a REST authentication token"
 
   # @default_api_opts defined in features/support/hooks.rb
-  api_import @default_api_opts.merge( "report.1" => Rack::Test::UploadedFile.new("features/resources/#{file}", "text/xml") )
-  response.should be_success
+  response = api_import @default_api_opts.merge( "report.1" => Rack::Test::UploadedFile.new("features/resources/#{file}", "text/xml") )
+  response.status.should == 200
 end
 
 

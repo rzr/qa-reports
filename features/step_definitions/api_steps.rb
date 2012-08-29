@@ -63,7 +63,7 @@ When %r/^the client sends reports "([^"]*)" via the REST API to test set "([^"]*
     data["report."+(index+1).to_s] = Rack::Test::UploadedFile.new(file, "text/xml")
   end
 
-  api_import data
+  @response = api_import data
   @response.status.should == 200
 end
 
