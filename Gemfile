@@ -1,10 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~>3.0.9'
-gem 'mysql2', '~>0.2.11' # 0.3 branch only works with rails 3.1
+gem 'rails', '~>3.2.8'
+gem 'i18n', '0.6.0'
+gem 'mysql2'
 gem 'nokogiri', '~>1.3'
-gem 'devise', '1.1.9'
-gem 'fastercsv', '~>1.5'
+gem 'devise'
 gem 'slim', '0.9.4' # templates break on newer versions
 gem 'paperclip', '~>2.3.15'
 gem 'coffee-script', '~>2.2'
@@ -43,7 +43,7 @@ group :development, :test do
   gem 'capybara'
   gem 'spork', '~> 0.9.0.rc'
   gem 'cucumber'
-  gem 'cucumber-rails', '~> 0.3.2' #newer ones fail
+  gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'factory_girl'
   gem "factory_girl_rails", "~> 1.1"
