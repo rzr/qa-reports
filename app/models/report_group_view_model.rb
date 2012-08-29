@@ -107,7 +107,7 @@ class ReportGroupViewModel
 
     # TODO: Could reports just be wrapped in ReportShows that have the count methods?
     #       Or use directly the association count calls e.g. passed.count.
-    MeegoTestSession.load_case_counts_for_reports! reports
+    MeegoTestSession.load_case_counts_for_reports! reports.to_a
   end
 end
 
