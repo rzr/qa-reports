@@ -185,7 +185,7 @@ When "I download a list of sessions without a begin time" do
 end
 
 When %r/^I download "([^"]*)"$/ do |file|
-  get file
+  @response = get file
 end
 
 When %r/^I view the (updated )?report$/ do |unused_param|
@@ -325,11 +325,11 @@ Then "result should match the file with oldest date" do
 end
 
 Then %r/^resulting JSON should match file "([^"]*)"$/ do |file1|
-  json = ActiveSupport::JSON.decode(response.body)
+  json = ActiveSupport::JSON.decode(@response.body)
   json[0]['qa_id'].should == get_testsessionid(file1)
   json.count.should == 1
 end
 
 Then %r/^I get a "([^"]*)" response code$/ do |code|
-  response.code.should == code
+  @response.code.should == code
 end
