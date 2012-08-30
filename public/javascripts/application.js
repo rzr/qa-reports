@@ -140,16 +140,17 @@ renderSeriesGraphs = function(selector) {
         //var $graph = $modal.find(".nft_drilldown_graph");
         var graph = document.getElementById("nft_drilldown_graph");
         var updateLabels = function() {
-            $(graph).find("div").each(function(idx,e) {
+            $(graph).find("div.dygraph-axis-label-x").each(function(idx,e) {
                 var $e = $(e);
-                if ($e.css.has("top")) {
-                    $e.css("width", parseInt($e.css("width"))+10);
-                    $e.css("left", -10);
-                    $e.text($e.text() + yunit);
-                } else if ($e.css("text-align") == "center") {
-                    $e.css("width", parseInt($e.css("width"))+15);
-                    $e.text($e.text() + xunit);
-                }
+                $e.parent().css("width", parseInt($e.css("width"))+15);
+                $e.text($e.text() + xunit);
+            });
+            $(graph).find("div.dygraph-axis-label-y").each(function(idx,e) {
+                var $e = $(e);
+                $e.parent()
+                    .css("width", parseInt($e.css("width"))+10)
+                    .css("left", -10);
+                $e.text($e.text() + yunit);
             });
         };
         dyg = new Dygraph(graph, data, {
