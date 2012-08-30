@@ -40,11 +40,11 @@
     <measurement name="weight" value="60.000000" unit="kg"/>
     <series name="Current samples" group="Current measurement" unit="mA" interval="100" interval_unit="ms">
      <measurement value="92.800000"/>
-     <measurement value="01.400000"/>
+     <measurement value="1.400000"/>
      <measurement value="87.000000"/>
-     <measurement value="08.000000"/>
+     <measurement value="8.000000"/>
      <measurement value="95.400000"/>
-     <measurement value="03.200000"/>
+     <measurement value="3.200000"/>
     </series>
    </case>
    <case name="simple-case3" timeout="90" manual="false" insignificant="false" result="PASS">
