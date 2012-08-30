@@ -24,6 +24,7 @@ on_ready_steps = ->
     $('.nft_trend_button').click ->
       m_id = $(this).attr("id").match("[0-9]{1,}$")
       renderNftTrendGraph(m_id)
+      false
 
     # Dialog that show NFT serial measurements history in See history -mode
     $('#nft_series_history_dialog').jqm({
