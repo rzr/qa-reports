@@ -69,7 +69,7 @@ h2#test_results
             td class=@report_show.change_class(:nft_index)
               em= @report_show.percentage_change(:nft_index)
 
-    - unless @report_show.total_cases == 0
+    - if @report.has_cases?
       h3#test_features Test Results by Feature
 
       - unless @build_diff.empty?
