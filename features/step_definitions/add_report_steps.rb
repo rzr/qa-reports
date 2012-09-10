@@ -22,3 +22,7 @@ And %r/^the testcase "([^"]*)" should have the comment from the previous report$
   prev_tc = session.prev_session.meego_test_cases.find_by_name(testcase)
   Then %{I should see "#{prev_tc.comment}" within "#testcase-#{tc.id}"}
 end
+
+And %r/^I ([^"]*) uploading empty result files$/ do |verb|
+  APP_CONFIG['allow_empty_files'] = (verb == "enable")
+end
