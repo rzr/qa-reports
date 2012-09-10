@@ -1,6 +1,10 @@
-= MeeGo QA Reports
+= QA Reports
 
-Test reporting application for the MeeGo QA teams. See trailer at
+Test reporting application originally developed for MeeGo QA teams. See trailer at
 [[http://www.youtube.com/watch?v=sOUkwJT2RBo|youtube]]
 
-See up-to-date documentation at [[http://wiki.meego.com/Quality/QA-tools/QAReports|QA Reports wiki]]
+See up-to-date documentation at [[https://github.com/leonidas/qa-reports/wiki|wiki]]
+
+== Notes
+
+10 September 2012: QA Reports was updated to use Ruby 1.9.3 and Rails 3.2.
