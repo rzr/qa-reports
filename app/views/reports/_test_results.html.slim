@@ -69,30 +69,15 @@ h2#test_results
             td class=@report_show.change_class(:nft_index)
               em= @report_show.percentage_change(:nft_index)
 
-    h3#test_features Test Results by Feature
+    - unless @report_show.total_cases == 0
+      h3#test_features Test Results by Feature
 
-    - unless @build_diff.empty?
-      span.sort
-        a.see_feature_comment_button.sort_btn#detailed_feature.active href="#" See comment and grading
-        a.see_feature_build_button.sort_btn#detailed_feature href="#" See build pass%
+      - unless @build_diff.empty?
+        span.sort
+          a.see_feature_comment_button.sort_btn#detailed_feature.active href="#" See comment and grading
+          a.see_feature_build_button.sort_btn#detailed_feature href="#" See build pass%
 
-    table.feature_detailed_results#test_results_by_feature
-      thead.even
-        tr
-          th.th_feature Feature
-          th.th_total Total
-          th.th_passed Passed
-          th.th_failed Failed
-          th.th_not_testable N/A
-          th.th_pass_rate Pass%
-          th.th_graph &nbsp;
-          th.th_notes Comments
-          th.th_grading Grading
-
-      = render :partial => 'feature_summary', :collection => @report_show.non_empty_features, :locals => {:max_cases => @report_show.max_feature_cases}
-
-    - unless @build_diff.empty?
-      table.feature_detailed_results_with_build_id#test_feature_build_results style="display:none"
+      table.feature_detailed_results#test_results_by_feature
         thead.even
           tr
             th.th_feature Feature
@@ -100,12 +85,28 @@ h2#test_results
             th.th_passed Passed
             th.th_failed Failed
             th.th_not_testable N/A
-            = build_pass_rate_headers(@build_diff)
-            th.th_result.current_feature_build_result = "*#{@report_show.build_id}"
-            th style="border-bottom-style: none;"
-              div style="position:relative;"
+            th.th_pass_rate Pass%
+            th.th_graph &nbsp;
+            th.th_notes Comments
+            th.th_grading Grading
 
-        = render :partial => 'feature_pass_rate_build_summary', :collection => @report_show.features
+        = render :partial => 'feature_summary', :collection => @report_show.non_empty_features, :locals => {:max_cases => @report_show.max_feature_cases}
+
+      - unless @build_diff.empty?
+        table.feature_detailed_results_with_build_id#test_feature_build_results style="display:none"
+          thead.even
+            tr
+              th.th_feature Feature
+              th.th_total Total
+              th.th_passed Passed
+              th.th_failed Failed
+              th.th_not_testable N/A
+              = build_pass_rate_headers(@build_diff)
+              th.th_result.current_feature_build_result = "*#{@report_show.build_id}"
+              th style="border-bottom-style: none;"
+                div style="position:relative;"
+
+          = render :partial => 'feature_pass_rate_build_summary', :collection => @report_show.features
 
 - data = @report.summary_data
 
