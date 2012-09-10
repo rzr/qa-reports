@@ -64,13 +64,15 @@ $ () ->
   title_of = (table) ->
     table.find('.index_month_title .name').text() unless table.length == 0
 
+  bar_style = (count) -> if max_cases > 0 then "width:#{count/max_cases*100}%" else "width:0"
+
   directives =
     reports:
       'name@href': report_path
       htmlgraph:
-        'passed@style': -> "width:#{this.passes/max_cases*100}%"
-        'failed@style': -> "width:#{this.fails/max_cases*100}%"
-        'na@style':     -> "width:#{this.nas/max_cases*100}%"
+        'passed@style': -> bar_style this.passes
+        'failed@style': -> bar_style this.fails
+        'na@style':     -> bar_style this.nas
         'passed@title': -> "passed #{this.passes}"
         'failed@title': -> "failed #{this.fails}"
         'na@title':     -> "na #{this.nas}"
