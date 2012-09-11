@@ -12,7 +12,7 @@ describe XMLResultFileParser do
   <testresults version="1.0" environment="hardware" hwproduct="RX-71" hwbuild="0720">
     <suite name="simple-suite" timeout="90" manual="false" insignificant="false">
       <set name="simple-set" feature="Feature 1" description="Example test definition" timeout="90" manual="false" insignificant="false" environment="hardware">
-       <case name="Test Case 1" timeout="90" manual="false" insignificant="false" result="PASS" comment="comment 1: OK">
+       <case name="Test Case 1" timeout="90" manual="false" insignificant="false" result="PASS" comment="comment 1: OK" TC_ID="tc-1">
         <step manual="false" command="sleep 2" result="PASS">
          <expected_result>0</expected_result>
          <return_code>0</return_code>
@@ -22,7 +22,7 @@ describe XMLResultFileParser do
          <stderr></stderr>
         </step>
        </case>
-       <case name="Test Case 2" timeout="90" manual="false" insignificant="false" result="FAIL" comment="comment 2: FAIL">
+       <case name="Test Case 2" timeout="90" manual="false" insignificant="false" result="FAIL" comment="comment 2: FAIL" TC_ID="tc-2">
         <step manual="false" command="sleep 1" result="FAIL">
          <expected_result>0</expected_result>
          <return_code>0</return_code>
@@ -32,7 +32,7 @@ describe XMLResultFileParser do
          <stderr></stderr>
         </step>
        </case>
-       <case name="Test Case 5" timeout="90" manual="false" insignificant="false" result="FAIL" comment="comment 5: FAIL">
+       <case name="Test Case 5" timeout="90" manual="false" insignificant="false" result="FAIL" comment="comment 5: FAIL" TC_ID="tc-5">
         <step manual="false" command="echo foo" result="NA">
          <expected_result>0</expected_result>
          <return_code>0</return_code>
@@ -44,7 +44,7 @@ describe XMLResultFileParser do
        </case>
       </set>
       <set name="simple-set" feature="Feature 2" description="Example test definition" timeout="90" manual="false" insignificant="false" environment="hardware">
-       <case name="Test Case 3" timeout="90" manual="false" insignificant="false" result="NA" comment="comment 3: NA">
+       <case name="Test Case 3" timeout="90" manual="false" insignificant="false" result="NA" comment="comment 3: NA" TC_ID="tc-3">
         <step manual="false" command="sleep 2" result="FAIL">
          <expected_result>0</expected_result>
          <return_code>0</return_code>
@@ -54,7 +54,7 @@ describe XMLResultFileParser do
          <stderr></stderr>
         </step>
        </case>
-       <case name="Test Case 4" timeout="90" manual="false" insignificant="false" result="FAIL" comment="comment 4: FAIL">
+       <case name="Test Case 4" timeout="90" manual="false" insignificant="false" result="FAIL" comment="comment 4: FAIL" TC_ID="tc-4">
         <step manual="false" command="sleep 1" result="FAIL">
          <expected_result>0</expected_result>
          <return_code>0</return_code>
@@ -126,6 +126,10 @@ END
         it "should have comment 'comment: OK'" do
           @test_cases[@fea][@tc][:comment].should == "comment 1: OK"
         end
+
+        it "should have TC_ID 'tc-1'" do
+          @test_cases[@fea][@tc][:tc_id].should == "tc-1"
+        end
       end
 
       describe "Test Case 2" do
@@ -140,6 +144,10 @@ END
         it "should have comment 'comment: OK'" do
           @test_cases[@fea][@tc][:comment].should == "comment 2: FAIL"
         end
+
+        it "should have TC_ID 'tc-2'" do
+          @test_cases[@fea][@tc][:tc_id].should == "tc-2"
+        end
       end
 
       describe "Test Case 5" do
@@ -153,6 +161,10 @@ END
 
         it "should have comment 'comment: OK'" do
           @test_cases[@fea][@tc][:comment].should == "comment 5: FAIL"
+        end
+
+        it "should have TC_ID 'tc-5'" do
+          @test_cases[@fea][@tc][:tc_id].should == "tc-5"
         end
       end
     end
@@ -189,6 +201,10 @@ END
         it "should have comment 'comment: OK'" do
           @test_cases[@fea][@tc][:comment].should == "comment 3: NA"
         end
+
+        it "should have TC_ID 'tc-3'" do
+          @test_cases[@fea][@tc][:tc_id].should == "tc-3"
+        end
       end
 
       describe "Test Case 4" do
@@ -202,6 +218,10 @@ END
 
         it "should have comment 'comment: OK'" do
           @test_cases[@fea][@tc][:comment].should == "comment 4: FAIL"
+        end
+
+        it "should have TC_ID 'tc-4'" do
+          @test_cases[@fea][@tc][:tc_id].should == "tc-4"
         end
       end
     end

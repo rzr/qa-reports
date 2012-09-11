@@ -23,6 +23,7 @@ class XMLResultFileParser
         :result                             => MeegoTestSession.map_result(test_case['result']),
         :comment                            => test_case['comment'] || "",
         :source_link                        => test_case['vcsurl']  || "",
+        :tc_id                              => test_case['TC_ID']   || "",
         :measurements_attributes            => test_case.xpath('./measurement').map do |measurement|
           {
             :name       => measurement['name'],
