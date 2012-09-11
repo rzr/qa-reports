@@ -1,11 +1,11 @@
-= QA Reports
+# QA Reports
 
 Test reporting application originally developed for MeeGo QA teams. See trailer at
-[[http://www.youtube.com/watch?v=sOUkwJT2RBo|youtube]]
+[YouTube](http://www.youtube.com/watch?v=sOUkwJT2RBo)
 
-See up-to-date documentation at [[https://github.com/leonidas/qa-reports/wiki|wiki]]
+See up-to-date documentation at [wiki](https://github.com/leonidas/qa-reports/wiki)
 
-== Notes
+## Migration Notes
 
 *   11 September 2012: Added application configuration file `config/config.yml`. You
     will need to run `cap deploy:setup` again, or create a copy of the file to your
