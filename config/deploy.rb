@@ -52,7 +52,7 @@ after "deploy:setup" do
   put YAML::dump(bugzilla_conf), "#{shared_path}/config/bugzilla.yml"
 
   # Upload application config
-  upload("#{RAILS_ROOT}/config/config.yml", "#{shared_path}/config/config.yml")
+  upload("config/config.yml", "#{shared_path}/config/config.yml")
 
   # Upload QA Dashboard configuration
   deploy.qadashboard.setup
