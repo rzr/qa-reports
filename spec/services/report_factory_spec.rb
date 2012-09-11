@@ -137,4 +137,25 @@ describe ReportFactory do
 
     end
   end
+
+  describe "With valid report with test case IDs" do
+    it "should store the IDs to the database" do
+
+      file = File.new("spec/fixtures/sim1.xml")
+      data = {}
+
+      data[:release_version] = "1.2"
+      data[:target]          = "Core"
+      data[:testset]         = "TC_ID"
+      data[:product]         = "N900"
+      data[:result_files]    = [FileAttachment.new(:file => file, :attachment_type => :result_file)]
+
+      test_session = ReportFactory.new.build(data)
+      test_session.meego_test_cases.each do |tc|
+        if tc.name == "SMOKE-SIM-Query_SIM_card_status"
+          tc.tc_id.should == "smoke-123"
+        end
+      end
+    end
+  end
 end
