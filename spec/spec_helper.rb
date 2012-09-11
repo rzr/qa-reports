@@ -13,7 +13,7 @@ Spork.prefork do
 
   # TODO: Get rid of seeds
   require "#{Rails.root}/db/seeds.rb"
-  require 'features/support/factories.rb'
+  require "#{Rails.root}/features/support/factories.rb"
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
