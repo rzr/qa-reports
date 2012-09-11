@@ -1,5 +1,5 @@
 class ReportComparisonDifference < ActiveRecord::Base
-  set_table_name 'meego_test_cases'
+  self.table_name = 'meego_test_cases'
 
   def result_to
     if self[:latest_result].present?
