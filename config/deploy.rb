@@ -1,7 +1,8 @@
 # Must be set before requireing multisage
 set :default_stage, "staging"
+set :application, "qa-reports"
 require 'capistrano/ext/multistage'
-require 'config/deploy/capistrano_database_yml'
+require './config/deploy/capistrano_database_yml'
 require 'bundler/capistrano'
 require 'yaml'
 
