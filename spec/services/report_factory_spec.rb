@@ -1,3 +1,4 @@
+require 'pp'
 require 'spec_helper'
 require 'report_factory'
 
@@ -138,23 +139,67 @@ describe ReportFactory do
     end
   end
 
-  describe "With valid report with test case IDs" do
-    it "should store the IDs to the database" do
+  it "should produce a valid report from input file containing TC_IDs" do
 
-      file = File.new("spec/fixtures/sim1.xml")
-      data = {}
+    author = User.new({:email => 'foo@bar.com', :password => 'minsixchars', :name => 'Test User'})
+    author.save!
 
-      data[:release_version] = "1.2"
-      data[:target]          = "Core"
-      data[:testset]         = "TC_ID"
-      data[:product]         = "N900"
-      data[:result_files]    = [FileAttachment.new(:file => file, :attachment_type => :result_file)]
+    file = File.new("spec/fixtures/sim1.xml")
+    data = {}
 
-      test_session = ReportFactory.new.build(data)
-      test_session.meego_test_cases.each do |tc|
-        if tc.name == "SMOKE-SIM-Query_SIM_card_status"
-          tc.tc_id.should == "smoke-123"
-        end
+    data[:release_version] = "1.2"
+    data[:target]          = "Core"
+    data[:testset]         = "TC_ID"
+    data[:product]         = "N900"
+    data[:result_files]    = [FileAttachment.new(:file => file, :attachment_type => :result_file)]
+
+    test_session        = ReportFactory.new.build(data)
+    test_session.author = author
+    test_session.editor = author
+    test_session.save!
+
+    test_session.meego_test_cases.each do |tc|
+      if tc.name == "SMOKE-SIM-Query_SIM_card_status"
+        tc.tc_id.should == "smoke-123"
+      end
+    end
+  end
+
+  it "should produce a valid report from input file with custom statuses" do
+    APP_CONFIG['custom_statuses'] = ['Blocked', 'Pending', 'Upstream']
+
+    author = User.new({:email => 'foo@bar.com', :password => 'minsixchars', :name => 'Test User'})
+    author.save!
+
+    file = File.new("features/resources/custom_statuses.xml")
+    file.stub!(:original_filename).and_return("custom_statuses.xml")
+    data = {}
+
+    data[:release_version] = "1.2"
+    data[:target]          = "Core"
+    data[:testset]         = "CustomStatus"
+    data[:product]         = "N900"
+    data[:result_files]    = [FileAttachment.new(:file => file, :attachment_type => :result_file)]
+
+    test_session        = ReportFactory.new.build(data)
+    test_session.author = author
+    test_session.editor = author
+    # Need to save, otherwise associations do not exist
+    test_session.save!
+
+    test_session.meego_test_cases.each do |tc|
+      case tc.name
+      when "NFT-BT-Device_Scan_C-ITER"
+        tc.result.should == MeegoTestCase::PASS
+      when "NFT-BT-Device_Scan"
+        tc.result.should             == MeegoTestCase::CUSTOM
+        tc.custom_result.name.should == "Blocked"
+      when "NFT-BT-Device_Pair"
+        tc.result.should == MeegoTestCase::CUSTOM
+        tc.custom_result.name.should == "Blocked"
+      when "NFT-BT-Device_Disconnect"
+        tc.result.should == MeegoTestCase::CUSTOM
+        tc.custom_result.name.should == "Pending"
       end
     end
   end
