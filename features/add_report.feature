@@ -93,6 +93,16 @@ Feature:
 
     Then I should see "didn't contain any valid test cases"
 
+  Scenario: Add new XML report with no test cases with empty files allowed
+    When I enable uploading empty result files
+    And I follow "Add report"
+    And I select target "Core", test set "Smokey" and product "n990"
+    And attach the report "empty.xml"
+    And submit the form at "upload_report_submit"
+
+    Then I should not see "didn't contain any valid test cases"
+    And I disable uploading empty result files
+
   Scenario: Add new XML report with invalid content
     When I follow "Add report"
     And I select target "Core", test set "Smokey" and product "n990"

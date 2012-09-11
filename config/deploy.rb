@@ -52,6 +52,9 @@ after "deploy:setup" do
   end
   put YAML::dump(bugzilla_conf), "#{shared_path}/config/bugzilla.yml"
 
+  # Upload application config
+  upload("config/config.yml", "#{shared_path}/config/config.yml")
+
   # Upload QA Dashboard configuration
   deploy.qadashboard.setup
 end
@@ -84,6 +87,10 @@ after "deploy:symlink" do
   # Remove current bugzilla config file and symlink to shared
   run "rm #{current_path}/config/bugzilla.yml"
   run "ln -nfs #{shared_path}/config/bugzilla.yml #{current_path}/config/bugzilla.yml"
+
+  # Remove current app config file and symlink to shared
+  run "rm #{current_path}/config/config.yml"
+  run "ln -nfs #{shared_path}/config/config.yml #{current_path}/config/config.yml"
 end
 
 namespace :deploy do

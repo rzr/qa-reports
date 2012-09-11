@@ -1,0 +1,5 @@
+# QA Reports application configuration
+
+# By default QA Reports bounces files that do not contain any valid test
+# cases. Set this to true to enable creating reports without any cases.
+allow_empty_files: false

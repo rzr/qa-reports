@@ -178,6 +178,10 @@ module ReportSummary
         where(:meego_test_case_id => meego_test_cases).count
   end
 
+  def has_cases?
+    total_cases > 0
+  end
+
   def has_nft?
     total_nft > 0
   end

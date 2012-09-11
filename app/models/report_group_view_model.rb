@@ -96,7 +96,7 @@ class ReportGroupViewModel
     MeegoTestSession.published.
       joins(:meego_test_cases).where(@params).
       count(:group=>:meego_test_session_id, :order => 'count_all DESC', :limit => 1).
-      values.first
+      values.first || 0
   end
 
   def find_report_range(range)

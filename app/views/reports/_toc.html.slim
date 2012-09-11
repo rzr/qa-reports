@@ -13,14 +13,15 @@ ol.toc
   ol
     li
       a href="#test_results" Result Summary
-    li
-      a href="#test_features" Test Results by Feature
-    - if @report.has_non_nft?
+    -if @report.has_cases?
       li
-        a href="#detailed_results" Detailed Test Results
-    - if @report.has_nft?
-      li
-        a href="#detailed_nft_results" Non-Functional Test Results
+        a href="#test_features" Test Results by Feature
+      - if @report.has_non_nft?
+        li
+          a href="#detailed_results" Detailed Test Results
+      - if @report.has_nft?
+        li
+          a href="#detailed_nft_results" Non-Functional Test Results
   li
     a href="#issue_summary" Issue Summary
   - if @report.result_files.present? || @editing

@@ -66,7 +66,7 @@ class ReportFactory
         raise ParseError.new(result_attachment.filename), "You can only upload files with the extension .xml or .csv"
       end
 
-      raise ParseError.new(result_attachment.filename), result_attachment.filename + " didn't contain any valid test cases" if new_features.empty?
+      raise ParseError.new(result_attachment.filename), result_attachment.filename + " didn't contain any valid test cases" if new_features.empty? and not APP_CONFIG['allow_empty_files']
 
       merge_results(features, new_features)
     end
