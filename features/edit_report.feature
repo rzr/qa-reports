@@ -103,33 +103,6 @@ Feature: Edit Report
     Then the result of test case "SMOKE-SIM-Get_IMSI" should be "Pass"
 
   @javascript
-  Scenario: I modify test case result with custom results enabled
-    Given I enable custom results "Not tested", "Blocked"
-
-    And I edit the report "1.2/Core/automated/N900"
-    And I change the test case result of "SMOKE-SIM-Get_IMSI" to "Blocked"
-    And I press "Done"
-
-    Then the result of test case "SMOKE-SIM-Get_IMSI" should be "Blocked"
-    And I disable custom results
-
-  @javascript
-  Scenario: I modify test case with deprecated result with custom results enabled
-    Given I enable custom results "Not tested", "Blocked"
-
-    And I edit the report "1.2/Core/automated/N900"
-    And I change the test case result of "SMOKE-SIM-Get_IMSI" to "Blocked"
-    And I press "Done"
-
-    Then the result of test case "SMOKE-SIM-Get_IMSI" should be "Blocked"
-
-    Then I enable custom results "Not tested"
-    And I edit the report "1.2/Core/automated/N900"
-
-    Then I should not see "Blocked" within "select"
-    And I disable custom results
-
-  @javascript
   Scenario: I modify a NFT test case result
     When I edit the report "1.2/Core/automated/N900"
     And I change the test case result of "Phone Connection time" to "Pass"

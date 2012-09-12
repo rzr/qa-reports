@@ -68,16 +68,3 @@ When %r/^I change the test case comment of "([^"]*)" to "([^"]*)"$/ do |tc, comm
   cell.fill_in "test_case[comment]", :with => comment
 end
 
-Given %r/^I enable custom results (".+")$/ do |results|
-  results = results.scan(/"([^"]+?)"/).flatten
-
-  APP_CONFIG['custom_results'] = results
-
-  results.each do |result|
-    FactoryGirl.create(:custom_result, :name => result)
-  end
-end
-
-Then /^I disable custom results$/ do
-  APP_CONFIG['custom_results'] = []
-end
