@@ -139,4 +139,44 @@ FactoryGirl.define do
     tested_at       "2011-08-06"
     result_files    {|result_files| [result_files.association(:result_file)] }
   end
+
+  # Factories for building a report with custom test results
+
+  factory :report_with_custom_results, :class => MeegoTestSession do
+    after_create { |report|
+      FactoryGirl.create(:custom_result_feature, :meego_test_session => report)
+    }
+    author
+    editor
+    release         {Release.first}
+    title           "Custom results"
+    profile         {Profile.first}
+    testset         "NFT"
+    product         "N900"
+    published       true
+    tested_at       "2011-08-06"
+    result_files    {|result_files| [result_files.association(:result_file)] }
+  end
+
+  factory :custom_result_feature, :class => Feature do
+    after_create { |feature|
+      FactoryGirl.create(
+        :custom_result_test_case,
+        :feature            => feature,
+        :meego_test_session => feature.meego_test_session,
+        :name               => 'Case with custom result'
+      )
+    }
+    name 'Feature'
+  end
+
+  factory :custom_result, :class => CustomResult do
+    name "Pending"
+  end
+
+  factory :custom_result_test_case, :class => MeegoTestCase do
+    name          "Custom result TC"
+    result        MeegoTestCase::CUSTOM
+    custom_result FactoryGirl.create(:custom_result)
+  end
 end
