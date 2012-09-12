@@ -162,7 +162,7 @@ describe ReportFactory do
 
   end
 
-  it "should produce a valid report from input file with custom statuses" do
+  it "should produce a valid report from input file with custom results" do
     APP_CONFIG['custom_statuses'] = ['Blocked', 'Pending', 'Upstream']
     CustomResult.create([{:name => "Blocked"},{:name => "Pending"},{:name => "Upstream"}])
 
@@ -200,5 +200,29 @@ describe ReportFactory do
         tc.custom_result.name.should == "Pending"
       end
     end
+  end
+
+  it "should validate custom results against configured ones" do
+    APP_CONFIG['custom_statuses'] = ['Blocked']
+    CustomResult.create({:name => "Blocked"}, {:name => "Pending"})
+
+    author = User.new({:email => 'foo@bar.com', :password => 'minsixchars', :name => 'Test User'})
+    author.save!
+
+    file = File.new("features/resources/custom_statuses.xml")
+    file.stub!(:original_filename).and_return("custom_statuses.xml")
+    data = {}
+
+    data[:release_version] = "1.2"
+    data[:target]          = "Core"
+    data[:testset]         = "CustomStatus"
+    data[:product]         = "N900"
+    data[:result_files]    = [FileAttachment.new(:file => file, :attachment_type => :result_file)]
+
+    test_session        = ReportFactory.new.build(data)
+    test_session.author = author
+    test_session.editor = author
+    # Need to save, otherwise associations do not exist
+    test_session.save.should be_false
   end
 end
