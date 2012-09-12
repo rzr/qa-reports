@@ -332,8 +332,12 @@ class MeegoTestSession < ActiveRecord::Base
                   "pass"     => MeegoTestCase::PASS,
                   "measured" => MeegoTestCase::MEASURED}
 
+  RESULT_CODES = RESULT_NAMES.invert
+
   #TODO: move to test case?
   def self.map_result(result)
+    result = RESULT_CODES[MeegoTestCase::NA] if result.downcase == "n/a"
+
     status_code = RESULT_NAMES[result.downcase]
     if status_code
       [status_code, nil]
@@ -343,7 +347,7 @@ class MeegoTestSession < ActiveRecord::Base
   end
 
   def self.result_as_string(result)
-    RESULT_NAMES.invert[result] || RESULT_NAMES.invert(MeegoTestCase::NA)
+    RESULT_CODES[result] || RESULT_CODES[MeegoTestCase::NA]
   end
 
   def update_report_result(user, params, published = true)
