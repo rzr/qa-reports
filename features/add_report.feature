@@ -181,6 +181,15 @@ Feature:
 
     Then I should not see "NFT Index"
 
+  Scenario: Report with custom statuses shows an error when statuses not enabled
+    When I follow "Add report"
+    And I select target "Handset", test set "Custom Results" and product "N990"
+    And I attach the report "custom_statuses.xml"
+    And I press "Next"
+
+    Then I should see "SOME ERROR MESSAGE!" within ".formError"
+    And I should not see "Publish"
+
   Scenario: Custom statuses shown for test cases
     Given I enable custom results "Pending", "Blocked"
 
