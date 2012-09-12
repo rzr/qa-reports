@@ -33,4 +33,28 @@ describe MeegoTestCase do
 
         tc.save.should be_true
     end
+
+    it "should set pass, fail and n/a result based on result name" do
+        tc = MeegoTestCase.new
+
+        tc.result_name = "Pass"
+        tc.result.should == MeegoTestCase::PASS
+
+        tc.result_name = "FAIL"
+        tc.result.should == MeegoTestCase::FAIL
+
+        tc.result_name = "n/a"
+        tc.result.should == MeegoTestCase::NA
+    end
+
+    it "should set a custom result based on result name" do
+        APP_CONFIG['custom_results'] = ['Pending']
+        CustomResult.create([{:name => 'Pending'}, {:name => 'Blocked'}])
+
+        tc = MeegoTestCase.new
+
+        tc.result_name = "Pending"
+        tc.result.should == MeegoTestCase::CUSTOM
+        tc.custom_result.name.should == "Pending"
+    end
 end

@@ -28,6 +28,24 @@ class MeegoTestCase < ActiveRecord::Base
     where(:name => name).first
   end
 
+  def result_name
+    if result == CUSTOM
+      custom_result.name
+    else
+      MeegoTestCaseHelper::RESULT_TO_TXT[result]
+    end
+  end
+
+  def result_name=(new_result)
+    res = MeegoTestCaseHelper::TXT_TO_RESULT[new_result.downcase]
+    if res
+      self.result = res
+    else
+      self.result = CUSTOM
+      self.custom_result = CustomResult.find_by_name(new_result)
+    end
+  end
+
   def unique_id
     (feature.name + "_" + name).downcase
   end
