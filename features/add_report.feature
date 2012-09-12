@@ -199,7 +199,6 @@ Feature:
     And I press "Next"
     And I press "Publish"
 
-    Then the result of test case "NFT-BT-Device_Scan_C-ITER" should be "Pass"
     And the result of test case "NFT-BT-Device_Scan" should be "Blocked"
     And the result of test case "NFT-BT-Device_Pair" should be "Blocked"
     And the result of test case "NFT-BT-Device_Disconnect" should be "Pending"
