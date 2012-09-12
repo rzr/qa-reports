@@ -16,7 +16,7 @@ class MeegoTestCase < ActiveRecord::Base
 
   accepts_nested_attributes_for :measurements, :serial_measurements, :attachment
 
-  validate :custom_result_should_be_in_configuration
+  validate :custom_result_should_be_in_configuration, :on => :create
 
   CUSTOM   =  3
   MEASURED =  2
