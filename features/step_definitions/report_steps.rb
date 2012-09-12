@@ -64,8 +64,9 @@ Given %r/^I view a report with results:$/ do |table|
   report.features << FactoryGirl.build(:feature_wo_test_cases)
 
   table.hashes.each do |hash|
+    result, custom_result = MeegoTestSession.map_result(hash[:Result])
     report.features.first.meego_test_cases << FactoryGirl.build(:test_case,
-      :result =>  MeegoTestSession.map_result(hash[:Result]),
+      :result =>  result,
       :measurements => [FactoryGirl.build(:meego_measurement,
         :value   => measurement_value(hash[:Value]),
         :target  => measurement_value(hash[:Target]),

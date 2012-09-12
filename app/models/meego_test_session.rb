@@ -334,7 +334,12 @@ class MeegoTestSession < ActiveRecord::Base
 
   #TODO: move to test case?
   def self.map_result(result)
-    RESULT_NAMES[result.downcase] || MeegoTestCase::NA
+    status_code = RESULT_NAMES[result.downcase]
+    if status_code
+      [status_code, nil]
+    else
+      [MeegoTestCase::CUSTOM, CustomResult.find_by_name(result)]
+    end
   end
 
   def self.result_as_string(result)

@@ -18,9 +18,12 @@ class XMLResultFileParser
       raise Nokogiri::XML::SyntaxError.new("Missing test case name")               unless test_case['name'].present?
       raise Nokogiri::XML::SyntaxError.new(test_case['name'] + ": Missing result") unless test_case['result'].present?
 
+      status_code, custom_result = MeegoTestSession.map_result(test_case['result'])
+
       {
         :name                               => test_case['name'],
-        :result                             => MeegoTestSession.map_result(test_case['result']),
+        :result                             => status_code,
+        :custom_result                      => custom_result,
         :comment                            => test_case['comment'] || "",
         :source_link                        => test_case['vcsurl']  || "",
         :tc_id                              => test_case['TC_ID']   || "",

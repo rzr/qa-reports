@@ -158,15 +158,13 @@ describe ReportFactory do
     test_session.editor = author
     test_session.save!
 
-    test_session.meego_test_cases.each do |tc|
-      if tc.name == "SMOKE-SIM-Query_SIM_card_status"
-        tc.tc_id.should == "smoke-123"
-      end
-    end
+    MeegoTestCase.find(:first, :conditions => "tc_id = 'smoke-123'").should_not be_nil
+
   end
 
   it "should produce a valid report from input file with custom statuses" do
     APP_CONFIG['custom_statuses'] = ['Blocked', 'Pending', 'Upstream']
+    CustomResult.create([{:name => "Blocked"},{:name => "Pending"},{:name => "Upstream"}])
 
     author = User.new({:email => 'foo@bar.com', :password => 'minsixchars', :name => 'Test User'})
     author.save!

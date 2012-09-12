@@ -59,5 +59,4 @@ if Rails.env == "staging" and MeegoTestSession.count < 10000 # ensure there's al
     session.published = true
     session.save
   end
-
 end
