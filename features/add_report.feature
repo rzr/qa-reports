@@ -181,6 +181,22 @@ Feature:
 
     Then I should not see "NFT Index"
 
+  Scenario: Custom statuses shown for test cases
+    Given I enable custom results "Pending", "Blocked"
+
+    When I follow "Add report"
+    And I select target "Handset", test set "Custom Results" and product "N990"
+    And I attach the report "custom_statuses.xml"
+    And I press "Next"
+    And I press "Publish"
+
+    Then the result of test case "NFT-BT-Device_Scan_C-ITER" should be "Pass"
+    And the result of test case "NFT-BT-Device_Scan" should be "Blocked"
+    And the result of test case "NFT-BT-Device_Pair" should be "Blocked"
+    And the result of test case "NFT-BT-Device_Disconnect" should be "Pending"
+
+    Then I disable custom results
+
   @selenium
   Scenario: Add new report with underscore in test set and product names
     When I follow "Add report"
