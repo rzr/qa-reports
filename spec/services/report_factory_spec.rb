@@ -163,7 +163,7 @@ describe ReportFactory do
   end
 
   it "should produce a valid report from input file with custom results" do
-    APP_CONFIG['custom_statuses'] = ['Blocked', 'Pending', 'Upstream']
+    APP_CONFIG['custom_results'] = ['Blocked', 'Pending', 'Upstream']
     CustomResult.create([{:name => "Blocked"},{:name => "Pending"},{:name => "Upstream"}])
 
     author = User.new({:email => 'foo@bar.com', :password => 'minsixchars', :name => 'Test User'})
@@ -203,8 +203,8 @@ describe ReportFactory do
   end
 
   it "should validate custom results against configured ones" do
-    APP_CONFIG['custom_statuses'] = ['Blocked']
-    CustomResult.create({:name => "Blocked"}, {:name => "Pending"})
+    APP_CONFIG['custom_results'] = ['Blocked']
+    CustomResult.create([{:name => "Blocked"}, {:name => "Pending"}])
 
     author = User.new({:email => 'foo@bar.com', :password => 'minsixchars', :name => 'Test User'})
     author.save!
