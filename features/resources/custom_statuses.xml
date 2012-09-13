@@ -42,6 +42,16 @@
      <stderr/>
     </step>
    </case>
+   <case name="NFT-BT-Device_NASTATUS" description="" manual="false" insignificant="false" result="N/A" subfeature="Scan">
+    <step command="" result="PASS">
+     <expected_result>0</expected_result>
+     <return_code>0</return_code>
+     <start>2010-09-10 14:36:08</start>
+     <end>2010-09-10 14:47:47</end>
+     <stdout/>
+     <stderr/>
+    </step>
+   </case>
   </set>
  </suite>
 </testresults>
