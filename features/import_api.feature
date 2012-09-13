@@ -139,3 +139,8 @@ Feature: Import API
     When the client sends three CSV files
     And I download a list of sessions without a begin time
     Then result should match the file with oldest date
+
+  Scenario: Sending custom results when not enabled
+    When the client sends file "features/resources/custom_statuses.xml" via the REST API
+    Then the upload fails
+    And the result complains about invalid custom result

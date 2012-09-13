@@ -88,6 +88,10 @@ When "the client sends three CSV files" do
   step %{session "short3.csv" has been modified at "2011-03-01 01:01"}
 end
 
+When "the client sends file with custom results" do
+  step %{the client sends file "features/resources/custom_statuses.xml" via the REST API}
+end
+
 When %r/^the client sends a request with string value instead of a file$/ do
     @response = api_import @default_api_opts.merge("report.1" => "Foo!")
 end
@@ -290,6 +294,10 @@ end
 
 Then "the result complains about invalid parameter" do
   step %{the REST result "errors" is "unknown attribute: foobar"}
+end
+
+Then "the result complains about invalid custom result" do
+  step %{the REST result "errors" is "Custom result Invalid custom result in testcase NFT-BT-Device_Disconnect"}
 end
 
 Then %r/^the REST result "([^"]*)" is "([^"]*)"$/ do |key, value|
