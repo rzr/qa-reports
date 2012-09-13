@@ -187,8 +187,7 @@ Feature:
     And I attach the report "custom_statuses.xml"
     And I press "Next"
 
-    Then I should see "SOME ERROR MESSAGE!" within ".formError"
-    And I should not see "Publish"
+    Then I should see "Custom result Invalid custom result in testcase NFT-BT-Device_Scan" within ".formError"
 
   Scenario: Custom statuses shown for test cases
     Given I enable custom results "Pending", "Blocked"

@@ -98,7 +98,18 @@ class UploadController < ApplicationController
 
     set_suggestions
 
-    if @test_session.errors.empty? and @test_session.save
+    # Save separately to catch model validation errors
+    if @test_session.errors.empty?
+      begin
+        @test_session.save!
+      rescue Exception => e
+        # Dynamic form can only show one error message...
+        errmsg = if @test_session.errors.empty? then "Failed to save report: e.message" else @test_session.errors[@test_session.errors.keys[0]][1] end
+        @test_session.errors.add(:result_files, errmsg)
+      end
+    end
+
+    if @test_session.errors.empty?
       redirect_to preview_report_path(@test_session)
     else
       @profiles = Profile.names

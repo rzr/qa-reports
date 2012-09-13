@@ -32,6 +32,8 @@ class Feature < ActiveRecord::Base
   has_many :na,               :class_name => "MeegoTestCase", :conditions => { :result => MeegoTestCase::NA       }
   has_many :measured,         :class_name => "MeegoTestCase", :conditions => { :result => MeegoTestCase::MEASURED }
 
+  validates_associated_bubbling :meego_test_cases
+
   after_create :save_test_cases
 
   include ReportSummary
