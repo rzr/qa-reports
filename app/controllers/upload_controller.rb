@@ -102,9 +102,9 @@ class UploadController < ApplicationController
     if @test_session.errors.empty?
       begin
         @test_session.save!
-      rescue Exception => e
+      rescue ActiveRecord::RecordInvalid => e
         # Dynamic form can only show one error message...
-        errmsg = if @test_session.errors.empty? then "Failed to save report: e.message" else @test_session.errors[@test_session.errors.keys[0]][1] end
+        errmsg = if e.record.errors.empty? then "Failed to save report: e.message" else e.record.errors[e.record.errors.keys[0]][1] end
         @test_session.errors.add(:result_files, errmsg)
       end
     end
