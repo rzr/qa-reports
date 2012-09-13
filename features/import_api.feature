@@ -141,6 +141,14 @@ Feature: Import API
     Then result should match the file with oldest date
 
   Scenario: Sending custom results when not enabled
-    When the client sends file "features/resources/custom_statuses.xml" via the REST API
+    When the client sends file with custom results
     Then the upload fails
     And the result complains about invalid custom result
+
+  Scenario: Sending custom results when enabled
+    Given I enable custom results "Pending", "Blocked"
+    When the client sends file with custom results
+
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see test cases with result Blocked

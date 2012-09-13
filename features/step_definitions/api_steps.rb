@@ -260,6 +260,10 @@ Then "I should see the defined report title" do
   step %{I should see "My Test Report"}
 end
 
+Then %r/^I should see test cases with result Blocked/ do
+  step %{I should see "Blocked"}
+end
+
 Then "the upload succeeds" do
   step %{the REST result "ok" is "1"}
 end
