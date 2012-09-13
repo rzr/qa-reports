@@ -95,7 +95,7 @@ module ReportSummary
   end
 
   def total_na
-    @total_na ||= count_results(MeegoTestCase::NA)
+    @total_na ||= count_results(MeegoTestCase::NA) + count_results(MeegoTestCase::CUSTOM)
   end
 
   def total_measured
