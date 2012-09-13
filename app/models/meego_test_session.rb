@@ -126,9 +126,16 @@ class MeegoTestSession < ActiveRecord::Base
       where(:meego_test_session_id => reports).group(:meego_test_session_id, :result).count(:result)
 
     reports.map! do |report|
+      # Calculate NA value separately since we need to include CUSTOM to it. Either one may be nil
+      na     = result_counts[[report.id, MeegoTestCase::NA]]
+      custom = result_counts[[report.id, MeegoTestCase::CUSTOM]]
+      if not custom.nil?
+        na = if na.nil? then custom else na + custom end
+      end
+
       report.total_passed   = result_counts[[report.id, MeegoTestCase::PASS]]
       report.total_failed   = result_counts[[report.id, MeegoTestCase::FAIL]]
-      report.total_na       = result_counts[[report.id, MeegoTestCase::NA]]
+      report.total_na       = na
       report.total_measured = result_counts[[report.id, MeegoTestCase::MEASURED]]
       report.total_cases    = report.total_passed + report.total_failed + report.total_na + report.total_measured
       report

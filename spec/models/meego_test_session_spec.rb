@@ -66,4 +66,18 @@ describe MeegoTestSession do
     end
   end
 
+  describe "With custom results" do
+    it "should calculate custom as n/a" do
+      APP_CONFIG['custom_results'] = ['Pending']
+      CustomResult.create([{:name => "Pending"}])
+
+      report = FactoryGirl.create(:report_with_custom_results)
+      MeegoTestSession::load_case_counts_for_reports!([report])
+
+      # TODO: How to verify that the value for total_na really coms
+      # from load_case_counts... instead of lib/testreport::total_na?
+      report.total_na.should == 1
+    end
+  end
+
 end
