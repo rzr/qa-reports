@@ -66,8 +66,8 @@
           input name="_method" type="hidden" value="put"
           div.float_above
             select name="test_case[result]"
-              - (-1..2).each do |s|
-                option selected="#{testcase.result == s ? 'selected' : ''}" value="#{s}" =result_to_txt(s)
+              - @results_list.each do |s|
+                option selected="#{testcase.result_name == s ? 'selected' : ''}" value="#{s}" =s
       / NOTE: The following is identical in _nft_testcase and _testcase_comment.
       / Partial not used here because of seriously bad performance.
       td class="testcase_notes #{'edit' if @editing}" rowspan="#{testcase.all_measurements.size if testcase.has_measurements? }"

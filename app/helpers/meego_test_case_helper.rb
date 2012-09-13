@@ -34,6 +34,16 @@ module MeegoTestCaseHelper
     end
   end
 
+  def self.possible_results
+    # Fixed results
+    results = (-1..2).map do |idx|
+      RESULT_TO_TXT[idx]
+    end
+    # Custom results
+    results += APP_CONFIG['custom_results']
+    results
+  end
+
   def result_class(model, prefix = "")
     return prefix + MeegoTestSession.result_as_string(MeegoTestCase::NA) if model.nil?
 
