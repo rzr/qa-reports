@@ -92,6 +92,10 @@ When "the client sends file with custom results" do
   step %{the client sends file "features/resources/custom_statuses.xml" via the REST API}
 end
 
+When "the client sends partial file with custom results" do
+  step %{the client sends file "features/resources/custom_statuses_subset.xml" via the REST API}
+end
+
 When %r/^the client sends a request with string value instead of a file$/ do
     @response = api_import @default_api_opts.merge("report.1" => "Foo!")
 end

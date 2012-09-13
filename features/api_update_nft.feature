@@ -17,3 +17,12 @@ Feature: REST API update report with nft
 
     When I view the updated report
     Then I should not see NFT results
+
+  Scenario: Updating test report with custom results by adding more cases to the report
+    Given I enable custom results "Pending", "Blocked"
+    When the client sends partial file with custom results
+    Then the upload succeeds
+
+    When I disable custom results
+    And the client sends updated file with custom results
+    Then the upload fails

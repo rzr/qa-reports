@@ -24,6 +24,10 @@ When "I have sent a file with NFT results" do
   step %{the upload succeeds}
 end
 
+When "the client sends updated file with custom results" do
+  step %{the client sends a updated file "custom_statuses.xml" with the id 1 via the REST API}
+end
+
 When "I have sent a basic result file" do
   step %{the client sends a basic test result file}
 end
