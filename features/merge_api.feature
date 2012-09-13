@@ -134,3 +134,19 @@ Feature: Merge API
       | featureA      | testcaseB     | Pass   |
       | featureB      | testcaseB     | Pass   |
       | featureB      | testcaseC     | Fail   |
+
+  Scenario: Merge report with custom results when custom results are enabled
+    Given I enable custom results "Pending", "Blocked"
+
+    When I merge with the latest report using result file "custom_statuses.xml"
+    Then the API responds ok
+
+    When I view the latest report
+    Then I should see "custom_statuses.xml" within "#result_file_drag_drop_area .file_list"
+
+  Scenario: Merge report with custom results when custom results are disabled
+    When I merge with the latest report using result file "custom_statuses.xml"
+    Then the API responds with an error about "Invalid custom result in testcase NFT-BT-Device_Scan"
+
+    When I view the latest report
+    Then I should not see "custom_statuses.xml" within "#result_file_drag_drop_area .file_list"
