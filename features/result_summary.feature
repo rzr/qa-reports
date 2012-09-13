@@ -40,3 +40,23 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
       | Pass rate of total    |    40% | Passed / (Total test cases - Measured)               |
       | Pass rate of executed |    50% | Passed / (Total test cases - Measured - N/A)         |
       | NFT Index             |    69% | Sum(Test Case NFT Index) / Test Cases with NFT index |
+
+  Scenario: Result summary for custom results
+    Given I am logged in
+    And I enable custom results "Pending", "Blocked"
+
+    When I follow "Add report"
+    And I select target "Handset", test set "Custom Results" and product "N990"
+    And I attach the report "custom_statuses.xml"
+    And I press "Next"
+    And I press "Publish"
+
+    Then I should see Result Summary:
+      | Title                 | Result | [Explanation]                                        |
+      | Total test cases      |     5  |                                                      |
+      | Passed                |     1  |                                                      |
+      | Failed                |     0  |                                                      |
+      | N/A                   |     4  |                                                      |
+      | Run rate              |    20% | (Total test cases - N/A) / Total test cases          |
+      | Pass rate of total    |    20% | Passed / (Total test cases - Measured)               |
+      | Pass rate of executed |   100% | Passed / (Total test cases - Measured - N/A)         |
