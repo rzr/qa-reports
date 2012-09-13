@@ -19,6 +19,7 @@ module MeegoTestCaseHelper
   end
 
   def result_html(model)
+    return RESULT_TO_TXT[MeegoTestCase::NA] unless model
     model.result_name
   end
 
