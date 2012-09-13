@@ -19,8 +19,7 @@ module MeegoTestCaseHelper
   end
 
   def result_html(model)
-    return "N/A" unless model
-    result_to_txt(model.result)
+    model.result_name
   end
 
   def hide_passing(model)
