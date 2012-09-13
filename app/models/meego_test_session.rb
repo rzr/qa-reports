@@ -357,6 +357,7 @@ class MeegoTestSession < ActiveRecord::Base
     RESULT_CODES[result] || RESULT_CODES[MeegoTestCase::NA]
   end
 
+  # TODO: Test cases are lost if saving fails
   def update_report_result(user, params, published = true)
     tmp = ReportFactory.new.build(params)
     parsing_errors = tmp.errors[:result_files]
@@ -380,6 +381,7 @@ class MeegoTestSession < ActiveRecord::Base
     end
   end
 
+  # TODO: New attachment is added even if adding the cases from them fails
   def merge_result_files!(files)
     unless files.present?
       errors.add :result_files, "No result files."
