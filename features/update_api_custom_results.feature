@@ -6,11 +6,9 @@ Feature: Update API
     Given I am a user with a REST authentication token
 
   Scenario: Updating test report with custom results by adding more cases to the report after having disabled custom results
-    Given I see DB
     Given I enable custom results "Pending", "Blocked"
     When the client sends partial file with custom results
     Then the upload succeeds
-    Then I see DB
 
     When I disable custom results
     And the client sends updated file with custom results
