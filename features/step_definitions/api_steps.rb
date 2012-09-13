@@ -301,7 +301,7 @@ Then "the result complains about invalid parameter" do
 end
 
 Then "the result complains about invalid custom result" do
-  step %{the REST result "errors" is "Custom result Invalid custom result in testcase NFT-BT-Device_Disconnect"}
+  step %{the REST result "errors|features.meego_test_cases" is "Custom result Invalid custom result in testcase NFT-BT-Device_Scan;Custom result Invalid custom result in testcase NFT-BT-Device_Pair;Custom result Invalid custom result in testcase NFT-BT-Device_Disconnect"}
 end
 
 Then %r/^the REST result "([^"]*)" is "([^"]*)"$/ do |key, value|

@@ -78,7 +78,13 @@ class ApiController < ApplicationController
       render :json => {:ok => '1', :url => report_url}
     rescue ActiveRecord::RecordInvalid => invalid
       error_messages = {}
-      invalid.record.errors.each {|key, value| error_messages[key] = value}
+      invalid.record.errors.each do |key, value|
+        error_messages[key] ||= []
+        error_messages[key] << value unless value == "is invalid"
+      end
+      # Comma separate list of errors to get them all on one upload
+      error_messages.each do |key, value| error_messages[key] = error_messages[key].join ";" end
+
       render :json => {:ok => '0', :errors => error_messages}
     end
 
