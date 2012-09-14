@@ -31,31 +31,27 @@ class ApiController < ApplicationController
   end
 
   def import_data
-    data = request.query_parameters.merge(request.request_parameters)
-    data.delete(:auth_token)
     errors = []
-
-    data[:result_files] = collect_files(data, "report", errors)
-    data[:attachments]  = collect_files(data, "attachment", errors)
-
+    fix_request_params(params, errors)
     if !errors.empty?
       render :json => {:ok => '0', :errors => "Request contained invalid files: " + errors.join(',')}
       return
     end
 
-    data[:hardware] ||= data[:hwproduct]
-    data[:product] ||= data[:hardware]
-    data[:testset] ||= data[:testtype]
-    data.delete(:hwproduct)
-    data.delete(:testtype)
-    data.delete(:hardware)
-    data[:build_id] ||= data.delete(:build_id_txt) if data[:build_id_txt]
+    # Map deprecated API params to current ones
+    params[:hardware] ||= params[:hwproduct]
+    params[:product]  ||= params[:hardware]
+    params[:testset]  ||= params[:testtype]
+    params.delete(:hwproduct)
+    params.delete(:testtype)
+    params.delete(:hardware)
+    params[:build_id] ||= params.delete(:build_id_txt) if params[:build_id_txt]
 
     begin
-      return render :json => {:ok => '0', :errors => {:target => "can't be blank"}} if not data[:target]
-      return render :json => {:ok => '0', :errors => {:target => "Incorrect target '#{data[:target]}'. Valid ones are: #{Profile.names.join(',')}."}} if not Profile.find_by_name(data[:target])
-      @test_session = ReportFactory.new.build(data.clone)
-      return render :json => {:ok => '0', :errors => errmsg_invalid_version(data[:release_version])} if not @test_session.release
+      return render :json => {:ok => '0', :errors => {:target => "can't be blank"}} if not params[:target]
+      return render :json => {:ok => '0', :errors => {:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}} if not Profile.find_by_name(params[:target])
+      @test_session = ReportFactory.new.build(params.clone)
+      return render :json => {:ok => '0', :errors => errmsg_invalid_version(params[:release_version])} if not @test_session.release
       @test_session.author = current_user
       @test_session.editor = current_user
       @test_session.published = true
@@ -74,7 +70,7 @@ class ApiController < ApplicationController
     begin
       @test_session.save!
 
-      report_url = url_for :controller => 'reports', :action => 'show', :release_version => @test_session.release.name, :target => data[:target], :testset => data[:testset], :product => data[:product], :id => @test_session.id
+      report_url = url_for :controller => 'reports', :action => 'show', :release_version => @test_session.release.name, :target => params[:target], :testset => params[:testset], :product => params[:product], :id => @test_session.id
       render :json => {:ok => '1', :url => report_url}
     rescue ActiveRecord::RecordInvalid => invalid
       error_messages = {}
@@ -197,4 +193,23 @@ class ApiController < ApplicationController
       return render :status => 403, :json => {:errors => "Invalid authentication token."} unless user_signed_in?
   end
 
+  def fix_request_params(params, errors)
+    # Delete params not understood by models
+    params.delete(:auth_token)
+    params.delete(:controller)
+    params.delete(:action)
+
+    # Fix result files and attachments.
+    params[:result_files] ||= []
+    params[:attachments]  ||= []
+
+    # Convert uploaded files to FileAttachments
+    params[:result_files] = params[:result_files].map do |f| FileAttachment.new(:file => f, :attachment_type => :result_file) end if params[:result_files]
+    params[:attachments]  = params[:attachments].map  do |f| FileAttachment.new(:file => f, :attachment_type => :attachment)  end if params[:attachments]
+
+    # Read files from the deprecated fields as well
+    params[:result_files] += collect_files(params, "report", errors)
+    params[:attachments]  += collect_files(params, "attachment", errors)
+
+  end
 end

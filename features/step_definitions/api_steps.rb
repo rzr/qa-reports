@@ -23,6 +23,10 @@ When "the client sends a basic test result file" do
   step %{the client sends file "features/resources/sim.xml" via the REST API}
 end
 
+When "the client sends a basic test result file via deprecated API" do
+  step %{the client sends file "features/resources/sim.xml" via the deprecated REST API}
+end
+
 When "the client sends a report with tests without features" do
   step %{the client sends file "spec/fixtures/no_features.xml" via the REST API}
 end
@@ -32,8 +36,18 @@ end
 When %r/^the client sends file "([^"]*)" via the REST API$/ do |file|
   # @default_api_opts defined in features/support/hooks.rb
   @response = api_import @default_api_opts.merge({
+    "result_files[]" => Rack::Test::UploadedFile.new("#{file}", "text/xml")
+  })
+  @response.status.should == 200
+end
+
+When %r/^the client sends file "([^"]*)" via the deprecated REST API$/ do |file|
+  data = @default_api_opts
+  data.delete('result_files[]')
+  data = data.merge({
     "report.1" => Rack::Test::UploadedFile.new("#{file}", "text/xml")
   })
+  @response = api_import data
   @response.status.should == 200
 end
 
@@ -101,7 +115,7 @@ When %r/^the client sends a request with string value instead of a file$/ do
 end
 
 When %r/^the client sends a request without file$/ do
-  @default_api_opts.delete("report.1")
+  @default_api_opts.delete("result_files[]")
   @response = api_import @default_api_opts
   @response.status.should == 200
 end

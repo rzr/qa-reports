@@ -8,7 +8,7 @@ Before do
     "testset"         => "automated",
     "product"         => "N900",
     "tested_at"       => Date.today.to_s,
-    "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
+    "result_files[]"  => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   }
 
   @default_api_opts_all = @default_api_opts.merge({

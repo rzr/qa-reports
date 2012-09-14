@@ -381,7 +381,6 @@ class MeegoTestSession < ActiveRecord::Base
     end
   end
 
-  # TODO: New attachment is added even if adding the cases from them fails
   def merge_result_files!(files)
     unless files.present?
       errors.add :result_files, "No result files."

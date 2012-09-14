@@ -19,6 +19,11 @@ Feature: Import API
     Then I should see names of the two features
     And I should see the uploaded attachments
 
+  Scenario: Uploading a test report with single basic file using deprecated API
+    When the client sends a basic test result file via deprecated API
+    Then the upload succeeds
+    And I should be able to view the created report
+
   Scenario: Adding a report with deprecated parameters
     When the client sends a basic test result file with deprecated parameters
     Then the upload succeeds
