@@ -407,8 +407,6 @@ class MeegoTestSession < ActiveRecord::Base
   end
 
   def merge!(report_hash)
-    self.result_files += report_hash[:result_files] || []
-
     current_features = features.index_by &:name
     to_update, to_create = report_hash[:features_attributes].
                            partition {|fh| current_features.has_key? fh[:name]}
@@ -416,6 +414,14 @@ class MeegoTestSession < ActiveRecord::Base
     to_update.each { |fh| current_features[fh[:name]].merge! fh }
 
     to_create.each { |fh| features.create fh }
+
+    # Store only if there are no errors and the session is valid.
+    # Error count is checked separately because the model may be
+    # valid, and calling valid? would then clear the errors that
+    # have been added for other reasons programmatically.
+    # The check in general needs to be done since due to some oddity
+    # the result_files ARE saved even if session.save wouldn't be called
+    self.result_files += report_hash[:result_files] || [] if self.errors.empty? && self.valid?
 
     self
   end
