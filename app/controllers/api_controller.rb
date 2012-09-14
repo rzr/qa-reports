@@ -79,10 +79,14 @@ class ApiController < ApplicationController
     rescue ActiveRecord::RecordInvalid => invalid
       error_messages = {}
       invalid.record.errors.each do |key, value|
-        error_messages[key] ||= []
-        error_messages[key] << value
+        # If there are more than one errors for a key return them as an array
+        if invalid.record.errors[key].length > 1
+          error_messages[key] ||= []
+          error_messages[key] << value
+        else
+          error_messages[key] = value
+        end
       end
-
       render :json => {:ok => '0', :errors => error_messages}
     end
 
