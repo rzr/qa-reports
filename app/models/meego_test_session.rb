@@ -403,7 +403,7 @@ class MeegoTestSession < ActiveRecord::Base
     end
 
     logger.info "new_data: #{new_data.inspect}"
-    merge!(new_data)
+    #merge!(new_data)
   end
 
   def merge!(report_hash)

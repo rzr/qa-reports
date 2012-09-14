@@ -4,4 +4,9 @@
 # cases. Set this to true to enable creating reports without any cases.
 allow_empty_files: false
 
+# QA Reports accepts Pass, Fail, N/A, and Measured as valid results for
+# a test case by default. It can be configured to accept additional ones
+# as well by defining them here. Notice that currently all tests with
+# custom results are calculated as N/A in the metrics.
+# Example: custom_results = ['Blocked', 'Pending']
 custom_results: []
