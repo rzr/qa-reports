@@ -101,25 +101,21 @@ class ApiController < ApplicationController
   end
 
   def update_result
-    data = request.query_parameters.merge(request.request_parameters)
-    data.delete(:auth_token)
-
-    errors                = []
-
-    data[:result_files] = collect_files(data, "report", errors)
-    data[:updated_at] = data[:updated_at] || Time.now
-
+    errors = []
+    fix_request_params(params, errors)
     if !errors.empty?
       render :json => {:ok => '0', :errors => "Request contained invalid files: " + errors.join(',')}
       return
     end
+
+    params[:updated_at] = params[:updated_at] || Time.now
 
     parse_err = nil
 
     if @report_id = params[:id].try(:to_i)
       begin
         @test_session = MeegoTestSession.find(@report_id)
-        parse_err = @test_session.update_report_result(current_user, data, true)
+        parse_err = @test_session.update_report_result(current_user, params, true)
       rescue ActiveRecord::UnknownAttributeError, ActiveRecord::RecordNotSaved => errors
         # TODO: Could we get reasonable error messages somehow? e.g. MeegoTestCase
         # may add an error from custom results but this just has a very generic error message
