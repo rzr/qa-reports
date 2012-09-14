@@ -2,7 +2,8 @@
 
 QA Reports is a test result reporting application originally developed for
 [MeeGo](http://en.wikipedia.org/wiki/MeeGo). For basic features demonstration
-see trailer at [YouTube](http://www.youtube.com/watch?v=sOUkwJT2RBo).
+see trailer at [YouTube](http://www.youtube.com/watch?v=sOUkwJT2RBo). User
+guide and other detailed documentation is available in [wiki](https://github.com/leonidas/qa-reports/wiki).
 
 QA Reports is built with Ruby on Rails.
 
