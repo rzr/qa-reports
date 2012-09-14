@@ -47,8 +47,6 @@ Then %r/^the report should not contain a detailed test results section/ do
   step %{I should not see "Detailed Test Results"}
 end
 
-result_value = {'Pass' => '1', 'Fail' => '-1', 'N/A' => '0'}
-
 When %r/^I change the test case result of "([^"]*)" to "([^"]*)"$/ do |tc, result|
   row = find_testcase_row(tc)
   row.find('.testcase_result').click()
@@ -65,6 +63,14 @@ When %r/^I change the test case comment of "([^"]*)" to "([^"]*)"$/ do |tc, comm
   cell = row.find('.testcase_notes')
   cell.click()
   cell.fill_in "test_case[comment]", :with => comment
+end
+
+Then %r/^the result edit dropdown should not contain "([^"]*)"$/ do |result|
+  opts = all(:xpath, "//select[@name='test_case[result_name]'][1]/option", :visible => false)
+  # TODO there must be a far better way to do this. opts.should_not have_content(result) didn't work
+  for elem in opts do
+    assert_not_equal result, elem.value, "Expected option '#{elem.value}' not to exist"
+  end
 end
 
 Given %r/^I enable custom results (".+")$/ do |results|

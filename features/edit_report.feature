@@ -126,7 +126,7 @@ Feature: Edit Report
     Then I enable custom results "Not tested"
     And I edit the report "1.2/Core/automated/N900"
 
-    Then I should not see "Blocked" within "select"
+    Then the result edit dropdown should not contain "Blocked"
     And I disable custom results
 
   @javascript
