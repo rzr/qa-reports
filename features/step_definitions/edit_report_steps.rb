@@ -52,7 +52,7 @@ result_value = {'Pass' => '1', 'Fail' => '-1', 'N/A' => '0'}
 When %r/^I change the test case result of "([^"]*)" to "([^"]*)"$/ do |tc, result|
   row = find_testcase_row(tc)
   row.find('.testcase_result').click()
-  row.select(result, :from => "test_case[result]")
+  row.select(result, :from => "test_case[result_name]")
 end
 
 Then %r/^the result of test case "([^"]*)" should be "([^"]*)"$/ do |tc, result|

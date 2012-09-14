@@ -13,7 +13,7 @@ tr class="testcase #{result_class(testcase, 'result_')}" id="testcase-#{testcase
       input name="authenticity_token" type="hidden" value=form_authenticity_token
       input name="_method" type="hidden" value="put"
       div.float_above
-        select name="test_case[result]"
+        select name="test_case[result_name]"
           - @results_list.each do |s|
             option selected="#{testcase.result_name == s ? 'selected' : ''}" value="#{s}" =s
 

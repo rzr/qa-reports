@@ -137,6 +137,7 @@ class ReportsController < ApplicationController
   def populate_report_fields
     @report       = MeegoTestSession.fetch_fully(params[:id])
     @nft_trends   = NftHistory.new(@report) if @report.has_nft?
+    @results_list = MeegoTestCaseHelper.possible_results
   end
 
   def populate_edit_fields
@@ -146,7 +147,6 @@ class ReportsController < ApplicationController
     @testsets         = MeegoTestSession.release(release.name).testsets
     @products         = MeegoTestSession.release(release.name).popular_products
     @build_ids        = MeegoTestSession.release(release.name).popular_build_ids
-    @results_list     = MeegoTestCaseHelper.possible_results
   end
 
   protected
