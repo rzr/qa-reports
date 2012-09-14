@@ -33,38 +33,35 @@ class ApiController < ApplicationController
   def import_data
     errors = []
     fix_request_params(params, errors)
-    if !errors.empty?
-      render :json => {:ok => '0', :errors => "Request contained invalid files: " + errors.join(',')}
-      return
-    end
+    return send_error("Request contained invalid files: " + errors.join(',')) if not errors.empty?
 
     # Map deprecated API params to current ones
     params[:hardware] ||= params[:hwproduct]
     params[:product]  ||= params[:hardware]
     params[:testset]  ||= params[:testtype]
+    params[:build_id] ||= params.delete(:build_id_txt) if params[:build_id_txt]
     params.delete(:hwproduct)
     params.delete(:testtype)
     params.delete(:hardware)
-    params[:build_id] ||= params.delete(:build_id_txt) if params[:build_id_txt]
+
+    return send_error({:target => "can't be blank"}) if not params[:target]
+    return send_error({:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}) if not Profile.find_by_name(params[:target])
 
     begin
-      return render :json => {:ok => '0', :errors => {:target => "can't be blank"}} if not params[:target]
-      return render :json => {:ok => '0', :errors => {:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}} if not Profile.find_by_name(params[:target])
       @test_session = ReportFactory.new.build(params.clone)
-      return render :json => {:ok => '0', :errors => errmsg_invalid_version(params[:release_version])} if not @test_session.release
+      return send_error(errmsg_invalid_version(params[:release_version])) if not @test_session.release
+
       @test_session.author = current_user
       @test_session.editor = current_user
       @test_session.published = true
 
     rescue ActiveRecord::UnknownAttributeError => error
-      render :json => {:ok => '0', :errors => error.message}
-      return
+      return send_error(error.message)
     end
 
     # Check the errors
     if @test_session.errors.size > 0
-      render :json => {:ok => '0', :errors => @test_session.errors}
-      return
+      return send_error(@test_session.errors)
     end
 
     begin
@@ -72,6 +69,7 @@ class ApiController < ApplicationController
 
       report_url = url_for :controller => 'reports', :action => 'show', :release_version => @test_session.release.name, :target => params[:target], :testset => params[:testset], :product => params[:product], :id => @test_session.id
       render :json => {:ok => '1', :url => report_url}
+
     rescue ActiveRecord::RecordInvalid => invalid
       error_messages = {}
       invalid.record.errors.each do |key, value|
@@ -83,7 +81,7 @@ class ApiController < ApplicationController
           error_messages[key] = value
         end
       end
-      render :json => {:ok => '0', :errors => error_messages}
+      return send_error(error_messages)
     end
 
   end
@@ -115,25 +113,22 @@ class ApiController < ApplicationController
     if @report_id = params[:id].try(:to_i)
       begin
         @test_session = MeegoTestSession.find(@report_id)
-        parse_err = @test_session.update_report_result(current_user, params, true)
+        parse_err     = @test_session.update_report_result(current_user, params, true)
       rescue ActiveRecord::UnknownAttributeError, ActiveRecord::RecordNotSaved => errors
         # TODO: Could we get reasonable error messages somehow? e.g. MeegoTestCase
         # may add an error from custom results but this just has a very generic error message
-        render :json => {:ok => '0', :errors => errors.message}
-        return
+        return send_error(errors.message)
       end
 
       if parse_err.present?
-        render :json => {:ok => '0', :errors => "Request contained invalid files: " + parse_err}
-        return
+        return send_error("Request contained invalid files: " + parse_err)
       end
 
       if @test_session.save
         expire_caches_for(@test_session, true)
         expire_index_for(@test_session)
       else
-        render :json => {:ok => '0', :errors => invalid.record.errors}
-        return
+        return send_error(invalid.record.errors)
       end
 
       render :json => {:ok => '1'}
@@ -206,6 +201,9 @@ class ApiController < ApplicationController
     # Read files from the deprecated fields as well
     params[:result_files] += collect_files(params, "report", errors)
     params[:attachments]  += collect_files(params, "attachment", errors)
+  end
 
+  def send_error(errors)
+    return render :json => {:ok => '0', :errors => errors}
   end
 end
