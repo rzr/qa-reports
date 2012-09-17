@@ -38,7 +38,6 @@ When %r/^the client sends file "([^"]*)" via the REST API$/ do |file|
   @response = api_import @default_api_opts.merge({
     "result_files[]" => Rack::Test::UploadedFile.new("#{file}", "text/xml")
   })
-  @response.status.should == 200
 end
 
 When %r/^the client sends file "([^"]*)" via the deprecated REST API$/ do |file|
@@ -48,7 +47,6 @@ When %r/^the client sends file "([^"]*)" via the deprecated REST API$/ do |file|
     "report.1" => Rack::Test::UploadedFile.new("#{file}", "text/xml")
   })
   @response = api_import data
-  @response.status.should == 200
 end
 
 # The first API had hwproduct and testtype
@@ -56,7 +54,6 @@ When "the client sends a basic test result file with deprecated parameters" do
   @response = api_import @default_version_1_api_opts.merge({
     "report.1" => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   })
-  @response.status.should == 200
 end
 
 # The 2nd API had "hardware"
@@ -64,7 +61,6 @@ When "the client sends a basic test result file with deprecated product paramete
   @response = api_import @default_version_2_api_opts.merge({
     "report.1" => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   })
-  @response.status.should == 200
 end
 
 When %r/^the client sends reports "([^"]*)" via the REST API to test set "([^"]*)" and product "([^"]*)"$/ do |files, testset, hardware|
@@ -78,7 +74,6 @@ When %r/^the client sends reports "([^"]*)" via the REST API to test set "([^"]*
   end
 
   @response = api_import data
-  @response.status.should == 200
 end
 
 When %r/^the client sends files with attachments$/ do
@@ -88,7 +83,6 @@ When %r/^the client sends files with attachments$/ do
       "attachment.1"    => Rack::Test::UploadedFile.new("public/images/ajax-loader.gif", "image/gif"),
       "attachment.2"    => Rack::Test::UploadedFile.new("public/images/icon_alert.gif", "image/gif"),
   })
-  @response.status.should == 200
 end
 
 # This is used in test session listing tests
@@ -117,31 +111,26 @@ end
 When %r/^the client sends a request without file$/ do
   @default_api_opts.delete("result_files[]")
   @response = api_import @default_api_opts
-  @response.status.should == 200
 end
 
 When %r/^the client sends a request without a target profile$/ do
   @default_api_opts.delete("target")
   @response = api_import @default_api_opts
-  @response.status.should == 200
 end
 
 When "the client sends a request with invalid release version" do
   @default_api_opts["release_version"] ="foo"
   @response = api_import @default_api_opts
-  @response.status.should == 200
 end
 
 When "the client sends a request with invalid target profile" do
   @default_api_opts["target"] ="Foo"
   @response = api_import @default_api_opts
-  @response.status.should == 200
 end
 
 When "the client sends a request with invalid product" do
   @default_api_opts["product"] ="N900/ce"
   @response = api_import @default_api_opts
-  @response.status.should == 200
 end
 
 When "the client sends a request containing invalid extra parameter" do
@@ -181,13 +170,10 @@ When %r/^the client sends a request with optional parameter "([^"]*)" with value
     "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml"),
     opt               => val
   })
-
-  @response.status.should == 200
 end
 
 When "the client sends a request with all optional parameters defined" do
   @response = api_import @default_api_opts_all
-  @response.status.should == 200
 end
 
 When %r/^I view the latest report "([^"]*)"/ do |report_string|
@@ -283,10 +269,12 @@ Then %r/^I should see test cases with result Blocked/ do
 end
 
 Then "the upload succeeds" do
+  @response.status.should == 200
   step %{the REST result "ok" is "1"}
 end
 
 Then "the upload fails" do
+  @response.status.should == 422
   step %{the REST result "ok" is "0"}
 end
 

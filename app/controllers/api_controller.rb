@@ -94,7 +94,7 @@ class ApiController < ApplicationController
       report.update_attribute(:editor, current_user)
       head :ok
     else
-      render :json => {:errors => report.errors}, :status => :unprocessable_entity
+      return send_error(report.errors)
     end
   end
 
@@ -102,8 +102,7 @@ class ApiController < ApplicationController
     errors = []
     fix_request_params(params, errors)
     if !errors.empty?
-      render :json => {:ok => '0', :errors => "Request contained invalid files: " + errors.join(',')}
-      return
+      return send_error("Request contained invalid files: " + errors.join(','))
     end
 
     params[:updated_at] = params[:updated_at] || Time.now
@@ -146,7 +145,7 @@ class ApiController < ApplicationController
       hashed_sessions = sessions.map { |s| ReportExporter::hashify_test_session(s) }
       render :json => hashed_sessions
     rescue ArgumentError => error
-      render :json => {:ok => '0', :errors => error.message}
+      return send_error(error.message)
     end
   end
 
@@ -180,8 +179,8 @@ class ApiController < ApplicationController
   end
 
   def api_authentication
-      return render :status => 403, :json => {:errors => "Missing authentication token."} if params[:auth_token].nil?
-      return render :status => 403, :json => {:errors => "Invalid authentication token."} unless user_signed_in?
+      return send_error("Missing authentication token.", :forbidden) if params[:auth_token].nil?
+      return send_error("Invalid authentication token.", :forbidden) unless user_signed_in?
   end
 
   def fix_request_params(params, errors)
@@ -203,7 +202,7 @@ class ApiController < ApplicationController
     params[:attachments]  += collect_files(params, "attachment", errors)
   end
 
-  def send_error(errors)
-    return render :json => {:ok => '0', :errors => errors}
+  def send_error(errors, status = :unprocessable_entity)
+    return render :json => {:ok => '0', :errors => errors}, :status => status
   end
 end

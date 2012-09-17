@@ -4,7 +4,6 @@ When %r/^the client sends a updated file "([^\"]*)" with the id (\d+) via the RE
   @response = post "/api/update/#{report_id}?auth_token=foobar", {
       "report"          => Rack::Test::UploadedFile.new("features/resources/#{file}", "text/xml")
   }
-  @response.status.should == 200
 end
 
 When "the client sends an updated result file" do
@@ -46,7 +45,6 @@ When %r/^the client sends several updated files with the id (\d+) via the REST A
       "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim_new.xml", "text/xml"),
       "report.2"        => Rack::Test::UploadedFile.new("features/resources/bluetooth.xml", "text/xml"),
   }
-  @response.status.should == 200
 end
 
 When %r/^the client sends 1 updated valid file, and 1 invalid file with the id (\d+) via the REST API$/ do |report_id|
@@ -55,7 +53,6 @@ When %r/^the client sends 1 updated valid file, and 1 invalid file with the id (
       "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim_new.xml", "text/xml"),
       "report.2"        => Rack::Test::UploadedFile.new("features/resources/invalid.xml", "text/xml"),
   }
-  @response.status.should == 200
 end
 
 Then "I see NFT results" do
