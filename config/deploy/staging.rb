@@ -1,6 +1,7 @@
 set :application, "qa-reports.qa.leonidasoy.fi"
 set :deploy_to, "/home/#{user}/#{application}"
 set :rails_env, "staging"
+set :branch, "dev"
 
 ssh_options[:port] = 31915
 
