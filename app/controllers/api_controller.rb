@@ -121,7 +121,7 @@ class ApiController < ApplicationController
       end
 
       if parse_err.present?
-        return send_error("Request contained invalid files: " + parse_err)
+        return send_error(parse_err)
       end
 
       if @test_session.save

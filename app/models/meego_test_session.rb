@@ -359,26 +359,39 @@ class MeegoTestSession < ActiveRecord::Base
 
   # TODO: Test cases are lost if saving fails
   def update_report_result(user, params, published = true)
+    # Add required attributes to params
+    params.merge!(
+      :release => self.release,
+      :profile => self.profile,
+      :testset => self.testset,
+      :product => self.product,
+      :author  => self.author
+    )
+
     tmp = ReportFactory.new.build(params)
-    parsing_errors = tmp.errors[:result_files]
+    parsing_errors = tmp.errors.to_hash
+
+    if !parsing_errors.empty?
+      return "Request contained invalid files: " + parsing_errors[:result_files].join(',')
+    end
+
+    if not tmp.valid?
+      return tmp.errors.to_hash
+    end
 
     user.update_attribute(:default_target, self.profile.name) if self.profile.name.present?
     self.editor    = user
     self.published = published
 
-    if !parsing_errors.empty?
-      return parsing_errors.join(',')
-    else
-      @result_files = tmp.result_files
-      self.features.clear
-      self.meego_test_cases.clear
-      tmp.features.each do |feature|
-        feature.meego_test_cases.each { |tc| tc.meego_test_session = self }
-      end
-      self.features = tmp.features
-      self.meego_test_cases = tmp.meego_test_cases
-      return nil
+    @result_files = tmp.result_files
+    self.features.clear
+    self.meego_test_cases.clear
+    tmp.features.each do |feature|
+      feature.meego_test_cases.each { |tc| tc.meego_test_session = self }
     end
+    self.features = tmp.features
+    self.meego_test_cases = tmp.meego_test_cases
+    return nil
   end
 
   def merge_result_files!(files)
