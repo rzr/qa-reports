@@ -19,6 +19,7 @@ Feature:
     Then I should see "My Custom Reports" within "#logo"
     And I set application name to "MeeGo QA Reports"
 
+  # http://stackoverflow.com/questions/8461755/capybara-how-to-test-a-stylesheet-of-a-page
   @wip @javascript
   Scenario: Visiting the front page with custom CSS in use
     Given I set custom CSS file "/stylesheets/themes/nokia.css"
