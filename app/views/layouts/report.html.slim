@@ -4,7 +4,7 @@ html
     meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
     meta content="IE=8" http-equiv="X-UA-Compatible"
 
-    title MeeGo QA Reports
+    title = APP_CONFIG['app_name']
     = stylesheet_link_tag :all
     - if use_nokia_layout?
       link href="/stylesheets/themes/nokia.css" media="all" rel="stylesheet" type="text/css"
@@ -83,7 +83,7 @@ html
         #nft_series_history_graph style="width:770px; height:270px;"
         .nft_graph_options
           div
-            h3 
+            h3
               | Legend
             input name="serial_values" value="0" type="checkbox" checked="checked"
             span.max Max

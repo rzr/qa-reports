@@ -28,6 +28,10 @@ Given %r/^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
+Given /^I set application name to "(.*?)"$/ do |name|
+  APP_CONFIG['app_name'] = name
+end
+
 When %r/^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end

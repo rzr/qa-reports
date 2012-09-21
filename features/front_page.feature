@@ -10,3 +10,10 @@ Feature:
     Then I should see "MeeGo" within "#logo"
     And I should see the sign in link without ability to add report
     And I should see the main navigation columns
+
+  @javascript
+  Scenario: Visiting the front page with custom app name
+    Given I set application name to "My Custom Reports"
+
+    When I go to the front page
+    Then I should see "My Custom Reports" within "#logo"

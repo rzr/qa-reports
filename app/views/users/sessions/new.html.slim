@@ -1,7 +1,7 @@
 .page_content
   = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-  
-    h1 Login to MeeGo QA Reports
+
+    h1 Login to #{APP_CONFIG['app_name']}
     - if flash[:alert]
       .error
         = flash[:alert]

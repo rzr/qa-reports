@@ -10,3 +10,6 @@ allow_empty_files: false
 # custom results are calculated as N/A in the metrics.
 # Example: custom_results = ['Blocked', 'Pending']
 custom_results: []
+
+# Name of the application, used in HTML titles etc.
+app_name: "MeeGo QA Reports"
