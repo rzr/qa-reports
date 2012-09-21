@@ -17,3 +17,12 @@ Feature:
 
     When I go to the front page
     Then I should see "My Custom Reports" within "#logo"
+    And I set application name to "MeeGo QA Reports"
+
+  @javascript
+  Scenario: Visiting the front page with custom CSS in use
+    Given I set custom CSS file "/stylesheets/themes/nokia.css"
+
+    When I go to the front page
+    Then the page should include CSS file "/stylesheets/themes/nokia.css"
+    And I set custom CSS file ""

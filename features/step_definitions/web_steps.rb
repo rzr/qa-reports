@@ -32,6 +32,10 @@ Given /^I set application name to "(.*?)"$/ do |name|
   APP_CONFIG['app_name'] = name
 end
 
+Given /^I set custom CSS file "(.*?)"$/ do |path|
+  APP_CONFIG['custom_css'] = path
+end
+
 When %r/^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
@@ -228,6 +232,10 @@ Then %r/^(?:|I )should have the following query string:$/ do |expected_pairs|
   else
     assert_equal expected_params, actual_params
   end
+end
+
+Then /^the page should include CSS file "(.*?)"$/ do |path|
+  page.should have_xpath("//link[@href='#{path}']")
 end
 
 Then %r/^show me the page$/ do

@@ -13,3 +13,10 @@ custom_results: []
 
 # Name of the application, used in HTML titles etc.
 app_name: "MeeGo QA Reports"
+
+# Custom CSS file to include. To reduce the need to touch the default
+# stylsheet users may defined an URL to a custom stylesheet that
+# (partially) overrides the default one. If given, the path defined
+# here is included in the HTML output.
+# Example: custom_css = '/stylesheets/themes/nokia.css'
+custom_css: ''
