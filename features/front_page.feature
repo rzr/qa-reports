@@ -27,3 +27,17 @@ Feature:
     When I go to the front page
     Then the page should include CSS file "/stylesheets/themes/nokia.css"
     And I set custom CSS file ""
+
+  @javascript
+  Scenario: Disabling and enabling header navigation links
+    Given I go to the front page
+    And I should see "Give Feedback" within "#upper_header"
+    And I should see "Documentation" within "#upper_header"
+    And I should see "Submit an Idea" within "#upper_header"
+
+    Then I disable all header links
+    And I should not see "Give Feedback" within "#upper_header"
+    And I should not see "Documentation" within "#upper_header"
+    And I should not see "Submit an Idea" within "#upper_header"
+
+    And I enable all header links
