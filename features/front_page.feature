@@ -11,7 +11,6 @@ Feature:
     And I should see the sign in link without ability to add report
     And I should see the main navigation columns
 
-  @javascript
   Scenario: Visiting the front page with custom app name
     Given I set application name to "My Custom Reports"
 
@@ -20,7 +19,7 @@ Feature:
     And I set application name to "MeeGo QA Reports"
 
   # http://stackoverflow.com/questions/8461755/capybara-how-to-test-a-stylesheet-of-a-page
-  @wip @javascript
+  @wip
   Scenario: Visiting the front page with custom CSS in use
     Given I set custom CSS file "/stylesheets/themes/nokia.css"
 
@@ -28,7 +27,6 @@ Feature:
     Then the page should include CSS file "/stylesheets/themes/nokia.css"
     And I set custom CSS file ""
 
-  @javascript
   Scenario: Disabling and enabling header navigation links
     Given I go to the front page
     And I should see "Give Feedback" within "#upper_header"
@@ -36,7 +34,9 @@ Feature:
     And I should see "Submit an Idea" within "#upper_header"
 
     Then I disable all header links
-    And I should not see "Give Feedback" within "#upper_header"
+    And I go to the front page
+
+    Then I should not see "Give Feedback" within "#upper_header"
     And I should not see "Documentation" within "#upper_header"
     And I should not see "Submit an Idea" within "#upper_header"
 

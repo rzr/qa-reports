@@ -112,6 +112,29 @@ module ApplicationHelper
     !APP_CONFIG['custom_css'].empty?
   end
 
+  def upper_header_link(key, text)
+    if not APP_CONFIG[key].blank?
+      link_href   = APP_CONFIG[key]
+
+      if  link_href =~ /^mailto\:/
+        css_class   = "mailto"
+        link_target = nil
+      else
+        css_class   = "external"
+        link_target = "_blank"
+      end
+
+      render :partial => 'shared/upper_header_link', :locals => {
+        link_href: link_href,
+        link_target: link_target,
+        css_class: css_class,
+        link_text: text
+      }
+    else
+      ""
+    end
+  end
+
   def html_graph(passed, failed, na, max_cases)
     pw = passed*386/max_cases
     fw = failed*386/max_cases

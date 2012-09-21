@@ -25,12 +25,12 @@ end
 
 When /I disable all header links/ do
   APP_CONFIG['feedback_link']      = ''
-  APP_CONFIG['documantation_link'] = ''
+  APP_CONFIG['documentation_link'] = ''
   APP_CONFIG['idea_link']          = ''
 end
 
 When /I enable all header links/ do
   APP_CONFIG['feedback_link']      = 'mailto:meego-qa@lists.meego.com'
-  APP_CONFIG['documantation_link'] = 'https://github.com/leonidas/qa-reports/wiki'
+  APP_CONFIG['documentation_link'] = 'https://github.com/leonidas/qa-reports/wiki'
   APP_CONFIG['idea_link']          = 'https://github.com/leonidas/qa-reports/issues'
 end

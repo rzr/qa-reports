@@ -20,3 +20,16 @@ app_name: "MeeGo QA Reports"
 # here is included in the HTML output.
 # Example: custom_css = '/stylesheets/themes/nokia.css'
 custom_css: ''
+
+# Help link URIs on the top of the page. Define either a http(s) URI
+# or a mailto:email@domain.com to enable the item in question.
+# Leave empty to disable a particular link.
+
+# Give Feedback
+feedback_link: 'mailto:meego-qa@lists.meego.com'
+
+# Documentation
+documentation_link: 'https://github.com/leonidas/qa-reports/wiki'
+
+# Submit an Idea
+idea_link: 'https://github.com/leonidas/qa-reports/issues'
