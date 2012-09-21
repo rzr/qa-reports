@@ -5,8 +5,8 @@ html
     meta content="IE=8" http-equiv="X-UA-Compatible"
     title = APP_CONFIG['app_name']
     = stylesheet_link_tag :all
-    - if use_nokia_layout?
-      link href="/stylesheets/themes/nokia.css" media="all" rel="stylesheet" type="text/css"
+    - if use_custom_layout?
+      link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
     = javascript_include_tag "jquery.min.js"
     = javascript_include_tag "jquery-ui.min.js"
     = javascript_include_tag 'bluff/js-class.js'

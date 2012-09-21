@@ -235,7 +235,7 @@ Then %r/^(?:|I )should have the following query string:$/ do |expected_pairs|
 end
 
 Then /^the page should include CSS file "(.*?)"$/ do |path|
-  page.should have_xpath("//link[@href='#{path}']")
+  page.should have_xpath("//link[contains(@href, '#{path}')]")
 end
 
 Then %r/^show me the page$/ do

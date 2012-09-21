@@ -19,7 +19,7 @@ Feature:
     Then I should see "My Custom Reports" within "#logo"
     And I set application name to "MeeGo QA Reports"
 
-  @javascript
+  @wip @javascript
   Scenario: Visiting the front page with custom CSS in use
     Given I set custom CSS file "/stylesheets/themes/nokia.css"
 

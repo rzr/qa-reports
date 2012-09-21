@@ -108,8 +108,8 @@ module ApplicationHelper
     date ? date.strftime('%d/%m/%Y') : ''
   end
 
-  def use_nokia_layout?
-    request.host.include? "maemo" or request.host.include? "nokia"
+  def use_custom_layout?
+    !APP_CONFIG['custom_css'].empty?
   end
 
   def html_graph(passed, failed, na, max_cases)
