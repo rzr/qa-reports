@@ -12,11 +12,19 @@ uri: /buglist.cgi?bugidtype=include&columnlist=short_desc%2Cbug_status%2Cresolut
 link_uri: http://bugs.meego.com/show_bug.cgi?id=
 
 # Proxy server address and port (leave empty if not needed)
-proxy_server: 
+proxy_server:
 proxy_port:
-  
+
 # HTTP Basic authentication. These are asked during deployment. Notice that
 # you need these only if you must login with HTTP Basic Auth to access
 # Bugzilla - i.e. your browsers displays a popup window asking for credentials.
-http_username: 
-http_password: 
+http_username:
+http_password:
+
+# Bugzilla integrated authentication. Many Bugzilla installations require
+# users to log in for searching and viewing bugs. Provide these creadentials
+# if that is the case within your organization. Note: this takes use of
+# Bugzilla_login and Bugzilla_password parameters added in Bugzilla 3.6
+# http://www.bugzilla.org/docs/tip/en/html/api/Bugzilla/WebService.html#LOGGING_IN
+bugzilla_username:
+bugzilla_password:
