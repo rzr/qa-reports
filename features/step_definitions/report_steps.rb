@@ -112,7 +112,7 @@ When %r/^I request the report summary as json$/ do
   json.length.should == 1
   json[0]['id'].should_not be_nil
 
-  response = get "/1.2/Core/automated/N900/#{json[0]['id']}.json"
+  response = get "/1.2/Core/automated/N900/#{json[0]['id']}/summary.json"
   @json = ActiveSupport::JSON.decode(response.body)
 end
 
@@ -121,14 +121,14 @@ require 'pp'
 Then %r/^I should get the summary for the whole report$/ do
   summary = @json['summary']
 
-  summary['total'].should == 9
-  summary['passed'].should == 3
-  summary['failed'].should == 4
+  summary['total'].should == 25
+  summary['passed'].should == 16
+  summary['failed'].should == 7
   summary['na'].should == 2
 end
 
 Then %r/^I should get the summary for each feature$/ do
-  @json['features'].length.should == 4
+  @json['features'].length.should == 5
   @json['features'].each do |feature|
     case feature['name']
     when 'Contacts'
@@ -150,6 +150,11 @@ Then %r/^I should get the summary for each feature$/ do
       feature['total'].should == 4
       feature['passed'].should == 2
       feature['failed'].should == 2
+      feature['na'].should == 0
+    when 'SIM'
+      feature['total'].should == 16
+      feature['passed'].should == 13
+      feature['failed'].should == 3
       feature['na'].should == 0
     end
   end
