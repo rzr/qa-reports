@@ -1,3 +1,5 @@
+require 'pp'
+
 Given %r/^there are (\d+) reports from "([^"]*)" under "([^"]*)"$/ do |num, date, report_path|
   release, profile, testset, product = report_path.split '/'
   year, month = date.split '/'
@@ -39,4 +41,25 @@ Then %r/^I should see a graph containing data for the most recent reports$/ do
 
   graph_dates.count.should == reports_dates.count
   (graph_dates - reports_dates).should be_empty
+end
+
+When %r/^I view the json for category "(.*?)"$/ do |cat|
+  @response = get "/#{cat}.json"
+end
+
+Then %r/^I should see a list of all reports under "(.*?)" as json$/ do |cat|
+  @response.status.should == 200
+  json = ActiveSupport::JSON.decode(@response.body)
+
+  release, profile, testset, product = cat.split '/'
+  reports = ReportGroupViewModel.new(release, profile, testset, product).all_reports
+
+  json.length.should == reports.length
+  json.each do |report|
+    model = MeegoTestSession.find(report['id'])
+    model.should_not be_nil
+
+    DateTime.parse(report['tested_at']).should == model.tested_at
+    report['title'].should == model.title
+  end
 end
