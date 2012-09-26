@@ -91,4 +91,13 @@ class MeegoTestCase < ActiveRecord::Base
     end
   end
 
+  def as_json(options = nil)
+    {
+      name: name,
+      result: result_name,
+      comment: comment,
+      bugs: comment.scan(/\[\[(\d+)\]\]/).map {|m| m[0].to_i}
+    }
+  end
+
 end

@@ -19,7 +19,11 @@ class FeatureShow < SummaryShow
     @feature.html_graph total_passed, total_failed, total_na, max_cases
   end
 
-  def as_json(options = nil)
-    super.merge name: name
+  def as_json(options = {})
+    json = super.merge name: name
+    if options[:include_testcases]
+      json.merge! testcases: @feature.meego_test_cases.map(&:as_json)
+    end
+    json
   end
 end

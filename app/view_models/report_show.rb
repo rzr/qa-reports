@@ -18,7 +18,7 @@ class ReportShow < SummaryShow
   def as_json(options = nil)
     {
       summary:  super,
-      features: features.map(&:as_json)
+      features: features.map {|f| f.as_json(options)}
     }
   end
 

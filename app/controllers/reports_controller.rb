@@ -73,6 +73,11 @@ class ReportsController < ApplicationController
     @history      = history(@report, 5)
     @build_diff   = build_diff(@report, 4)
     @report_show  = ReportShow.new(MeegoTestSession.find(params[:id]), @build_diff)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @report_show.as_json(include_testcases: true) }
+    end
   end
 
   def summary
