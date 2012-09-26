@@ -15,4 +15,11 @@ class ReportShow < SummaryShow
     @non_empty_features ||= @report.non_empty_features.map { |feature| FeatureShow.new(feature, @build_diff) }
   end
 
+  def as_json(options = nil)
+    {
+      summary:  super,
+      features: features.map(&:as_json)
+    }
+  end
+
 end

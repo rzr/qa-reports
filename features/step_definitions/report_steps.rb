@@ -116,8 +116,6 @@ When %r/^I request the report summary as json$/ do
   @json = ActiveSupport::JSON.decode(response.body)
 end
 
-require 'pp'
-
 Then %r/^I should get the summary for the whole report$/ do
   summary = @json['summary']
 

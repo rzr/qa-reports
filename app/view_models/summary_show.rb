@@ -35,4 +35,13 @@ class SummaryShow
     ("%+i" % value) + postfix
   end
 
+  def as_json(options = nil)
+    {
+      total:    total_cases,
+      passed:   total_passed,
+      failed:   total_failed,
+      na:       total_na,
+      measured: total_measured
+    }
+  end
 end

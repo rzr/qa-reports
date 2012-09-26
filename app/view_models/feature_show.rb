@@ -18,4 +18,8 @@ class FeatureShow < SummaryShow
   def graph_img_tag(max_cases)
     @feature.html_graph total_passed, total_failed, total_na, max_cases
   end
+
+  def as_json(options = nil)
+    super.merge name: name
+  end
 end

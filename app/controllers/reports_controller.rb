@@ -34,7 +34,7 @@ require 'report_exporter'
 class ReportsController < ApplicationController
   include CacheHelper
   layout        'report'
-  before_filter :authenticate_user!,         :except => [:index, :categories, :show, :print, :compare]
+  before_filter :authenticate_user!,         :except => [:index, :categories, :show, :print, :compare, :summary]
   before_filter :validate_path_params,       :only   => [:show, :print]
   cache_sweeper :meego_test_session_sweeper, :only   => [:update, :delete, :publish]
 
@@ -73,6 +73,11 @@ class ReportsController < ApplicationController
     @history      = history(@report, 5)
     @build_diff   = build_diff(@report, 4)
     @report_show  = ReportShow.new(MeegoTestSession.find(params[:id]), @build_diff)
+  end
+
+  def summary
+    @report_show = ReportShow.new(MeegoTestSession.find(params[:id]))
+    render json: @report_show
   end
 
   def print

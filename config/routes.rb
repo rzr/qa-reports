@@ -41,6 +41,7 @@ Meegoqa::Application.routes.draw do
     match '/:release_version/:target/:testset/:product/:id'             => 'reports#show',             :via => "get", :as => :show_report
     match '/:release_version/:target/:testset/:product/:id/edit'        => 'reports#edit',             :via => "get", :as => :edit_report
     match '/:release_version/:target/:testset/:product/:id/print'       => 'reports#print',            :via => "get", :as => :print_report
+    match '/:release_version/:target/:testset/:product/:id/summary.json'=> 'reports#summary',          :via => "get"
     match '(/:release_version(/:target(/:testset(/:product))))/upload'  => 'upload#upload_form',       :via => "get", :as => :new_report
 
     match '(/:release_version(/:target(/:testset(/:product))))/product' => 'products#index',           :via => "get", :as => :products
