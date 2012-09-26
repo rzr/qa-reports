@@ -60,3 +60,11 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
       | Run rate              |    20% | (Total test cases - N/A) / Total test cases          |
       | Pass rate of total    |    20% | Passed / (Total test cases - Measured)               |
       | Pass rate of executed |   100% | Passed / (Total test cases - Measured - N/A)         |
+
+  Scenario: Result summary as json
+    Given the report for "results_by_feature.csv" exists on the service
+
+    When I request the report summary as json
+
+    Then I should get the summary for the whole report
+    And I should get the summary for each feature

@@ -101,6 +101,57 @@ Then %r/^I should see the test case comments from the previous test report if th
   find_testcase_row("Test Case 2").should have_no_content("This comment should be overwritten with empty comment")
 end
 
-When /^I view the latest report$/ do
+When %r/^I view the latest report$/ do
   visit report_path(MeegoTestSession.latest)
 end
+
+When %r/^I request the report summary as json$/ do
+  response = get "/1.2/Core/automated/N900.json"
+  json = ActiveSupport::JSON.decode(response.body)
+
+  json.length.should == 1
+  json[0]['id'].should_not be_nil
+
+  response = get "/1.2/Core/automated/N900/#{json[0]['id']}.json"
+  @json = ActiveSupport::JSON.decode(response.body)
+end
+
+require 'pp'
+
+Then %r/^I should get the summary for the whole report$/ do
+  summary = @json['summary']
+
+  summary['total'].should == 9
+  summary['passed'].should == 3
+  summary['failed'].should == 4
+  summary['na'].should == 2
+end
+
+Then %r/^I should get the summary for each feature$/ do
+  @json['features'].length.should == 4
+  @json['features'].each do |feature|
+    case feature['name']
+    when 'Contacts'
+      feature['total'].should == 1
+      feature['passed'].should == 1
+      feature['failed'].should == 0
+      feature['na'].should == 0
+    when 'Dialer'
+      feature['total'].should == 2
+      feature['passed'].should == 0
+      feature['failed'].should == 0
+      feature['na'].should == 2
+    when 'Audio'
+      feature['total'].should == 2
+      feature['passed'].should == 0
+      feature['failed'].should == 2
+      feature['na'].should == 0
+    when 'Home screen'
+      feature['total'].should == 4
+      feature['passed'].should == 2
+      feature['failed'].should == 2
+      feature['na'].should == 0
+    end
+  end
+end
+
