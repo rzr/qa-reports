@@ -158,3 +158,51 @@ Then %r/^I should get the summary for each feature$/ do
   end
 end
 
+When %r/^I request the report details as JSON$/ do
+  response = get "/1.2/Core/automated/N900.json"
+  json = ActiveSupport::JSON.decode(response.body)
+
+  json.length.should == 1
+  json[0]['id'].should_not be_nil
+
+  response = get "/1.2/Core/automated/N900/#{json[0]['id']}.json"
+  @json = ActiveSupport::JSON.decode(response.body)
+end
+
+Then %r/^I should get the test cases for each feature$/ do
+  @json['features'].each do |feature|
+    feature['testcases'].length.should == feature['total']
+
+    case feature['name']
+    when 'Dialer'
+      idx = feature['testcases'].index {|tc| tc['name'] == "Receive a call, accept the call, terminate this call (phonesim, GSM & WCDMA) (GSM and WCDMA cannot be covered until real modem supported,Will use phonesim to test before real modem support)"}
+      idx.should_not be_nil
+
+      tc = feature['testcases'][idx]
+      tc['result'].should == "N/A"
+      tc['comment'].should == "SIM function is not implemented yet."
+      tc['bugs'].length.should == 0
+      tc['tc_id'].should == nil
+
+    when 'Home screen'
+      idx = feature['testcases'].index {|tc| tc['name'] == "Check if core applications* (Dialer, SMS, fennec browser, photo viewer, audio player, video player, contacts, email, Terminal) can be launched from app-launcher"}
+      idx.should_not be_nil
+
+      tc = feature['testcases'][idx]
+      tc['result'].should == "Fail"
+      tc['comment'].should == "[[5856]] [[3551]] [[3551]]"
+      tc['bugs'].sort.should == [5856, 3551, 3551].sort
+      tc['tc_id'].should == nil
+
+    when 'SIM'
+      idx = feature['testcases'].index {|tc| tc['name'] == "SMOKE-SIM-Verify_PIN"}
+      idx.should_not be_nil
+
+      tc = feature['testcases'][idx]
+      tc['result'].should == "Pass"
+      tc['comment'].should == ""
+      tc['bugs'].length.should == 0
+      tc['tc_id'].should == nil
+    end
+  end
+end
