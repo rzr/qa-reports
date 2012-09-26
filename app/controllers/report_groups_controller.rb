@@ -7,7 +7,12 @@ class ReportGroupsController < ApplicationController
 
     @group_report = ReportGroupViewModel.new(release.name, profile.name, testset, product)
     @monthly_data = @group_report.report_range_by_month(0..39).to_json
-    respond_to { |format| format.html }
+    respond_to do |format|
+      format.html
+      format.json { render json: @group_report.all_reports.map { |r|
+        r.as_json root:false, only:[:id, :title, :tested_at]
+      }}
+    end
   end
 
   def report_page
