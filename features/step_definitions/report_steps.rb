@@ -119,6 +119,15 @@ end
 Then %r/^I should get the summary for the whole report$/ do
   summary = @json['summary']
 
+  @json['title'].should == 'My Test Report'
+  @json['objective'].should == 'To notice regression'
+  @json['build'].should == 'foobar-image.bin'
+  @json['build_id'].should == '1234.78a'
+  @json['environment'].should == 'Laboratory environment'
+  @json['qa_summary'].should == 'Ready to ship'
+  @json['issue_summary'].should == 'No major issues found'
+
+
   summary['total'].should == 25
   summary['passed'].should == 16
   summary['failed'].should == 7

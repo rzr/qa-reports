@@ -15,7 +15,7 @@ Before do
     "title"                => "My Test Report",
     "objective_txt"        => "To notice regression",
     "build_txt"            => "foobar-image.bin",
-    "build_id_txt"         => "1234.78a",
+    "build_id"             => "1234.78a",
     "environment_txt"      => "Laboratory environment",
     "qa_summary_txt"       => "Ready to ship",
     "issue_summary_txt"    => "No major issues found"

@@ -17,6 +17,13 @@ class ReportShow < SummaryShow
 
   def as_json(options = nil)
     {
+      title: @report.title,
+      objective: @report.objective_txt,
+      build: @report.build_txt,
+      build_id: @report.build_id,
+      environment: @report.environment_txt,
+      qa_summary: @report.qa_summary_txt,
+      issue_summary: @report.issue_summary_txt,
       summary:  super,
       features: features.map {|f| f.as_json(options)}
     }
