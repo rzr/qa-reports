@@ -10,6 +10,20 @@ Feature: View report
     And I should get the test cases for each feature
 
   @wip
+  Scenario: View report with custom results as JSON
+    Given I am a user with a REST authentication token
+    And I enable custom results "Pending", "Blocked"
+
+    When the client sends file with custom results
+    Then the upload succeeds
+
+    When I request the report details as JSON
+    Then I see custom result counts in summary
+
+    And I should get the test cases with custom results for each feature
+    And I disable custom results
+
+  @wip
   Scenario: View cumulative report as JSON
     Given I am a user with a REST authentication token
     And three report files with variation in statuses and cases have been uploaded

@@ -286,3 +286,28 @@ Then %r/^I see custom result counts in summary$/ do
   summary['pending'].should == 1
   summary['na'].should      == 1
 end
+
+Then /^I should get the test cases with custom results for each feature$/ do
+  feature = @json['features'][0]
+
+  feature['testcases'].length.should == 5
+
+  ['NFT-BT-Device_Scan_C-ITER', 'NFT-BT-Device_Scan', 'NFT-BT-Device_Pair', 'NFT-BT-Device_Disconnect', 'NFT-BT-Device_NASTATUS'].each do |tcname|
+    idx = feature['testcases'].index {|tc| tc['name'] == tcname}
+    idx.should_not be_nil
+    tc = feature['testcases'][idx]
+
+    case tcname
+    when 'NFT-BT-Device_Scan_C-ITER'
+      tc['result'].should == "Pass"
+    when 'NFT-BT-Device_Scan'
+      tc['result'].should == "Blocked"
+    when 'NFT-BT-Device_Pair'
+      tc['result'].should == "Blocked"
+    when 'NFT-BT-Device_Disconnect'
+      tc['result'].should == "Pending"
+    when 'NFT-BT-Device_NASTATUS'
+      tc['result'].should == "N/A"
+    end
+  end
+end
