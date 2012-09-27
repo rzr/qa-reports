@@ -255,6 +255,7 @@ Then %r/^I should get the cumulative summary for each feature$/ do
     when 'Feature 4'
       feature['total'].should == 5
     end
+  end
 end
 
 Then %r/^I should get the cumulative test cases for each feature$/ do

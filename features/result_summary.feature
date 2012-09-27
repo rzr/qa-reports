@@ -68,3 +68,12 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
 
     Then I should get the summary for the whole report
     And I should get the summary for each feature
+
+  @wip
+  Scenario: Cumulative result summary as JSON
+    Given I am a user with a REST authentication token
+    And three report files with variation in statuses and cases have been uploaded
+
+    When I request a cumulative report over all reports under "1.2/Core/automated/N900" as JSON
+    Then I should get the cumulative summary for the whole report
+    And I should get the cumulative summary for each feature
