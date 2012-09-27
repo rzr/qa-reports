@@ -25,7 +25,6 @@ Feature: View several reports under a category
     When I view the report category "1.2/Core/Automated/N900"
     Then I should see a graph containing data for the most recent reports
 
-  @wip
   Scenario: Request the list of reports for a given category as json
     When I view the json for category "1.2/Core/Automated/N900"
     Then I should see a list of all reports under "1.2/Core/Automated/N900" as json

@@ -1,5 +1,3 @@
-require 'pp'
-
 Given %r/^there are (\d+) reports from "([^"]*)" under "([^"]*)"$/ do |num, date, report_path|
   release, profile, testset, product = report_path.split '/'
   year, month = date.split '/'
@@ -61,5 +59,6 @@ Then %r/^I should see a list of all reports under "(.*?)" as json$/ do |cat|
 
     DateTime.parse(report['tested_at']).should == model.tested_at
     report['title'].should == model.title
+    report['url'].should == url_for(controller: 'reports', action: 'show', release_version: model.release.name, target: model.profile.name, testset: model.testset, product: model.product, id: model.id)
   end
 end
