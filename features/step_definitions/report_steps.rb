@@ -137,32 +137,34 @@ end
 Then %r/^I should get the summary for each feature$/ do
   @json['features'].length.should == 5
   @json['features'].each do |feature|
+    summary = feature['summary']
+
     case feature['name']
     when 'Contacts'
-      feature['Total'].should == 1
-      feature['Pass'].should == 1
-      feature['Fail'].should == 0
-      feature['N/A'].should == 0
+      summary['Total'].should == 1
+      summary['Pass'].should == 1
+      summary['Fail'].should == 0
+      summary['N/A'].should == 0
     when 'Dialer'
-      feature['Total'].should == 2
-      feature['Pass'].should == 0
-      feature['Fail'].should == 0
-      feature['N/A'].should == 2
+      summary['Total'].should == 2
+      summary['Pass'].should == 0
+      summary['Fail'].should == 0
+      summary['N/A'].should == 2
     when 'Audio'
-      feature['Total'].should == 2
-      feature['Pass'].should == 0
-      feature['Fail'].should == 2
-      feature['N/A'].should == 0
+      summary['Total'].should == 2
+      summary['Pass'].should == 0
+      summary['Fail'].should == 2
+      summary['N/A'].should == 0
     when 'Home screen'
-      feature['Total'].should == 4
-      feature['Pass'].should == 2
-      feature['Fail'].should == 2
-      feature['N/A'].should == 0
+      summary['Total'].should == 4
+      summary['Pass'].should == 2
+      summary['Fail'].should == 2
+      summary['N/A'].should == 0
     when 'SIM'
-      feature['Total'].should == 16
-      feature['Pass'].should == 13
-      feature['Fail'].should == 3
-      feature['N/A'].should == 0
+      summary['Total'].should == 16
+      summary['Pass'].should == 13
+      summary['Fail'].should == 3
+      summary['N/A'].should == 0
     end
   end
 end
