@@ -226,7 +226,7 @@ When %r/^I request a cumulative report over all reports under "(.*?)" as JSON$/ 
 
   # Get the cumulative report by the IDs
   # TODO: What kind of URI scheme would be nicest for the cumulative report?
-  response = get "/#{cat}/#{latest_id}/cumulative/#{oldest_id}"
+  response = get "/#{cat}/cumulative?oldest=#{oldest_id}&latest=#{latest_id}"
   response.status.should == 200
   @json    = ActiveSupport::JSON.decode(response.body)
 end
@@ -237,10 +237,16 @@ Then %r/^I should get the cumulative summary for the whole report$/ do
   # Note: currently case is counted as N/A only if it has not had
   # any other status, i.e. if a case was Passed but has since been
   # N/A it is counted as Passed in the totals
-  summary['Total'].should  == 18
-  summary['Pass'].should == 7
-  summary['Fail'].should == 6
-  summary['N/A'].should     == 5
+  summary['Total'].should == 18
+  summary['Pass'].should  == 7
+  summary['Fail'].should  == 6
+  summary['N/A'].should   == 5
+
+  seq = @json['sequences']
+  seq['titles'].length.should    == 3
+  seq['dates'].length.should     == 3
+  seq['summaries'].length.should == 3
+
 end
 
 Then %r/^I should get the cumulative summary for each feature$/ do
@@ -248,25 +254,25 @@ Then %r/^I should get the cumulative summary for each feature$/ do
   @json['features'].each do |feature|
     case feature['name']
     when 'Feature 1'
-      feature['Total'].should  == 3
-      feature['Pass'].should == 2
-      feature['Fail'].should == 1
-      feature['N/A'].should     == 0
+      feature['Total'].should == 3
+      feature['Pass'].should  == 2
+      feature['Fail'].should  == 1
+      feature['N/A'].should   == 0
     when 'Feature 2'
-      feature['Total'].should  == 7
-      feature['Pass'].should == 4
-      feature['Fail'].should == 3
-      feature['N/A'].should     == 0
+      feature['Total'].should == 7
+      feature['Pass'].should  == 4
+      feature['Fail'].should  == 3
+      feature['N/A'].should   == 0
     when 'Feature 3'
-      feature['Total'].should  == 3
-      feature['Pass'].should == 0
-      feature['Fail'].should == 2
-      feature['N/A'].should     == 1
+      feature['Total'].should == 3
+      feature['Pass'].should  == 0
+      feature['Fail'].should  == 2
+      feature['N/A'].should   == 1
     when 'Feature 4'
-      feature['Total'].should  == 5
-      feature['Pass'].should == 1
-      feature['Fail'].should == 0
-      feature['N/A'].should     == 4
+      feature['Total'].should == 5
+      feature['Pass'].should  == 1
+      feature['Fail'].should  == 0
+      feature['N/A'].should   == 4
     end
   end
 end
@@ -281,8 +287,8 @@ Then %r/^I see custom result counts in summary$/ do
   summary = @json['summary']
 
   summary['Total'].should   == 5
-  summary['Pass'].should  == 1
-  summary['N/A'].should      == 1
+  summary['Pass'].should    == 1
+  summary['N/A'].should     == 1
   summary['Blocked'].should == 2
   summary['Pending'].should == 1
 end
