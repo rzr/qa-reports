@@ -248,33 +248,39 @@ Then %r/^I should get the cumulative summary for the whole report$/ do
   seq['titles'].length.should    == 3
   seq['dates'].length.should     == 3
   seq['summaries'].length.should == 3
+  seq['features'].length.should  == 4
 
+  seq['features'].each do |k,v|
+    v.length.should == 3
+  end
 end
 
 Then %r/^I should get the cumulative summary for each feature$/ do
   @json['features'].length.should == 4
   @json['features'].each do |feature|
+    summary = feature['summary']
+
     case feature['name']
     when 'Feature 1'
-      feature['Total'].should == 3
-      feature['Pass'].should  == 2
-      feature['Fail'].should  == 1
-      feature['N/A'].should   == 0
+      summary['Total'].should == 3
+      summary['Pass'].should  == 2
+      summary['Fail'].should  == 1
+      summary['N/A'].should   == 0
     when 'Feature 2'
-      feature['Total'].should == 7
-      feature['Pass'].should  == 4
-      feature['Fail'].should  == 3
-      feature['N/A'].should   == 0
+      summary['Total'].should == 7
+      summary['Pass'].should  == 4
+      summary['Fail'].should  == 3
+      summary['N/A'].should   == 0
     when 'Feature 3'
-      feature['Total'].should == 3
-      feature['Pass'].should  == 0
-      feature['Fail'].should  == 2
-      feature['N/A'].should   == 1
+      summary['Total'].should == 3
+      summary['Pass'].should  == 0
+      summary['Fail'].should  == 2
+      summary['N/A'].should   == 1
     when 'Feature 4'
-      feature['Total'].should == 5
-      feature['Pass'].should  == 1
-      feature['Fail'].should  == 0
-      feature['N/A'].should   == 4
+      summary['Total'].should == 5
+      summary['Pass'].should  == 1
+      summary['Fail'].should  == 0
+      summary['N/A'].should   == 4
     end
   end
 end
