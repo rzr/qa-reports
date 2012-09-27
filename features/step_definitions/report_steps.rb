@@ -128,10 +128,10 @@ Then %r/^I should get the summary for the whole report$/ do
   @json['issue_summary'].should == 'No major issues found'
 
 
-  summary['total'].should == 25
-  summary['passed'].should == 16
-  summary['failed'].should == 7
-  summary['na'].should == 2
+  summary['Total'].should == 25
+  summary['Pass'].should == 16
+  summary['Fail'].should == 7
+  summary['N/A'].should == 2
 end
 
 Then %r/^I should get the summary for each feature$/ do
@@ -139,30 +139,30 @@ Then %r/^I should get the summary for each feature$/ do
   @json['features'].each do |feature|
     case feature['name']
     when 'Contacts'
-      feature['total'].should == 1
-      feature['passed'].should == 1
-      feature['failed'].should == 0
-      feature['na'].should == 0
+      feature['Total'].should == 1
+      feature['Pass'].should == 1
+      feature['Fail'].should == 0
+      feature['N/A'].should == 0
     when 'Dialer'
-      feature['total'].should == 2
-      feature['passed'].should == 0
-      feature['failed'].should == 0
-      feature['na'].should == 2
+      feature['Total'].should == 2
+      feature['Pass'].should == 0
+      feature['Fail'].should == 0
+      feature['N/A'].should == 2
     when 'Audio'
-      feature['total'].should == 2
-      feature['passed'].should == 0
-      feature['failed'].should == 2
-      feature['na'].should == 0
+      feature['Total'].should == 2
+      feature['Pass'].should == 0
+      feature['Fail'].should == 2
+      feature['N/A'].should == 0
     when 'Home screen'
-      feature['total'].should == 4
-      feature['passed'].should == 2
-      feature['failed'].should == 2
-      feature['na'].should == 0
+      feature['Total'].should == 4
+      feature['Pass'].should == 2
+      feature['Fail'].should == 2
+      feature['N/A'].should == 0
     when 'SIM'
-      feature['total'].should == 16
-      feature['passed'].should == 13
-      feature['failed'].should == 3
-      feature['na'].should == 0
+      feature['Total'].should == 16
+      feature['Pass'].should == 13
+      feature['Fail'].should == 3
+      feature['N/A'].should == 0
     end
   end
 end
@@ -180,7 +180,7 @@ end
 
 Then %r/^I should get the test cases for each feature$/ do
   @json['features'].each do |feature|
-    feature['testcases'].length.should == feature['total']
+    feature['testcases'].length.should == feature['Total']
 
     case feature['name']
     when 'Dialer'
@@ -237,10 +237,10 @@ Then %r/^I should get the cumulative summary for the whole report$/ do
   # Note: currently case is counted as N/A only if it has not had
   # any other status, i.e. if a case was Passed but has since been
   # N/A it is counted as Passed in the totals
-  summary['total'].should  == 18
-  summary['passed'].should == 7
-  summary['failed'].should == 6
-  summary['na'].should     == 5
+  summary['Total'].should  == 18
+  summary['Pass'].should == 7
+  summary['Fail'].should == 6
+  summary['N/A'].should     == 5
 end
 
 Then %r/^I should get the cumulative summary for each feature$/ do
@@ -248,43 +248,43 @@ Then %r/^I should get the cumulative summary for each feature$/ do
   @json['features'].each do |feature|
     case feature['name']
     when 'Feature 1'
-      feature['total'].should  == 3
-      feature['passed'].should == 2
-      feature['failed'].should == 1
-      feature['na'].should     == 0
+      feature['Total'].should  == 3
+      feature['Pass'].should == 2
+      feature['Fail'].should == 1
+      feature['N/A'].should     == 0
     when 'Feature 2'
-      feature['total'].should  == 7
-      feature['passed'].should == 4
-      feature['failed'].should == 3
-      feature['na'].should     == 0
+      feature['Total'].should  == 7
+      feature['Pass'].should == 4
+      feature['Fail'].should == 3
+      feature['N/A'].should     == 0
     when 'Feature 3'
-      feature['total'].should  == 3
-      feature['passed'].should == 0
-      feature['failed'].should == 2
-      feature['na'].should     == 1
+      feature['Total'].should  == 3
+      feature['Pass'].should == 0
+      feature['Fail'].should == 2
+      feature['N/A'].should     == 1
     when 'Feature 4'
-      feature['total'].should  == 5
-      feature['passed'].should == 1
-      feature['failed'].should == 0
-      feature['na'].should     == 4
+      feature['Total'].should  == 5
+      feature['Pass'].should == 1
+      feature['Fail'].should == 0
+      feature['N/A'].should     == 4
     end
   end
 end
 
 Then %r/^I should get the cumulative test cases for each feature$/ do
   @json['features'].each do |feature|
-    feature['testcases'].length.should == feature['total']
+    feature['testcases'].length.should == feature['Total']
   end
 end
 
 Then %r/^I see custom result counts in summary$/ do
   summary = @json['summary']
 
-  summary['total'].should   == 5
-  summary['passed'].should  == 1
-  summary['blocked'].should == 2
-  summary['pending'].should == 1
-  summary['na'].should      == 1
+  summary['Total'].should   == 5
+  summary['Pass'].should  == 1
+  summary['N/A'].should      == 1
+  summary['Blocked'].should == 2
+  summary['Pending'].should == 1
 end
 
 Then /^I should get the test cases with custom results for each feature$/ do

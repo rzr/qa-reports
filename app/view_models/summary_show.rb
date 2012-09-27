@@ -6,6 +6,14 @@ class SummaryShow
   def initialize(report, build_diff=[])
     @build_diff = build_diff
     @report = report
+    @counts = {'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
+    @counts.default = 0
+    @total_count = 0
+    report.meego_test_cases.to_a.each do |tc|
+      result = tc.result_name
+      @counts[result] += 1
+      @total_count += 1
+    end
   end
 
   def percentage(attribute)
@@ -36,12 +44,6 @@ class SummaryShow
   end
 
   def as_json(options = nil)
-    {
-      total:    total_cases,
-      passed:   total_passed,
-      failed:   total_failed,
-      na:       total_na,
-      measured: total_measured
-    }
+    json = @counts.merge({'Total' => @total_count})
   end
 end

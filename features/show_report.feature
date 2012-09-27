@@ -9,7 +9,6 @@ Feature: View report
 
     And I should get the test cases for each feature
 
-  @wip
   Scenario: View report with custom results as JSON
     Given I am a user with a REST authentication token
     And I enable custom results "Pending", "Blocked"
