@@ -20,7 +20,7 @@ class FeatureShow < SummaryShow
   end
 
   def as_json(options = {})
-    json = super.merge name: name
+    json = {name: name, summary: super}
     if options[:include_testcases]
       json.merge! testcases: @feature.meego_test_cases.map(&:as_json)
     end
