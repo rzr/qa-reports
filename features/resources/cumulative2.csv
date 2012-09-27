@@ -1,0 +1,11 @@
+Feature,Test Case,Pass,Fail,NA,Comment,Measurement Name,Value,Unit,Target,Failure
+Feature 1,Description 1,0,0,1,NA
+Feature 1,Description 2,0,1,0,Fail
+Feature 1,Description 3,1,0,0,OK
+Feature 2,Description 4,0,1,0,Fail
+Feature 2,Description 5,0,1,0,Fail
+Feature 2,Description 6,0,1,0,Fail
+Feature 2,Description 7,1,0,0,OK
+Feature 2,Description 8,1,0,0,OK
+Feature 2,Description 9,0,1,0,Fail
+Feature 2,Description 10,0,1,0,Fail

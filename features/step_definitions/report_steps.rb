@@ -260,6 +260,8 @@ Then %r/^I should get the cumulative summary for each feature$/ do
   @json['features'].each do |feature|
     summary = feature['summary']
 
+    feature['testcase_url'].should_not be_nil
+
     case feature['name']
     when 'Feature 1'
       summary['Total'].should == 3

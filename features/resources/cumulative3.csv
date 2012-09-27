@@ -1,0 +1,17 @@
+Feature,Test Case,Pass,Fail,NA,Comment,Measurement Name,Value,Unit,Target,Failure
+Feature 1,Description 1,0,0,1,NA
+Feature 1,Description 2,1,0,0,OK
+Feature 1,Description 3,0,1,0,FAIL
+Feature 2,Description 4,1,0,0,OK
+Feature 2,Description 5,1,0,0,OK
+Feature 2,Description 6,0,1,0,Fail
+Feature 2,Description 7,0,0,1,NA
+Feature 2,Description 8,0,0,1,NA
+Feature 3,Description 11,0,0,1,NA
+Feature 3,Description 12,0,1,0,Fail
+Feature 3,Description 13,0,1,0,Fail
+Feature 4,Description 14,0,0,1,NA
+Feature 4,Description 15,0,0,1,NA
+Feature 4,Description 16,1,0,0,OK
+Feature 4,Description 17,0,0,1,NA
+Feature 4,Description 18,0,0,1,NA

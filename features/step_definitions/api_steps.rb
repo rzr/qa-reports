@@ -359,11 +359,11 @@ Then %r/^I get a "([^"]*)" response code$/ do |code|
 end
 
 Given "three report files with variation in statuses and cases have been uploaded" do
-  step %{the client sends file "features/resources/comparison1.csv" via the REST API}
-  step %{the client sends file "features/resources/comparison2.csv" via the REST API}
-  step %{the client sends file "features/resources/comparison3.csv" via the REST API}
+  step %{the client sends file "features/resources/cumulative1.csv" via the REST API}
+  step %{the client sends file "features/resources/cumulative2.csv" via the REST API}
+  step %{the client sends file "features/resources/cumulative3.csv" via the REST API}
   # Update here, no need to have a step in the feature for this
-  step %{session "comparison1.csv" has been tested at "2011-01-01 01:01"}
-  step %{session "comparison2.csv" has been tested at "2011-02-01 01:01"}
-  step %{session "comparison3.csv" has been tested at "2011-03-01 01:01"}
+  step %{session "cumulative1.csv" has been tested at "2011-01-01 01:01"}
+  step %{session "cumulative2.csv" has been tested at "2011-02-01 01:01"}
+  step %{session "cumulative3.csv" has been tested at "2011-03-01 01:01"}
 end
