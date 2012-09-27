@@ -334,6 +334,12 @@ And %r/^session "([^"]*)" has been modified at "([^"]*)"$/ do |file, date|
   ActiveRecord::Base.connection.execute("update meego_test_sessions set updated_at = '#{d}' where id = #{tid}")
 end
 
+And %r/^session "([^"]*)" has been tested at "([^"]*)"$/ do |file, date|
+  tid = get_testsessionid(file)
+  d = DateTime.parse(date)
+  ActiveRecord::Base.connection.execute("update meego_test_sessions set tested_at = '#{d}' where id = #{tid}")
+end
+
 Then "result should match the file with defined date" do
   step %{resulting JSON should match file "short2.csv"}
 end
@@ -350,4 +356,14 @@ end
 
 Then %r/^I get a "([^"]*)" response code$/ do |code|
   @response.status.should == code.to_i
+end
+
+Given "three report files with variation in statuses and cases have been uploaded" do
+  step %{the client sends file "features/resources/comparison1.csv" via the REST API}
+  step %{the client sends file "features/resources/comparison2.csv" via the REST API}
+  step %{the client sends file "features/resources/comparison3.csv" via the REST API}
+  # Update here, no need to have a step in the feature for this
+  step %{session "comparison1.csv" has been tested at "2011-01-01 01:01"}
+  step %{session "comparison2.csv" has been tested at "2011-02-01 01:01"}
+  step %{session "comparison3.csv" has been tested at "2011-03-01 01:01"}
 end

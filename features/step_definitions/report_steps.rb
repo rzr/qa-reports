@@ -215,3 +215,50 @@ Then %r/^I should get the test cases for each feature$/ do
     end
   end
 end
+
+When %r/^I request a cumulative report over all reports under "(.*?)" as JSON$/ do |cat|
+  # Get the JSON listing of the category (sorted by tested_at date)
+  response = get "/#{cat}.json"
+  json     = ActiveSupport::JSON.decode(response.body)
+
+  latest_id = json[0]['id']
+  oldest_id = json[json.length - 1]['id']
+
+  # Get the cumulative report by the IDs
+  # TODO: What kind of URI scheme would be nicest for the cumulative report?
+  # Also, we probably want to have also cumulative summary since there's summary and full report for a single case as well
+  response = get "/#{cat}/#{latest_id}/cumulative/#{oldest_id}"
+  response.status.should == 200
+  @json    = ActiveSupport::JSON.decode(response.body)
+end
+
+Then %r/^I should get the cumulative summary for the whole report$/ do
+  summary = @json['summary']
+
+  # If case has been passed but has since been N/A is it passed here?
+  summary['total'].should  == 18
+  summary['passed'].should == 0
+  summary['failed'].should == 0
+  summary['na'].should     == 0
+end
+
+Then %r/^I should get the cumulative summary for each feature$/ do
+  @json['features'].length.should == 4
+  @json['features'].each do |feature|
+    case feature['name']
+    when 'Feature 1'
+      feature['total'].should == 3
+    when 'Feature 2'
+      feature['total'].should == 7
+    when 'Feature 3'
+      feature['total'].should == 3
+    when 'Feature 4'
+      feature['total'].should == 5
+    end
+end
+
+Then %r/^I should get the cumulative test cases for each feature$/ do
+  @json['features'].each do |feature|
+    feature['testcases'].length.should == feature['total']
+  end
+end
