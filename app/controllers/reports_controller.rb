@@ -151,9 +151,15 @@ class ReportsController < ApplicationController
       .order("tested_at ASC, created_at ASC")
       .includes([{:features => :meego_test_cases}, {:meego_test_cases => :feature}])
 
+    # Save the last feature where a particular testcase occurs
+    testcase_feature = {}
+
     features = Set.new
     sessions.each do |session|
       features = features.merge session.features.map(&:name)
+      session.meego_test_cases.each do |tc|
+        testcase_feature[tc.name] = tc.feature.name
+      end
     end
 
     testcases = {}
