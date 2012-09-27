@@ -69,6 +69,17 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
     Then I should get the summary for the whole report
     And I should get the summary for each feature
 
+  Scenario: Result summary as JSON when custom results are enabled
+    Given I am a user with a REST authentication token
+    And I enable custom results "Pending", "Blocked"
+
+    When the client sends file with custom results
+    Then the upload succeeds
+
+    When I request the report summary as json
+    Then I see custom result counts in summary
+    And I disable custom results
+
   @wip
   Scenario: Cumulative result summary as JSON
     Given I am a user with a REST authentication token

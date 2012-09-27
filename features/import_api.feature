@@ -157,3 +157,4 @@ Feature: Import API
     Then the upload succeeds
     And I should be able to view the created report
     And I should see test cases with result Blocked
+    And I disable custom results

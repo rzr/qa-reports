@@ -276,3 +276,13 @@ Then %r/^I should get the cumulative test cases for each feature$/ do
     feature['testcases'].length.should == feature['total']
   end
 end
+
+Then %r/^I see custom result counts in summary$/ do
+  summary = @json['summary']
+
+  summary['total'].should   == 5
+  summary['passed'].should  == 1
+  summary['blocked'].should == 2
+  summary['pending'].should == 1
+  summary['na'].should      == 1
+end
