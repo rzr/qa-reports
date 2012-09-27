@@ -226,7 +226,6 @@ When %r/^I request a cumulative report over all reports under "(.*?)" as JSON$/ 
 
   # Get the cumulative report by the IDs
   # TODO: What kind of URI scheme would be nicest for the cumulative report?
-  # Also, we probably want to have also cumulative summary since there's summary and full report for a single case as well
   response = get "/#{cat}/#{latest_id}/cumulative/#{oldest_id}"
   response.status.should == 200
   @json    = ActiveSupport::JSON.decode(response.body)
@@ -235,11 +234,13 @@ end
 Then %r/^I should get the cumulative summary for the whole report$/ do
   summary = @json['summary']
 
-  # If case has been passed but has since been N/A is it passed here?
+  # Note: currently case is counted as N/A only if it has not had
+  # any other status, i.e. if a case was Passed but has since been
+  # N/A it is counted as Passed in the totals
   summary['total'].should  == 18
-  summary['passed'].should == 0
-  summary['failed'].should == 0
-  summary['na'].should     == 0
+  summary['passed'].should == 7
+  summary['failed'].should == 6
+  summary['na'].should     == 5
 end
 
 Then %r/^I should get the cumulative summary for each feature$/ do
@@ -247,13 +248,25 @@ Then %r/^I should get the cumulative summary for each feature$/ do
   @json['features'].each do |feature|
     case feature['name']
     when 'Feature 1'
-      feature['total'].should == 3
+      feature['total'].should  == 3
+      feature['passed'].should == 2
+      feature['failed'].should == 1
+      feature['na'].should     == 0
     when 'Feature 2'
-      feature['total'].should == 7
+      feature['total'].should  == 7
+      feature['passed'].should == 4
+      feature['failed'].should == 3
+      feature['na'].should     == 0
     when 'Feature 3'
-      feature['total'].should == 3
+      feature['total'].should  == 3
+      feature['passed'].should == 0
+      feature['failed'].should == 2
+      feature['na'].should     == 1
     when 'Feature 4'
-      feature['total'].should == 5
+      feature['total'].should  == 5
+      feature['passed'].should == 1
+      feature['failed'].should == 0
+      feature['na'].should     == 4
     end
   end
 end
