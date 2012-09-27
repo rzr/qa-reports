@@ -34,7 +34,7 @@ require 'report_exporter'
 class ReportsController < ApplicationController
   include CacheHelper
   layout        'report'
-  before_filter :authenticate_user!,         :except => [:index, :categories, :show, :print, :compare, :summary]
+  before_filter :authenticate_user!,         :except => [:index, :categories, :show, :print, :compare, :summary, :cumulative]
   before_filter :validate_path_params,       :only   => [:show, :print]
   cache_sweeper :meego_test_session_sweeper, :only   => [:update, :delete, :publish]
 
@@ -133,6 +133,61 @@ class ReportsController < ApplicationController
     }
     @groups = @comparison.groups
     render :layout => "report"
+  end
+
+  # TODO return some errors
+  def cumulative
+    start_date = MeegoTestSession.find(params[:oldest]).tested_at
+    end_date   = MeegoTestSession.find(params[:latest]).tested_at
+
+    release_id = Release.find_by_name(params[:release_version]).id
+    profile_id = Profile.find_by_name(params[:target]).id
+
+
+    sessions = MeegoTestSession.where("""
+        tested_at >= ? AND tested_at <= ? AND
+        published = 1 AND release_id = ? AND profile_id = ? AND testset = ? AND product = ?""",
+        start_date, end_date, release_id, profile_id, params[:testset], params[:product])
+      .order("tested_at ASC, created_at ASC")
+      .includes([{:features => :meego_test_cases}, {:meego_test_cases => :feature}])
+
+    features = Set.new
+    sessions.each do |session|
+      features = features.merge session.features.map(&:name)
+    end
+
+    testcases = {}
+    titles    = []
+    dates     = []
+    summaries = []
+
+    sessions.each do |session|
+      session.meego_test_cases.each do |tc|
+        # Test case status is updated based on latest status, except that N/A
+        # and custom statuses do not overwrite an existing result.
+        unless (tc.result == MeegoTestCase::NA || tc.result == MeegoTestCase::CUSTOM) && testcases.has_key?(tc.name)
+          testcases[tc.name] = tc.result_name
+        end
+      end
+
+      summary = {'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
+      summary.default = 0
+      testcases.each do |name,result|
+        summary[result] += 1
+      end
+
+      titles    << session.title
+      dates     << session.tested_at
+      summaries << summary
+    end
+
+    render json: {
+      'sequences' => {
+        'titles' => titles, 'dates' => dates, 'summaries' => summaries, 'features' => {}
+      },
+      'features' => [],
+      'summary' => {}
+    }
   end
 
   private
