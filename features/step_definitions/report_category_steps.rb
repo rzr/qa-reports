@@ -59,6 +59,7 @@ Then %r/^I should see a list of all reports under "(.*?)" as json$/ do |cat|
 
     DateTime.parse(report['tested_at']).should == model.tested_at
     report['title'].should == model.title
-    report['url'].should == url_for(controller: 'reports', action: 'show', release_version: model.release.name, target: model.profile.name, testset: model.testset, product: model.product, id: model.id)
+    # Add host for url_for since url_for here would otherwise return www.example.com, and the one in code tested example.org
+    report['url'].should == url_for(host: 'example.org', controller: 'reports', action: 'show', release_version: model.release.name, target: model.profile.name, testset: model.testset, product: model.product, id: model.id)
   end
 end
