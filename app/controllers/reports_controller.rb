@@ -135,8 +135,7 @@ class ReportsController < ApplicationController
     render :layout => "report"
   end
 
-  # TODO return some errors
-  def cumulative
+  def cumulate_from_sessions(params)
     start_date = MeegoTestSession.find(params[:oldest]).tested_at
     end_date   = MeegoTestSession.find(params[:latest]).tested_at
 
@@ -163,10 +162,6 @@ class ReportsController < ApplicationController
     end
 
     testcases = {}
-    titles    = []
-    dates     = []
-    summaries = []
-    feature_summaries = Hash.new{|h,k| h[k] = Array.new}
 
     sessions.each do |session|
       session.meego_test_cases.each do |tc|
@@ -176,6 +171,20 @@ class ReportsController < ApplicationController
           testcases[tc.name] = tc.result_name
         end
       end
+
+      yield features, testcase_feature, session, testcases
+    end
+  end
+
+  # TODO return some errors
+  def cumulative
+    testcases = {}
+    titles    = []
+    dates     = []
+    summaries = []
+    feature_summaries = Hash.new{|h,k| h[k] = Array.new}
+
+    cumulate_from_sessions(params) do |features, testcase_feature, session, testcases|
 
       summary = {'Total' => testcases.length, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
       summary.default = 0
