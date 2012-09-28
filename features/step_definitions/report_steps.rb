@@ -220,11 +220,11 @@ end
 
 When %r/^I request a cumulative report over all reports under "(.*?)" as JSON$/ do |cat|
   # Get the JSON listing of the category (sorted by tested_at date)
-  response = get "/#{cat}.json"
-  json     = ActiveSupport::JSON.decode(response.body)
+  response  = get "/#{cat}.json"
+  @cat_json = ActiveSupport::JSON.decode(response.body)
 
-  latest_id = json[0]['id']
-  oldest_id = json[json.length - 1]['id']
+  latest_id = @cat_json.first['id']
+  oldest_id = @cat_json.last['id']
 
   # Get the cumulative report by the IDs
   # TODO: What kind of URI scheme would be nicest for the cumulative report?
@@ -249,6 +249,29 @@ Then %r/^I should get the cumulative summary for the whole report$/ do
   seq['dates'].length.should     == 3
   seq['summaries'].length.should == 3
   seq['features'].length.should  == 4
+
+  (0..2).each do |i|
+    seq['titles'][i].should == @cat_json.reverse[i]['title']
+    DateTime.parse(seq['dates'][i]).should == DateTime.parse(@cat_json.reverse[i]['tested_at'])
+  end
+
+  seq['summaries'][0]['Total'].should    == 6
+  seq['summaries'][0]['Pass'].should     == 2
+  seq['summaries'][0]['Fail'].should     == 2
+  seq['summaries'][0]['N/A'].should      == 2
+  seq['summaries'][0]['Measured'].should == 0
+
+  seq['summaries'][1]['Total'].should    == 10
+  seq['summaries'][1]['Pass'].should     == 4
+  seq['summaries'][1]['Fail'].should     == 6
+  seq['summaries'][1]['N/A'].should      == 0
+  seq['summaries'][1]['Measured'].should == 0
+
+  seq['summaries'][2]['Total'].should    == 18
+  seq['summaries'][2]['Pass'].should     == 7
+  seq['summaries'][2]['Fail'].should     == 6
+  seq['summaries'][2]['N/A'].should      == 5
+  seq['summaries'][2]['Measured'].should == 0
 
   seq['features'].each do |k,v|
     v.length.should == 3
