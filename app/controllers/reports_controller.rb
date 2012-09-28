@@ -166,6 +166,7 @@ class ReportsController < ApplicationController
     titles    = []
     dates     = []
     summaries = []
+    feature_summaries = Hash.new{|h,k| h[k] = Array.new}
 
     sessions.each do |session|
       session.meego_test_cases.each do |tc|
@@ -176,10 +177,27 @@ class ReportsController < ApplicationController
         end
       end
 
-      summary = {'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
+      summary = {'Total' => testcases.length, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
       summary.default = 0
+
+      features_summary = Hash.new{|h,k| h[k] = {'Total' => 0, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}}
+
+      # Create the snapshots, i.e. cumulative counts until current report
       testcases.each do |name,result|
         summary[result] += 1
+        features_summary[testcase_feature[name]][result]  += 1
+        features_summary[testcase_feature[name]]['Total'] += 1
+      end
+
+      # Create cumulative history snapshots for all features.
+      features.each do |f|
+        if features_summary.has_key?(f)
+          feature_summaries[f] << features_summary[f]
+        else
+          # Create cumulative history for features that are to be found
+          # from later reports as well
+          feature_summaries[f] << {'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
+        end
       end
 
       titles    << session.title
@@ -187,12 +205,18 @@ class ReportsController < ApplicationController
       summaries << summary
     end
 
+    # Cumulative summary per feature
+    features_summary = []
+    feature_summaries.each do |k,v|
+      features_summary << {name: k, summary: v.last, testcase_url: 'TODO'}
+    end
+
     render json: {
       'sequences' => {
-        'titles' => titles, 'dates' => dates, 'summaries' => summaries, 'features' => {}
+        'titles' => titles, 'dates' => dates, 'summaries' => summaries, 'features' => feature_summaries
       },
-      'features' => [],
-      'summary' => {}
+      'features' => features_summary,
+      'summary' =>  summaries.last
     }
   end
 
