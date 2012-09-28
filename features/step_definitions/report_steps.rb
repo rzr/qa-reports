@@ -182,7 +182,7 @@ end
 
 Then %r/^I should get the test cases for each feature$/ do
   @json['features'].each do |feature|
-    feature['testcases'].length.should == feature['Total']
+    feature['testcases'].length.should == feature['summary']['Total']
 
     case feature['name']
     when 'Dialer'
