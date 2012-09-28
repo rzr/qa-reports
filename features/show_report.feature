@@ -22,6 +22,7 @@ Feature: View report
     And I should get the test cases with custom results for each feature
     And I disable custom results
 
+  @wip
   Scenario: View cumulative report as JSON
     Given I am a user with a REST authentication token
     And three report files with variation in statuses and cases have been uploaded
