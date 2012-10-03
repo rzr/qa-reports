@@ -13,7 +13,7 @@ class ReportGroupsController < ApplicationController
         json = r.as_json root:false, only:[:id, :title, :tested_at]
         json.merge!(url: url_for(controller: 'reports', action: 'show', release_version: r.release.name, target: r.profile.name, testset: r.testset, product: r.product, id: r.id))
         json
-      }}
+      }, :callback => params[:callback]}
     end
   end
 

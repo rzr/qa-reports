@@ -43,12 +43,12 @@ class ReportsController < ApplicationController
     @show_rss = true
     respond_to do |format|
       format.html { render :layout => 'application' }
-      format.json { render :json   => @index_model  }
+      format.json { render :json   => @index_model, :callback => params[:callback]  }
     end
   end
 
   def categories
-    render :json  => Index.find_by_release(release, params[:scope])
+    render :json => Index.find_by_release(release, params[:scope]), :callback => params[:callback]
   end
 
   def preview
@@ -76,13 +76,13 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @report_show.as_json(include_testcases: true) }
+      format.json { render json: @report_show.as_json(include_testcases: true), :callback => params[:callback] }
     end
   end
 
   def summary
     @report_show = ReportShow.new(MeegoTestSession.find(params[:id]))
-    render json: @report_show
+    render json: @report_show, :callback => params[:callback]
   end
 
   def print
@@ -226,7 +226,7 @@ class ReportsController < ApplicationController
       },
       'features' => features_summary,
       'summary' =>  summaries.last
-    }
+    }, :callback => params[:callback]
   end
 
   private

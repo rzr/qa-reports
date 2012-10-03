@@ -9,7 +9,7 @@ class TestSetsController < ApplicationController
     @testsets = MeegoTestSession.published.joins(:release).joins(:profile).where(query_params).testsets
 
     respond_to do |format|
-      format.json {render :json => @testsets}
+      format.json {render :json => @testsets, :callback => params[:callback]}
     end
   end
 

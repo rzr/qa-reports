@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
     @products = MeegoTestSession.published.joins(:release).joins(:profile).where(query_params).products
 
     respond_to do |format|
-      format.json {render :json => @products}
+      format.json {render :json => @products, :callback => params[:callback]}
     end
   end
 
