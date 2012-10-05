@@ -189,7 +189,7 @@ class ReportsController < ApplicationController
       summary = {'Total' => testcases.length, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}
       summary.default = 0
 
-      features_summary = Hash.new{|h,k| h[k] = {'Total' => 0, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}}
+      features_summary = Hash.new{|h,k| h[k] = {'Total' => 0, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}; h[k].default = 0; h[k]}
 
       # Create the snapshots, i.e. cumulative counts until current report
       testcases.each do |name,result|
