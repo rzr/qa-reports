@@ -283,8 +283,6 @@ Then %r/^I should get the cumulative summary for each feature$/ do
   @json['features'].each do |feature|
     summary = feature['summary']
 
-    feature['testcase_url'].should_not be_nil
-
     case feature['name']
     when 'Feature 1'
       summary['Total'].should == 3
@@ -353,17 +351,16 @@ end
 
 Then %r/^I should get the cumulative result for each test case$/ do
   # Check that ever test case appears in the final result
-
   names = Set.new
 
   @json['features'].each do |feature|
-    feature.testcases.each do |tc|
+    feature['testcases'].each do |tc|
       name, tc_id, result = tc
       names.add name
     end
   end
 
-  [1..18].each do |n|
+  (1..18).each do |n|
     names.should include("Description #{n}")
   end
 end
