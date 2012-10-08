@@ -350,3 +350,20 @@ Then /^I should get the test cases with custom results for each feature$/ do
     end
   end
 end
+
+Then %r/^I should get the cumulative result for each test case$/ do
+  # Check that ever test case appears in the final result
+
+  names = Set.new
+
+  @json['features'].each do |feature|
+    feature.testcases.each do |tc|
+      name, tc_id, result = tc
+      names.add name
+    end
+  end
+
+  [1..18].each do |n|
+    names.should include("Description #{n}")
+  end
+end
