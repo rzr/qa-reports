@@ -178,11 +178,13 @@ class ReportsController < ApplicationController
 
   # TODO return some errors
   def cumulative
-    testcases = {}
     titles    = []
     dates     = []
     summaries = []
     feature_summaries = Hash.new{|h,k| h[k] = Array.new}
+
+    final_testcases = nil
+    final_testcase_feature = nil
 
     cumulate_from_sessions(params) do |features, testcase_feature, session, testcases|
 
@@ -212,19 +214,30 @@ class ReportsController < ApplicationController
       titles    << session.title
       dates     << session.tested_at
       summaries << summary
+
+      final_testcases = testcases
+      final_testcase_feature = testcase_feature
     end
 
     # Cumulative summary per feature
-    features_summary = []
+    features = []
+    feature_map = {}
     feature_summaries.each do |k,v|
-      features_summary << {name: k, summary: v.last, testcase_url: 'TODO'}
+      feature = {name: k, summary: v.last, testcases: []}
+      feature_map[k] = feature
+      features << feature
+    end
+
+    # Add test cases for each feature
+    final_testcases.each do |name, result|
+      feature_map[final_testcase_feature[name]][:testcases] << [name, nil, result] # TODO: add tc_id and other metadata
     end
 
     render json: {
       'sequences' => {
         'titles' => titles, 'dates' => dates, 'summaries' => summaries, 'features' => feature_summaries
       },
-      'features' => features_summary,
+      'features' => features,
       'summary' =>  summaries.last
     }, :callback => params[:callback]
   end
