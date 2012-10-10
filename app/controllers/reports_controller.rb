@@ -165,14 +165,17 @@ class ReportsController < ApplicationController
 
     sessions.each do |session|
       session.meego_test_cases.each do |tc|
+        tcs = testcases[tc.name]
+
         # Test case status is updated based on latest status, except that N/A
         # and custom statuses do not overwrite an existing result.
-        unless (tc.result == MeegoTestCase::NA || tc.result == MeegoTestCase::CUSTOM) && testcases.has_key?(tc.name)
-          testcases[tc.name][:result] = tc.result_name
+        unless (tc.result == MeegoTestCase::NA || tc.result == MeegoTestCase::CUSTOM) && tcs[:result].present?
+          tcs[:result] = tc.result_name
         end
 
-        testcases[tc.name][:comment] = tc.comment
-        testcases[tc.name][:tc_id]   = tc.tc_id
+        tcs[:comment]     = tc.comment
+        tcs[:tc_id]       = tc.tc_id
+        tcs[:last_report] = session.title
       end
 
       yield features, testcase_feature, session, testcases
@@ -238,7 +241,8 @@ class ReportsController < ApplicationController
         name: name,
         tc_id: tc[:tc_id],
         result: tc[:result],
-        comment: tc[:comment]
+        comment: tc[:comment],
+        last_report: tc[:last_report]
       }
     end
 

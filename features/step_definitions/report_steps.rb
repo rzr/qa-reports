@@ -408,4 +408,5 @@ Then %r/^I should get the cumulative result for each test case$/ do
       end
     end
   end
+
 end
