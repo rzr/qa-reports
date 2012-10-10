@@ -368,11 +368,16 @@ Then %r/^I should get the cumulative result for each test case$/ do
     feature['testcases'].each do |tc|
       tcname  = tc['name']
       comment = tc['comment']
+      result  = tc['result']
+      prev_result =tc['prev_result']
+
       case tcname
       when 'Description 1'
         comment.should == "NA"
       when 'Description 2'
         comment.should == "OK"
+        result.should  == "Pass"
+        prev_result.should == "Fail"
       when 'Description 3'
         comment.should == "FAIL"
       when 'Description 4'

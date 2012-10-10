@@ -167,10 +167,16 @@ class ReportsController < ApplicationController
       session.meego_test_cases.each do |tc|
         tcs = testcases[tc.name]
 
+        tcs[:prev_result] = tcs[:result] if tcs[:result].present?
+
         # Test case status is updated based on latest status, except that N/A
         # and custom statuses do not overwrite an existing result.
         unless (tc.result == MeegoTestCase::NA || tc.result == MeegoTestCase::CUSTOM) && tcs[:result].present?
           tcs[:result] = tc.result_name
+        end
+
+        if tc.result == MeegoTestCase::PASS || tc.result == MeegoTestCase::FAIL
+          tcs[:last_executed] = session.title
         end
 
         tcs[:comment]     = tc.comment
@@ -242,7 +248,9 @@ class ReportsController < ApplicationController
         tc_id: tc[:tc_id],
         result: tc[:result],
         comment: tc[:comment],
-        last_report: tc[:last_report]
+        last_report: tc[:last_report],
+        prev_result: tc[:prev_result],
+        last_executed: tc[:last_executed]
       }
     end
 
