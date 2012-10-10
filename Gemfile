@@ -39,7 +39,9 @@ group :development, :test do
   gem 'rspec', '~>2.6.0'
   gem 'rspec-core','2.6.0'
   gem 'rspec-rails', '2.6.1'
-  gem 'capybara-webkit'
+  gem 'capybara-webkit',
+    :git => 'https://github.com/4moms/capybara-webkit',
+    :branch => 'released-plus-tcp'
   gem 'capybara'
   gem 'spork', '~> 0.9.0.rc'
   gem 'cucumber'
