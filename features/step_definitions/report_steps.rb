@@ -362,4 +362,50 @@ Then %r/^I should get the cumulative result for each test case$/ do
   (1..18).each do |n|
     names.should include("Description #{n}")
   end
+
+  # Check for test case comments
+  @json['features'].each do |feature|
+    feature['testcases'].each do |tc|
+      tcname  = tc['name']
+      comment = tc['comment']
+      case tcname
+      when 'Description 1'
+        comment.should == "NA"
+      when 'Description 2'
+        comment.should == "OK"
+      when 'Description 3'
+        comment.should == "FAIL"
+      when 'Description 4'
+        comment.should == "OK"
+      when 'Description 5'
+        comment.should == "OK"
+      when 'Description 6'
+        comment.should == "Fail"
+      when 'Description 7'
+        comment.should == "NA"
+      when 'Description 8'
+        comment.should == "NA"
+      when 'Description 9'
+        comment.should == "Fail"
+      when 'Description 10'
+        comment.should == "Fail"
+      when 'Description 11'
+        comment.should == "NA"
+      when 'Description 12'
+        comment.should == "Fail"
+      when 'Description 13'
+        comment.should == "Fail"
+      when 'Description 14'
+        comment.should == "NA"
+      when 'Description 15'
+        comment.should == "NA"
+      when 'Description 16'
+        comment.should == "OK"
+      when 'Description 17'
+        comment.should == "NA"
+      when 'Description 18'
+        comment.should == "NA"
+      end
+    end
+  end
 end

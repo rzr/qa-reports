@@ -161,15 +161,18 @@ class ReportsController < ApplicationController
       end
     end
 
-    testcases = {}
+    testcases = Hash.new{|h,k| h[k] = Hash.new}
 
     sessions.each do |session|
       session.meego_test_cases.each do |tc|
         # Test case status is updated based on latest status, except that N/A
         # and custom statuses do not overwrite an existing result.
         unless (tc.result == MeegoTestCase::NA || tc.result == MeegoTestCase::CUSTOM) && testcases.has_key?(tc.name)
-          testcases[tc.name] = tc.result_name
+          testcases[tc.name][:result] = tc.result_name
         end
+
+        testcases[tc.name][:comment] = tc.comment
+        testcases[tc.name][:tc_id]   = tc.tc_id
       end
 
       yield features, testcase_feature, session, testcases
@@ -194,7 +197,8 @@ class ReportsController < ApplicationController
       features_summary = Hash.new{|h,k| h[k] = {'Total' => 0, 'Pass' => 0, 'Fail' => 0, 'N/A' => 0, 'Measured' => 0}; h[k].default = 0; h[k]}
 
       # Create the snapshots, i.e. cumulative counts until current report
-      testcases.each do |name,result|
+      testcases.each do |name,tc|
+        result = tc[:result]
         summary[result] += 1
         features_summary[testcase_feature[name]][result]  += 1
         features_summary[testcase_feature[name]]['Total'] += 1
@@ -229,11 +233,12 @@ class ReportsController < ApplicationController
     end
 
     # Add test cases for each feature
-    final_testcases.each do |name, result|
+    final_testcases.each do |name, tc|
       feature_map[final_testcase_feature[name]][:testcases] << {
         name: name,
-        tc_id: nil, # TODO
-        result: result
+        tc_id: tc[:tc_id],
+        result: tc[:result],
+        comment: tc[:comment]
       }
     end
 
