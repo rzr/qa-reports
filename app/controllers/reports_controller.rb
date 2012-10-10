@@ -230,7 +230,11 @@ class ReportsController < ApplicationController
 
     # Add test cases for each feature
     final_testcases.each do |name, result|
-      feature_map[final_testcase_feature[name]][:testcases] << [name, nil, result] # TODO: add tc_id and other metadata
+      feature_map[final_testcase_feature[name]][:testcases] << {
+        name: name,
+        tc_id: nil, # TODO
+        result: result
+      }
     end
 
     render json: {

@@ -355,8 +355,7 @@ Then %r/^I should get the cumulative result for each test case$/ do
 
   @json['features'].each do |feature|
     feature['testcases'].each do |tc|
-      name, tc_id, result = tc
-      names.add name
+      names.add tc['name']
     end
   end
 
