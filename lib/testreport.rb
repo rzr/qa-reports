@@ -75,7 +75,7 @@ module MeegoTestReport
       end
     end
 
-    (html.join '').html_safe
+    (html.join '').chomp('<br/>').html_safe
   end
 
 end
