@@ -164,10 +164,14 @@ class ReportsController < ApplicationController
     testcases = Hash.new{|h,k| h[k] = Hash.new}
 
     sessions.each do |session|
+      # Update previous result for all testcases even if they no
+      # longer appear in the reports
+      testcases.each do |name,tc|
+        tc[:prev_result] = tc[:result] if tc[:result].present?
+      end
+
       session.meego_test_cases.each do |tc|
         tcs = testcases[tc.name]
-
-        tcs[:prev_result] = tcs[:result] if tcs[:result].present?
 
         # Test case status is updated based on latest status, except that N/A
         # and custom statuses do not overwrite an existing result.
