@@ -94,9 +94,12 @@ class MeegoTestCase < ActiveRecord::Base
     {
       name: name,
       result: result_name,
-      comment: MeegoTestCaseHelper::comment_html(self),
+      comment: comment_html,
       bugs: comment.scan(/\[\[(\d+)\]\]/).map {|m| "#{BUGZILLA_CONFIG['link_uri']}#{m[0]}"}
     }
   end
 
+  def comment_html
+    comment ? MeegoTestReport::format_txt(comment).html_safe : ""
+  end
 end

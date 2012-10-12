@@ -179,7 +179,7 @@ class ReportsController < ApplicationController
           tcs[:last_executed] = session.title
         end
 
-        tcs[:comment]     = MeegoTestCaseHelper::comment_html(tc)
+        tcs[:comment]     = tc.comment_html
         tcs[:tc_id]       = tc.tc_id
         tcs[:last_report] = session.title
       end
