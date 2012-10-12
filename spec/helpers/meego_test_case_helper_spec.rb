@@ -24,6 +24,6 @@ describe MeegoTestCaseHelper do
 
   it "should give proper, escaped html for test case comment" do
     t_case = MeegoTestCase.new(:comment => '<script>mah buckit</script>')
-    comment_html(t_case).should == '&lt;script&gt;mah buckit&lt;/script&gt;<br/>'
+    comment_html(t_case).should == '&lt;script&gt;mah buckit&lt;/script&gt;'
   end
 end
