@@ -201,7 +201,7 @@ Then %r/^I should get the test cases for each feature$/ do
 
       tc = feature['testcases'][idx]
       tc['result'].should == "Fail"
-      tc['comment'].should == "[[5856]] [[3551]] [[3551]]"
+      tc['comment'].should == "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\"#{BUGZILLA_CONFIG['link_uri']}5856\">5856</a> <a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\"#{BUGZILLA_CONFIG['link_uri']}3551\">3551</a> <a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\"#{BUGZILLA_CONFIG['link_uri']}3551\">3551</a>"
       tc['bugs'].sort.should == ["#{BUGZILLA_CONFIG['link_uri']}5856", "#{BUGZILLA_CONFIG['link_uri']}3551", "#{BUGZILLA_CONFIG['link_uri']}3551"].sort
       tc['tc_id'].should == nil
 
