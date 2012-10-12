@@ -202,7 +202,13 @@ Then %r/^I should get the test cases for each feature$/ do
       tc = feature['testcases'][idx]
       tc['result'].should == "Fail"
       tc['comment'].should == "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\"#{BUGZILLA_CONFIG['link_uri']}5856\">5856</a> <a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\"#{BUGZILLA_CONFIG['link_uri']}3551\">3551</a> <a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\"#{BUGZILLA_CONFIG['link_uri']}3551\">3551</a>"
-      tc['bugs'].sort.should == ["#{BUGZILLA_CONFIG['link_uri']}5856", "#{BUGZILLA_CONFIG['link_uri']}3551", "#{BUGZILLA_CONFIG['link_uri']}3551"].sort
+      tc['bugs'].length.should == 3
+      tc['bugs'][0]['id'].should == "5856"
+      tc['bugs'][1]['id'].should == "3551"
+      tc['bugs'][2]['id'].should == "3551"
+      tc['bugs'][0]['url'].should == "#{BUGZILLA_CONFIG['link_uri']}5856"
+      tc['bugs'][1]['url'].should == "#{BUGZILLA_CONFIG['link_uri']}3551"
+      tc['bugs'][2]['url'].should == "#{BUGZILLA_CONFIG['link_uri']}3551"
       tc['tc_id'].should == nil
 
     when 'SIM'

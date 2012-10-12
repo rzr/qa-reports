@@ -95,7 +95,7 @@ class MeegoTestCase < ActiveRecord::Base
       name: name,
       result: result_name,
       comment: comment_html,
-      bugs: comment.scan(/\[\[(\d+)\]\]/).map {|m| "#{BUGZILLA_CONFIG['link_uri']}#{m[0]}"}
+      bugs: comment.scan(/\[\[(\d+)\]\]/).map {|m| {id:m[0], url:"#{BUGZILLA_CONFIG['link_uri']}#{m[0]}"}}
     }
   end
 
