@@ -13,5 +13,8 @@
     <testcase name="NonContradiction" status="run" time="5" classname="">
     </testcase>
     <testcase name="NonContradiction_2" status="someotherstatus" time="5" classname=""></testcase>
+    <testcase name="HasErrors" status="run">
+      <error message="Error Message" type=""/>
+    </testcase>
   </testsuite>
 </testsuites>
