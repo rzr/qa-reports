@@ -52,6 +52,7 @@ Feature:
     | sim.xml                   | SMOKE-SIM-Get_IMSI               | Fail          |
     | all_na.xml                | NFT-BT-Device_Scan_C-ITER        | N/A           |
     | bug9767_result.xml        | case#1.1.1                       | Fail          |
+    | googletest.xml            | Addition                         | Fail          |
 
   Scenario: Add new report with invalid filename extension
     When I follow "Add report"
