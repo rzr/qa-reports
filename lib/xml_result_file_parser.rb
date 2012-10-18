@@ -24,7 +24,7 @@ class XMLResultFileParser
         :name                               => test_case['name'],
         :result                             => status_code,
         :custom_result                      => custom_result,
-        :comment                            => test_case['comment'] || test_case.css('failure').map {|f| f['message']}.join(', ') || "",
+        :comment                            => test_case['comment'] || test_case.css('failure, error').map {|f| f['message']}.join(', ') || "",
         :source_link                        => test_case['vcsurl']  || "",
         :tc_id                              => test_case['TC_ID']   || "",
         :measurements_attributes            => test_case.xpath('./measurement').map do |measurement|
@@ -69,7 +69,7 @@ class XMLResultFileParser
     # Google test
     if test_case['status'].present?
       return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::NA]   unless test_case['status'] == 'run'
-      return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::PASS] if     test_case.css('failure').length < 1
+      return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::PASS] if     test_case.css('failure, error').length < 1
       return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::FAIL]
     end
 
