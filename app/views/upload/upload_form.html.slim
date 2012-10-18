@@ -21,12 +21,8 @@
         a#upload_button.small_btn + Add report (or drag here)
 
         small
-          | See example&nbsp;
-          a href="/example.xml" xml
-          | ,&nbsp;
-          a href="/example.csv" csv
-          |  and&nbsp;
-          a href="http://meego.gitorious.org/meego-quality-assurance/test-definition/blobs/master/src/data/testdefinition-results.xsd" dataset specification
+          | See&nbsp;
+          a href="https://github.com/leonidas/qa-reports/wiki/XML-Formats" wiki
           |  for reference
         = f.error_message_on :result_files
         - if Rails.env.test?
