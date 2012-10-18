@@ -4,7 +4,7 @@ class XMLResultFileParser
   include MeasurementUtils
 
   def parse(io)
-    Nokogiri::XML(io) { |config| config.strict } .css('set').map do |set|
+    Nokogiri::XML(io) { |config| config.strict } .css('set, testsuite').map do |set|
       { :set => set, :name => (set['feature'] || set['name']) }
     end .inject({}) do |features, feature|
       test_cases = parse_test_cases(feature[:set])
@@ -14,17 +14,17 @@ class XMLResultFileParser
   end
 
   def parse_test_cases(set)
-    set.css('case').map do |test_case|
-      raise Nokogiri::XML::SyntaxError.new("Missing test case name")               unless test_case['name'].present?
-      raise Nokogiri::XML::SyntaxError.new(test_case['name'] + ": Missing result") unless test_case['result'].present?
+    set.css('case, testcase').map do |test_case|
+      raise Nokogiri::XML::SyntaxError.new("Missing test case name") unless test_case['name'].present?
+      result = get_result(test_case)
 
-      status_code, custom_result = MeegoTestSession.map_result(test_case['result'])
+      status_code, custom_result = MeegoTestSession.map_result(result)
 
       {
         :name                               => test_case['name'],
         :result                             => status_code,
         :custom_result                      => custom_result,
-        :comment                            => test_case['comment'] || "",
+        :comment                            => test_case['comment'] || test_case.css('failure').map {|f| f['message']}.join(', ') || "",
         :source_link                        => test_case['vcsurl']  || "",
         :tc_id                              => test_case['TC_ID']   || "",
         :measurements_attributes            => test_case.xpath('./measurement').map do |measurement|
@@ -58,5 +58,22 @@ class XMLResultFileParser
         end
       }
     end .index_by { |test_case| test_case[:name] }
+  end
+
+  private
+
+  def get_result(test_case)
+    # MeeGo test definition
+    return test_case['result'] if test_case['result'].present?
+
+    # Google test
+    if test_case['status'].present?
+      return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::NA]   unless test_case['status'] == 'run'
+      return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::PASS] if     test_case.css('failure').length < 1
+      return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::FAIL]
+    end
+
+    # Otherwise
+    raise Nokogiri::XML::SyntaxError.new(test_case['name'] + ": Missing result")
   end
 end
