@@ -104,6 +104,10 @@ When "the client sends partial file with custom results" do
   step %{the client sends file "features/resources/custom_statuses_subset.xml" via the REST API}
 end
 
+When "the client sends googletest result file" do
+  step %{the client sends file "features/resources/googletest.xml" via the REST API}
+end
+
 When %r/^the client sends a request with string value instead of a file$/ do
     @response = api_import @default_api_opts.merge("report.1" => "Foo!")
 end
@@ -266,6 +270,12 @@ end
 
 Then %r/^I should see test cases with result Blocked/ do
   step %{I should see "Blocked"}
+end
+
+Then "I should see the defined test cases" do
+  step %{I should see "NonContradiction_2"}
+  step %{I should see "Addition"}
+  step %{I should see "Value of: add(1, 1)"}
 end
 
 Then "the upload succeeds" do
