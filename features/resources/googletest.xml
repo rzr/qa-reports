@@ -12,6 +12,6 @@
   <testsuite name="LogicTest" tests="1" failures="0" errors="0" time="5">
     <testcase name="NonContradiction" status="run" time="5" classname="">
     </testcase>
-    <testcase name="NonContradiction" status="someotherstatus" time="5" classname=""></testcase>
+    <testcase name="NonContradiction_2" status="someotherstatus" time="5" classname=""></testcase>
   </testsuite>
 </testsuites>
