@@ -41,3 +41,15 @@ Feature:
     And I should not see "Submit an Idea" within "#upper_header"
 
     And I enable all header links
+
+  @javascript
+  Scenario: Disabling and enabling empty target headers
+    When I go to the front page
+    Then I should see "Netbook" within ".profiles"
+
+    Then I disable showing targets without reports
+
+    When I go to the front page
+    Then I should not see "Netbook" within ".profiles"
+
+    And I enable showing targets without reports

@@ -34,3 +34,11 @@ When /I enable all header links/ do
   APP_CONFIG['documentation_link'] = 'https://github.com/leonidas/qa-reports/wiki'
   APP_CONFIG['idea_link']          = 'https://github.com/leonidas/qa-reports/issues'
 end
+
+When %r/^I disable showing targets without reports$/ do
+  APP_CONFIG['hide_empty_targets'] = true
+end
+
+When %r/^I enable showing targets without reports$/ do
+  APP_CONFIG['hide_empty_targets'] = false
+end
