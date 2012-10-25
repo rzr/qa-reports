@@ -4,6 +4,10 @@
 # cases. Set this to true to enable creating reports without any cases.
 allow_empty_files: false
 
+# Set this to true to hide the targets that do not contain any reports
+# from the front page (target is the 2nd level of hierarchy)
+hide_empty_targets: false
+
 # QA Reports accepts Pass, Fail, N/A, and Measured as valid results for
 # a test case by default. It can be configured to accept additional ones
 # as well by defining them here. Notice that currently all tests with
@@ -33,3 +37,4 @@ documentation_link: 'https://github.com/leonidas/qa-reports/wiki'
 
 # Submit an Idea
 idea_link: 'https://github.com/leonidas/qa-reports/issues'
+
