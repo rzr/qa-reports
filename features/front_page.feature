@@ -45,11 +45,11 @@ Feature:
   @javascript
   Scenario: Disabling and enabling empty target headers
     When I go to the front page
-    Then I should see "Netbook" within ".profiles"
+    Then I should see "Netbook" within "#report_navigation"
 
     Then I disable showing targets without reports
 
     When I go to the front page
-    Then I should not see "Netbook" within ".profiles"
+    Then I should not see "Netbook" within "#report_navigation"
 
     And I enable showing targets without reports
