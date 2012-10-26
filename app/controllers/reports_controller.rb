@@ -48,7 +48,9 @@ class ReportsController < ApplicationController
   end
 
   def categories
-    render :json => Index.find_by_release(release, params[:scope]), :callback => params[:callback]
+    json = Index.find_by_release(release, params[:scope])
+    json[:profiles].delete(nil)
+    render :json => json, :callback => params[:callback]
   end
 
   def preview

@@ -2,37 +2,39 @@ class Index
 
   CUT_OFF_LIMIT = 30
 
-  def self.find_by_release(release, scope)
-    query = "
-      SELECT DISTINCT profiles.name AS profile, reports.testset, reports.product AS name
-      FROM profiles
-      LEFT JOIN meego_test_sessions AS reports ON profiles.id = reports.profile_id AND
-        reports.release_id = #{release.id} AND
-        reports.published  = TRUE AND
-        reports.tested_at  > ?
-      ORDER BY profiles.sort_order ASC, testset, product
-    "
+  QUERY = "
+    SELECT DISTINCT profiles.name AS profile, reports.testset, reports.product AS name
+    FROM profiles
+    LEFT JOIN meego_test_sessions AS reports ON profiles.id = reports.profile_id AND
+      reports.release_id = ? AND
+      reports.published  = TRUE AND
+      reports.tested_at  > ?
+    ORDER BY profiles.sort_order ASC, testset, product
+  "
 
+  def self.find_by_release(release, scope)
     { :profiles => Profile.find_by_sql(
-        [query, scope == 'all' ? 0 : CUT_OFF_LIMIT.days.ago]
+        [QUERY, release.id, scope == 'all' ? 0 : CUT_OFF_LIMIT.days.ago]
       ).group_by(&:profile).map do |profile, testsets|
-        {
-          :name     => profile,
-          :url      => "/#{release.name}/#{profile}",
-          :testsets => testsets.select{|ts| ts.testset.present?}.group_by(&:testset).map do |testset, products|
-              {
-                :name           => testset,
-                :url            => "/#{release.name}/#{profile}/#{testset}",
-                :comparison_url => comparison_url(release, profile, testset),
-                :products       => products.map do |product|
-                  {
-                    :name => product.name,
-                    :url  => "/#{release.name}/#{profile}/#{testset}/#{product.name}"
-                  }
-                end
-              }
-            end
-        }
+        unless APP_CONFIG['hide_empty_targets'] == true and testsets.select{|ts| ts.testset.present?}.count == 0
+          {
+            :name     => profile,
+            :url      => "/#{release.name}/#{profile}",
+            :testsets => testsets.select{|ts| ts.testset.present?}.group_by(&:testset).map do |testset, products|
+                {
+                  :name           => testset,
+                  :url            => "/#{release.name}/#{profile}/#{testset}",
+                  :comparison_url => comparison_url(release, profile, testset),
+                  :products       => products.map do |product|
+                    {
+                      :name => product.name,
+                      :url  => "/#{release.name}/#{profile}/#{testset}/#{product.name}"
+                    }
+                  end
+                }
+              end
+          }
+        end
       end
     }
   end
