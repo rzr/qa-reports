@@ -26,6 +26,9 @@ class ApplicationController < ActionController::Base
 
   #protect_from_forgery
 
+  unless Meegoqa::Application.config.consider_all_requests_local
+    rescue_from Exception, :with => :render_error
+  end
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   def record_not_found
@@ -52,6 +55,10 @@ private
 
   def update_session_data
     session[:release_id] = release.id
+  end
+
+  def render_error
+    render :file => "#{Rails.root}/public/500.html", :status => :internal_server_error, :layout => false
   end
 
 end
