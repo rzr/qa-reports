@@ -120,8 +120,8 @@ $(document).ready ->
 
     [_, release, scope] = location.hash.split '/'
     if release and scope
-      $("#release_filters a[href='/#{release}'").click()
-      $("#report_filters a[href='/#{scope}'").click()
+      $("#release_filters a[href='/#{release}']").click()
+      $("#report_filters a[href='/#{scope}']").click()
     else
       $("#release_filters .current a").click()
       $("#report_filters .current a").click()
