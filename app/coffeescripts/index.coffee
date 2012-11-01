@@ -106,16 +106,16 @@ $(document).ready ->
   initTabs = ->
     $('.tabs').select (event) ->
       target   = $(event.target)
-      selected = target.attr 'selected'
+      selected = target.attr 'data-selected'
       target.find("a[href='#{selected}']").parent().addClass('current').siblings().removeClass('current')
 
     $('.tabs').click (event) ->
       event.preventDefault()
-      $(this).attr('selected', $(event.target).attr 'href').select().change()
+      $(this).attr('data-selected', $(event.target).attr 'href').select().change()
 
     $('.tabs').change (event) ->
-      release_path = $('#release_filters').attr 'selected'
-      scope_path   = $('#report_filters').attr 'selected'
+      release_path = $('#release_filters').attr 'data-selected'
+      scope_path   = $('#report_filters').attr 'data-selected'
       Spine.Route.navigate release_path + scope_path
 
     [_, release, scope] = location.hash.split '/'
