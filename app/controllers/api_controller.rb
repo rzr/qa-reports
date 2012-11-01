@@ -113,6 +113,7 @@ class ApiController < ApplicationController
       begin
         @test_session = MeegoTestSession.find(@report_id)
         parse_err     = @test_session.update_report_result(current_user, params, true)
+        @test_session.updated_at = params[:updated_at]
       rescue ActiveRecord::UnknownAttributeError, ActiveRecord::RecordNotSaved => errors
         # TODO: Could we get reasonable error messages somehow? e.g. MeegoTestCase
         # may add an error from custom results but this just has a very generic error message
