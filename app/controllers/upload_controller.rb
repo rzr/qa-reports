@@ -92,6 +92,16 @@ class UploadController < ApplicationController
     params[:meego_test_session][:release_version] = params[:release][:name]
     params[:meego_test_session][:target] = params[:profile][:name]
 
+    # Fix tested at date - if it's the current date, add also current time.
+    # This needs to be done since reports uploaded via the API have the
+    # time as well so reports uploaded manually will always be "older"
+    # then the ones from the API if uploading the same day
+    unless params[:meego_test_session][:tested_at].blank?
+      if DateTime.parse(params[:meego_test_session][:tested_at]).strftime('%Y-%m-%d') == Time.now.strftime('%Y-%m-%d')
+        params[:meego_test_session][:tested_at] = Time.now.to_s
+      end
+    end
+
     @test_session = ReportFactory.new.build(params[:meego_test_session])
     @test_session.author = current_user
     @test_session.editor = current_user

@@ -68,18 +68,14 @@ $ () ->
 
   directives =
     reports:
-      name:
-        href: report_path
+      'name@href': report_path
       htmlgraph:
-        passed:
-          style: -> bar_style this.passes
-          title: -> "passed #{this.passes}"
-        failed:
-          style: -> bar_style this.fails
-          title: -> "failed #{this.fails}"
-        na:
-          style: -> bar_style this.nas
-          title: -> "na #{this.nas}"
+        'passed@style': -> bar_style this.passes
+        'failed@style': -> bar_style this.fails
+        'na@style':     -> bar_style this.nas
+        'passed@title': -> "passed #{this.passes}"
+        'failed@title': -> "failed #{this.fails}"
+        'na@title':     -> "na #{this.nas}"
 
   $resultTable.bind 'infinitescroll.finish', ->
     data = JSON.parse $resultTable.text()
