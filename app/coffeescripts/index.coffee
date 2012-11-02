@@ -4,14 +4,20 @@ $(document).ready ->
 
   directives =
     profiles:
-      'name@href': -> @url
+      name:
+        href: -> @url
       testsets:
-        'name@href': -> @url
-        'compare@href': (element) -> if @comparison_url then @comparison_url else element.hide(); return ""
-        'inplace-edit@data-url': -> @url
+        name:
+          href: -> @url
+        compare:
+          href: (params) -> if @comparison_url then @comparison_url else $(params.element).hide(); return ""
+        'inplace-edit':
+          'data-url': -> @url
         products:
-          'name@href': -> @url
-          'inplace-edit@data-url': -> @url
+          name:
+            href: -> @url
+          'inplace-edit':
+            'data-url': -> @url
 
   undo = (input) ->
     $input = $(input)
@@ -100,22 +106,22 @@ $(document).ready ->
   initTabs = ->
     $('.tabs').select (event) ->
       target   = $(event.target)
-      selected = target.attr 'selected'
+      selected = target.attr 'data-selected'
       target.find("a[href='#{selected}']").parent().addClass('current').siblings().removeClass('current')
 
     $('.tabs').click (event) ->
       event.preventDefault()
-      $(this).attr('selected', $(event.target).attr 'href').select().change()
+      $(this).attr('data-selected', $(event.target).attr 'href').select().change()
 
     $('.tabs').change (event) ->
-      release_path = $('#release_filters').attr 'selected'
-      scope_path   = $('#report_filters').attr 'selected'
+      release_path = $('#release_filters').attr 'data-selected'
+      scope_path   = $('#report_filters').attr 'data-selected'
       Spine.Route.navigate release_path + scope_path
 
     [_, release, scope] = location.hash.split '/'
     if release and scope
-      $("#release_filters a[href='/#{release}'").click()
-      $("#report_filters a[href='/#{scope}'").click()
+      $("#release_filters a[href='/#{release}']").click()
+      $("#report_filters a[href='/#{scope}']").click()
     else
       $("#release_filters .current a").click()
       $("#report_filters .current a").click()
