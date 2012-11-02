@@ -38,24 +38,6 @@ class ReportsController < ApplicationController
   before_filter :validate_path_params,       :only   => [:show, :print]
   cache_sweeper :meego_test_session_sweeper, :only   => [:update, :delete, :publish]
 
-  DEL_SESSION_MEASUREMENTS = <<-END
-    DELETE  meego_measurements
-    FROM    meego_measurements
-
-    INNER JOIN meego_test_cases ON meego_test_cases.id = meego_measurements.meego_test_case_id
-
-    WHERE meego_test_cases.meego_test_session_id = ?;
-  END
-
-  DEL_SESSION_SERIAL_MEASUREMENTS = <<-END
-    DELETE  serial_measurements
-    FROM    serial_measurements
-
-    INNER JOIN meego_test_cases ON meego_test_cases.id = serial_measurements.meego_test_case_id
-
-    WHERE meego_test_cases.meego_test_session_id = ?;
-  END
-
   def index
     @index_model = Index.find_by_release(release, params[:show_all])
     @show_rss = true
@@ -142,8 +124,8 @@ class ReportsController < ApplicationController
     end
 
     # Delete measurements
-    ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DEL_SESSION_MEASUREMENTS, report.id]))
-    ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DEL_SESSION_SERIAL_MEASUREMENTS, report.id]))
+    MeegoMeasurement.delete_by_report_id(report.id)
+    SerialMeasurement.delete_by_report_id(report.id)
 
     # Then we have nothing left that relates to a test case, so delete
     # the test cases from the report. With this we can skip massive
