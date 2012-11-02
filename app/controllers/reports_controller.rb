@@ -38,6 +38,24 @@ class ReportsController < ApplicationController
   before_filter :validate_path_params,       :only   => [:show, :print]
   cache_sweeper :meego_test_session_sweeper, :only   => [:update, :delete, :publish]
 
+  DEL_SESSION_MEASUREMENTS = <<-END
+    DELETE  meego_measurements
+    FROM    meego_measurements
+
+    INNER JOIN meego_test_cases ON meego_test_cases.id = meego_measurements.meego_test_case_id
+
+    WHERE meego_test_cases.meego_test_session_id = ?;
+  END
+
+  DEL_SESSION_SERIAL_MEASUREMENTS = <<-END
+    DELETE  serial_measurements
+    FROM    serial_measurements
+
+    INNER JOIN meego_test_cases ON meego_test_cases.id = serial_measurements.meego_test_case_id
+
+    WHERE meego_test_cases.meego_test_session_id = ?;
+  END
+
   def index
     @index_model = Index.find_by_release(release, params[:show_all])
     @show_rss = true
@@ -115,6 +133,23 @@ class ReportsController < ApplicationController
 
   def destroy
     report = MeegoTestSession.find(params[:id])
+
+    # Destroy test case attachments to get the files deleted as well
+    FileAttachment.find(:all,
+                        :joins      => "INNER JOIN meego_test_cases tc ON file_attachments.attachable_id = tc.id",
+                        :conditions => ["tc.meego_test_session_id=? AND file_attachments.attachable_type=?", report.id, 'MeegoTestCase']).each do |att|
+      att.destroy
+    end
+
+    # Delete measurements
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DEL_SESSION_MEASUREMENTS, report.id]))
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DEL_SESSION_SERIAL_MEASUREMENTS, report.id]))
+
+    # Then we have nothing left that relates to a test case, so delete
+    # the test cases from the report. With this we can skip massive
+    # amounts of queries to measurement and attachment tables
+    MeegoTestCase.delete_all(['meego_test_session_id=?', report.id])
+
     report.destroy
     redirect_to root_path
   end
