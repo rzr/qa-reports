@@ -44,6 +44,12 @@ class ApiController < ApplicationController
     params.delete(:testtype)
     params.delete(:hardware)
 
+    # Then fix some other possible problems -- if the request contains e.g.
+    # parameter release then ReportFactory.build would try to use that
+    # instead of getting a model instance
+    params[:release_version] ||= params.delete(:release)
+    params[:target]          ||= params.delete(:profile)
+
     return send_error({:target => "can't be blank"}) if not params[:target]
     return send_error({:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}) if not Profile.find_by_name(params[:target])
 
