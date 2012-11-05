@@ -48,6 +48,16 @@ Feature: Manage reports
     Then I should be on the homepage
     And I should not be able to view the report "1.2/Core/automated/N900"
 
+  @selenium
+  Scenario: Deleting a report removes only expected data
+    When I upload two NFT test reports
+    And I upload two NFT test reports
+    And I view the report "1.2/Handset/NFT/N900"
+    And I click to delete the report
+    When I click to confirm the delete
+
+    Then I should find data for the other report from the database
+
   Scenario: Link to original result file is shown
     When I view the report "1.2/Core/automated/N900"
 
