@@ -26,7 +26,16 @@ require "nft"
 class SerialMeasurement < ActiveRecord::Base
   belongs_to :meego_test_case
 
-  include MeasurementUtils 
+  include MeasurementUtils
+
+  DELETE_BY_REPORT_ID = <<-END
+    DELETE  serial_measurements
+    FROM    serial_measurements
+
+    INNER JOIN meego_test_cases ON meego_test_cases.id = serial_measurements.meego_test_case_id
+
+    WHERE meego_test_cases.meego_test_session_id = ?;
+  END
 
   FORMAT = "%.2f"
 
@@ -52,6 +61,10 @@ class SerialMeasurement < ActiveRecord::Base
   def med_html
     #sprintf(FORMAT, median_value)
     format_value(median_value, 3)
+  end
+
+  def self.delete_by_report_id(id)
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DELETE_BY_REPORT_ID, id]))
   end
 
 end

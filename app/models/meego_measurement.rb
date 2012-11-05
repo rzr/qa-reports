@@ -36,6 +36,15 @@ class MeegoMeasurement < ActiveRecord::Base
 
   include MeasurementUtils
 
+  DELETE_BY_REPORT_ID = <<-END
+    DELETE  meego_measurements
+    FROM    meego_measurements
+
+    INNER JOIN meego_test_cases ON meego_test_cases.id = meego_measurements.meego_test_case_id
+
+    WHERE meego_test_cases.meego_test_session_id = ?;
+  END
+
   def is_serial?
     false
   end
@@ -74,6 +83,10 @@ class MeegoMeasurement < ActiveRecord::Base
 
   def target_result
     TargetResultWrapper.new target_result_value
+  end
+
+  def self.delete_by_report_id(id)
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DELETE_BY_REPORT_ID, id]))
   end
 
   private
