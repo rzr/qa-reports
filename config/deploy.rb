@@ -115,6 +115,20 @@ namespace :deploy do
     run "passenger stop --pid-file #{current_path}/passenger.3000.pid"
   end
 
+  desc "Create logrotate config"
+  task :logrotate, :roles => :app do
+    conf = IO.read("config/logrotate.conf")
+    conf["##SHARED_PATH##"] = shared_path
+    # Write to shared path
+    put conf, "#{shared_path}/config/logrotate.conf"
+    write_file = Capistrano::CLI::ui.ask("Write logrotate conf to /etc/logrotate.d (needs passwordless sudo)? Default:no")
+    if write_file =~ /yes/i
+      run "cat #{shared_path}/config/logrotate.conf | sudo /usr/bin/tee /etc/logrotate.d/qa-reports"
+    else
+      puts "Logrotate config written to #{shared_path}/config/logrotate.conf on remote server. Copy to /etc/logrotate.d by yourself."
+    end
+  end
+
   namespace :qadashboard do
     desc "Upload QA Dashboard configuration"
     task :setup do
