@@ -220,3 +220,16 @@ When %r/^I change grading of feature "([^"]*)" to ([^"]*)$/ do |feature_name, gr
 
   grading_area.find("option", :text => grading_color.capitalize).select_option
 end
+
+Then %r/^I should find data for the other report from the database$/ do
+  MeegoTestSession.count(:conditions => {:profile_id => Profile.find_by_name('Handset').id, :testset => "NFT"}).should == 3
+
+  # Three reports left, each with one testcase containing a serial measurement
+  # and two test cases with two meego measurements each.
+  SerialMeasurement.count.should == 3
+  MeegoMeasurement.count.should  == 3 * 2 * 2
+
+  # Three reports left but the first one has two attachments
+  FileAttachment.count.should == 5
+
+end

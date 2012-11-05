@@ -115,6 +115,23 @@ class ReportsController < ApplicationController
 
   def destroy
     report = MeegoTestSession.find(params[:id])
+
+    # Destroy test case attachments to get the files deleted as well
+    FileAttachment.find(:all,
+                        :joins      => "INNER JOIN meego_test_cases tc ON file_attachments.attachable_id = tc.id",
+                        :conditions => ["tc.meego_test_session_id=? AND file_attachments.attachable_type=?", report.id, 'MeegoTestCase']).each do |att|
+      att.destroy
+    end
+
+    # Delete measurements
+    MeegoMeasurement.delete_by_report_id(report.id)
+    SerialMeasurement.delete_by_report_id(report.id)
+
+    # Then we have nothing left that relates to a test case, so delete
+    # the test cases from the report. With this we can skip massive
+    # amounts of queries to measurement and attachment tables
+    MeegoTestCase.delete_all(['meego_test_session_id=?', report.id])
+
     report.destroy
     redirect_to root_path
   end
