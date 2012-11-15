@@ -52,7 +52,7 @@ class UploadController < ApplicationController
 
     attachment = FileAttachment.create! :file => file, :attachment_type => :result_file
 
-    render :json => { :ok => '1', :attachment_id => attachment.id, :success => true}
+    render :json => { :ok => '1', :attachment_id => attachment.id, :success => true}, :content_type => content_type
   end
 
   def upload_attachment
@@ -66,7 +66,8 @@ class UploadController < ApplicationController
     # full file name of template has to be given because flash uploader can pass header HTTP_ACCEPT: text/*
     # file is not found because render :formats=>[:"text/*"]
     html_content = render_to_string :formats => [:html], :partial => 'reports/file_attachment_list', :locals => {:report => session, :files => session.attachments}
-    render :json => { :ok => '1', :html_content => html_content, :success => true }
+    ct = content_type
+    render :json => { :ok => '1', :html_content => html_content, :success => true }, :content_type => content_type
   end
 
   def merge_result_file
@@ -80,9 +81,10 @@ class UploadController < ApplicationController
       session.update_attribute(:editor, current_user)
       expire_caches_for(session)
       html_content = render_to_string :formats => [:html], :partial => 'reports/result_file_list', :locals => {:files => session.result_files}
-      render :json => { :ok => '1', :html_content => html_content, :success => true }
+      render :json => { :ok => '1', :html_content => html_content, :success => true }, :content_type => content_type
     else
-      render :json => { :ok => '0', :errors => session.errors[:result_files], :success => false }, :status => :unprocessable_entity
+      # This is still an IE issue - if JSON response status is not 200 IE will fail handling it
+      render :json => { :ok => '0', :errors => session.errors[:result_files], :success => false }, :status => :unprocessable_entity, :content_type => content_type
     end
   end
 
@@ -127,6 +129,16 @@ class UploadController < ApplicationController
     end
   end
 
+  # IE tries to download JSON responses sent to fileupload.js if
+  # content type is something else than text/plain.
+  def content_type
+    if request.env['HTTP_USER_AGENT'] =~ /msie/i
+      'text/plain'
+    else
+      'application/json'
+    end
+  end
+
   private
 
   def set_suggestions
@@ -137,8 +149,11 @@ class UploadController < ApplicationController
   end
 
   def filestream_from_qq_param
-    if request['qqfile'].respond_to? 'original_filename'
+    if request['qqfile'].respond_to?(:original_filename)
       return request['qqfile']
+    # IE uploads come as multipart form data and can be found from this, at least
+    elsif request.env['action_dispatch.request.request_parameters']['qqfile']
+      return request.env['action_dispatch.request.request_parameters']['qqfile']
     else
       f = StringIO.new(env['rack.input'].read())
       f.original_filename = request['qqfile']
