@@ -82,7 +82,7 @@ class UploadController < ApplicationController
       html_content = render_to_string :formats => [:html], :partial => 'reports/result_file_list', :locals => {:files => session.result_files}
       render :json => { :ok => '1', :html_content => html_content, :success => true }
     else
-      render :json => { :ok => '0', :errors => session.errors[:result_files], :error => session.errors[:result_files].join(';') }, :status => :unprocessable_entity
+      render :json => { :ok => '0', :errors => session.errors[:result_files], :success => false }, :status => :unprocessable_entity
     end
   end
 
