@@ -401,7 +401,7 @@ class MeegoTestSession < ActiveRecord::Base
     end
 
     files.each do |f|
-      unless f.respond_to?(:path)
+      unless f.respond_to?(:original_filename)
         errors.add :result_files, "Invalid file: #{f.to_s}."
         return self
       end
