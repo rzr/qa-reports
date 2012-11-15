@@ -52,7 +52,7 @@ class UploadController < ApplicationController
 
     attachment = FileAttachment.create! :file => file, :attachment_type => :result_file
 
-    render :json => { :ok => '1', :attachment_id => attachment.id }
+    render :json => { :ok => '1', :attachment_id => attachment.id, :success => true}
   end
 
   def upload_attachment
@@ -66,7 +66,7 @@ class UploadController < ApplicationController
     # full file name of template has to be given because flash uploader can pass header HTTP_ACCEPT: text/*
     # file is not found because render :formats=>[:"text/*"]
     html_content = render_to_string :formats => [:html], :partial => 'reports/file_attachment_list', :locals => {:report => session, :files => session.attachments}
-    render :json => { :ok => '1', :html_content => html_content}
+    render :json => { :ok => '1', :html_content => html_content, :success => true }
   end
 
   def merge_result_file
@@ -80,9 +80,9 @@ class UploadController < ApplicationController
       session.update_attribute(:editor, current_user)
       expire_caches_for(session)
       html_content = render_to_string :formats => [:html], :partial => 'reports/result_file_list', :locals => {:files => session.result_files}
-      render :json => { :html_content => html_content}
+      render :json => { :ok => '1', :html_content => html_content, :success => true }
     else
-      render :json => { :errors => session.errors[:result_files]}, :status => :unprocessable_entity
+      render :json => { :ok => '0', :errors => session.errors[:result_files], :error => session.errors[:result_files].join(';') }, :status => :unprocessable_entity
     end
   end
 
