@@ -40,7 +40,7 @@ $(document).ready ->
           button:   $upload_area.find('.upload_button')[0]
           element:  $upload_area[0]
           action:   upload_url
-          debug:    true
+          debug:    false
           params:   params
 
           onSubmit: (id, fileName) ->
