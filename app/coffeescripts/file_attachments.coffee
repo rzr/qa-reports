@@ -40,8 +40,9 @@ $(document).ready ->
           button:   $upload_area.find('.upload_button')[0]
           element:  $upload_area[0]
           action:   upload_url
-          debug:    false
+          debug:    true
           params:   params
+
           onSubmit: (id, fileName) ->
             $upload_area.find('.upload_button').removeClass 'draghover'
             $upload_area.removeClass 'draghover'
@@ -63,10 +64,10 @@ $(document).ready ->
 
           onComplete: (id, fileName, response) ->
               $(@element).find("#file_upload#{id}").remove()
-              if response.status == 200
-                $(@element).find(".file_list_ready").html(response.data.html_content)
+              if response.success
+                $(@element).find(".file_list_ready").html(response.html_content)
               else
-                $(@element).find(".formError").show().text(response.data.errors.toString())
+                $(@element).find(".formError").show().text(response.errors.toString())
 
     prepareFileUpload('#attachment_drag_drop_area', '#attachment_list_item_template',
         '/upload_attachment/')
