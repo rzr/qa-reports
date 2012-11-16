@@ -66,7 +66,7 @@ class UploadController < ApplicationController
     # full file name of template has to be given because flash uploader can pass header HTTP_ACCEPT: text/*
     # file is not found because render :formats=>[:"text/*"]
     html_content = render_to_string :formats => [:html], :partial => 'reports/file_attachment_list', :locals => {:report => session, :files => session.attachments}
-    ct = content_type
+
     render :json => { :ok => '1', :html_content => html_content, :success => true }, :content_type => content_type
   end
 
