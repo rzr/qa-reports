@@ -31,7 +31,7 @@ initSelectionEdit = (context, cls_elem, replace_txt, cls_mapping, default_cls) -
     input   = form.find 'select'
     cls     = 'edit'
 
-    default_cls ?= ''
+    default_cls ||= ''
 
     reverse = (val) ->
         for k,v of cls_mapping
