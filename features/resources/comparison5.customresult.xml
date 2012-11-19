@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="test">
+    <set feature="Feature 4">
+      <case name="Description 3" result="Pass"/>
+    </set>
+  </suite>
+</testresults>
