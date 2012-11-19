@@ -19,7 +19,7 @@ linkEditButtons = () ->
             "3": 'grading_green'
             "0": 'grading_white'
 
-initSelectionEdit = (context, cls_elem, replace_txt, cls_mapping) ->
+initSelectionEdit = (context, cls_elem, replace_txt, cls_mapping, default_cls) ->
     context  = $(context)
     if cls_elem?
         cls_elem = context.find cls_elem
@@ -30,6 +30,8 @@ initSelectionEdit = (context, cls_elem, replace_txt, cls_mapping) ->
     form    = context.find 'form'
     input   = form.find 'select'
     cls     = 'edit'
+
+    default_cls ?= ''
 
     reverse = (val) ->
         for k,v of cls_mapping
@@ -56,8 +58,8 @@ initSelectionEdit = (context, cls_elem, replace_txt, cls_mapping) ->
         action = form.attr 'action'
         $.post action, data
         if replace_txt
-            content.text input.find('[selected]').text()
-        cls_elem.addClass cls_mapping[input.val()]
+            content.text @value
+        cls_elem.addClass cls_mapping[@value] || default_cls
         clickHandler()
         return false
 
@@ -355,6 +357,8 @@ unlinkTestCaseButtons = (node) ->
     $result.unbind 'click'
     $comment.unbind 'click'
 
+    $result.find('select').unbind 'change'
+
 linkTestCaseButtons = (node) ->
     $node = $(node)
     $comment = $node.find '.testcase_notes'
@@ -362,10 +366,11 @@ linkTestCaseButtons = (node) ->
 
     for r in $result
         initSelectionEdit r, null, true,
-            "-1": 'fail'
-            "0": 'na'
-            "1": 'pass'
-            "2": 'measured'
+            "Fail":     'fail'
+            "N/A":      'na'
+            "Pass":     'pass'
+            "Measured": 'measured'
+        , 'na'
 
     $comment.click handleCommentEdit
 
