@@ -30,7 +30,7 @@ class ReportComparison
   end
 
   def fixed_from_na
-    @fixed_from_na ||= find_change_count(MeegoTestCase::NA, MeegoTestCase::PASS)
+    @fixed_from_na ||= find_change_count(MeegoTestCase::NA, MeegoTestCase::PASS) + find_change_count(MeegoTestCase::CUSTOM, MeegoTestCase::PASS)
   end
 
   def regression_to_fail
@@ -38,7 +38,7 @@ class ReportComparison
   end
 
   def regression_to_na
-    @regression_to_na ||= find_change_count(MeegoTestCase::PASS,MeegoTestCase::NA)
+    @regression_to_na ||= find_change_count(MeegoTestCase::PASS,MeegoTestCase::NA) + find_change_count(MeegoTestCase::PASS,MeegoTestCase::CUSTOM)
   end
 
   def new_passing
@@ -50,7 +50,7 @@ class ReportComparison
   end
 
   def new_na
-    @new_na ||= find_new_count(MeegoTestCase::NA)
+    @new_na ||= find_new_count(MeegoTestCase::NA) + find_new_count(MeegoTestCase::CUSTOM)
   end
 
   def test_case_pairs

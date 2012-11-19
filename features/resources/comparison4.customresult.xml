@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="test">
+    <set feature="Feature 4">
+      <case name="Description 3" result="Blocked"/>
+      <case name="Completely new case" result="Blocked"/>
+    </set>
+  </suite>
+</testresults>
