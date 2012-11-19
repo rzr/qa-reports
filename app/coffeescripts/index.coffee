@@ -104,14 +104,9 @@ $(document).ready ->
       $(product_titles).removeClass('to_be_edited')
 
   initTabs = ->
-    $('.tabs').select (event) ->
-      target   = $(event.target)
-      selected = target.attr 'data-selected'
-      target.find("a[href='#{selected}']").parent().addClass('current').siblings().removeClass('current')
-
     $('.tabs').click (event) ->
       event.preventDefault()
-      $(this).attr('data-selected', $(event.target).attr 'href').select().change()
+      $(this).attr('data-selected', $(event.target).attr 'href').change()
 
     $('.tabs').change (event) ->
       release_path = $('#release_filters').attr 'data-selected'
@@ -128,6 +123,7 @@ $(document).ready ->
 
   Spine.Route.add "/:release/:scope": (params) ->
     $.get "/#{params.release}/categories.json?scope=#{params.scope}", (view_model) ->
+      $('a[href="/' + params.scope + '"]', '#report_filters').parent().addClass('current').siblings().removeClass('current').end()
       $navigation.render(view_model, directives).show()
 
   Spine.Route.setup()
