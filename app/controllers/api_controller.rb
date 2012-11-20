@@ -50,7 +50,9 @@ class ApiController < ApplicationController
     params[:release_version] ||= params.delete(:release)
     params[:target]          ||= params.delete(:profile)
 
-    return send_error({:target => "can't be blank"}) if not params[:target]
+    [:release_version, :target, :product, :testset].each do |f|
+      return send_error({f => "can't be blank"}) if not params[f]
+    end
     return send_error({:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}) if not Profile.find_by_name(params[:target])
 
     begin
