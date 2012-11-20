@@ -50,7 +50,9 @@ class ApiController < ApplicationController
     params[:release_version] ||= params.delete(:release)
     params[:target]          ||= params.delete(:profile)
 
-    return send_error({:target => "can't be blank"}) if not params[:target]
+    [:release_version, :target, :product, :testset].each do |f|
+      return send_error({f => "can't be blank"}) if not params[f]
+    end
     return send_error({:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}) if not Profile.find_by_name(params[:target])
 
     begin
@@ -62,6 +64,10 @@ class ApiController < ApplicationController
       @test_session.published = true
 
     rescue ActiveRecord::UnknownAttributeError => error
+      return send_error(error.message)
+    rescue Exception => error
+      logger.error "ERROR: #{error.message}. Request parameters:"
+      logger.error params
       return send_error(error.message)
     end
 
@@ -124,6 +130,10 @@ class ApiController < ApplicationController
         # TODO: Could we get reasonable error messages somehow? e.g. MeegoTestCase
         # may add an error from custom results but this just has a very generic error message
         return send_error(errors.message)
+      rescue Exception => error
+        logger.error "ERROR: #{error.message}. Request parameters:"
+        logger.error params
+        return send_error(error.message)
       end
 
       if parse_err.present?

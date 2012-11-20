@@ -52,5 +52,9 @@ module Meegoqa
     # Disable the asset pipeline
     config.assets.enabled = false
 
+    # Since Rails 3 rescuing routing errors is odd/not working. We can however
+    # set the exceptions app to our own router and route /404 from there.
+    # http://blog.plataformatec.com.br/2012/01/my-five-favorite-hidden-features-in-rails-3-2/
+    config.exceptions_app = self.routes
   end
 end

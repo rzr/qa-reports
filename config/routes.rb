@@ -30,6 +30,12 @@ Meegoqa::Application.routes.draw do
 
   match '/reports/:id/compare/:compare_id' => 'session_comparison#show', :via => "get", :as => :session_comparison
 
+  if !APP_CONFIG['xml_stylesheet'].empty?
+    match '/files/attachments/*xml.html' => 'xslt#show', :via => "get"
+  end
+
+  match "/404", :to => "errors#not_found"
+
   # Constraint to allow a dot (.) in release vesion
   constraints(:release_version => /[a-zA-Z0-9._\-\s\%]+/, :id => /[0-9]+/) do
     match '(/:release_version)/index'                                   => 'reports#index',             :via => "get"
@@ -59,5 +65,6 @@ Meegoqa::Application.routes.draw do
     match '/:release_version/:target(/:testset(/:product))'                     => 'report_groups#show',        :via => "get", :as => :group_report
     match '/:release_version'                                                   => 'reports#index',             :via => "get", :as => :release
   end
-    root :to => "reports#index"
+
+  root :to => "reports#index"
 end
