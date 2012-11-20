@@ -44,8 +44,12 @@ idea_link: 'https://github.com/leonidas/qa-reports/issues'
 date_format: '%d %B %Y'
 
 # xslt processing of any xml results file can be enabled with setting
-# a path to a xsl file.
+# a path to a xsl file. Adding this field adds [html] link after xml
+# result files in reports' original results files list. This allows
+# pretty representation of e.g. step information that is not
+# stored in QA Reports database.
+#
 # You can download MeeGo's result file xsl file from
 # http://meego.gitorious.org/meego-quality-assurance/test-definition
 # Example: xml_stylesheet = './lib/xslt/testdefinition-results.xsl'
-xml_stylesheet: './lib/xslt/testdefinition-results.xsl'
+xml_stylesheet: ''
