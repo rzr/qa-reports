@@ -24,20 +24,16 @@ require 'xml/xslt'
 class XsltController < ApplicationController
   def show
     xmlfile = params[:xml]
-    xmlfile = "./public/files/attachments/" + xmlfile + ".xml"
-    if File.exists?(xmlfile) 
-        if  File.exists?(APP_CONFIG['xml_stylesheet']) 
-            xslt = XML::XSLT.new()
+    xmlfile = "./public/files/attachments/" + xmlfile
 
-            xslt.xml = XML::Smart.open(xmlfile)
-            xslt.xsl = XML::Smart.open(APP_CONFIG['xml_stylesheet'])
+    if File.exists?(xmlfile)
+        xslt = XML::XSLT.new()
 
-            html = xslt.serve()
-            render text:html
-        else
-            logger.error "XSLT sheet not found: %s"%APP_CONFIG['xml_stylesheet']
-            render :formats => [:html], file:"public/500", :status => 500
-        end
+        xslt.xml = XML::Smart.open(xmlfile)
+        xslt.xsl = XML::Smart.open(APP_CONFIG['xml_stylesheet'])
+
+        html = xslt.serve()
+        render text:html
     else
         logger.warn "The requested xml file does not exist: %s"%xmlfile
         render :formats => [:html], file:"public/404", :status => 404

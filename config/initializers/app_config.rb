@@ -11,6 +11,12 @@ APP_CONFIG['idea_link']          ||= 'https://github.com/leonidas/qa-reports/iss
 APP_CONFIG['date_format']        ||= '%d %B %Y'
 APP_CONFIG['xml_stylesheet']     ||= ''
 
+# Check that the xsl file exists
+if !APP_CONFIG['xml_stylesheet'].empty? && !File.exists?(APP_CONFIG['xml_stylesheet'])
+  puts "WARNING: #{APP_CONFIG['xml_stylesheet']} does not exist. Disabling XSLT" # Rails.logger not available yet
+  APP_CONFIG['xml_stylesheet'] = ''
+end
+
 if CustomResult.table_exists?
   APP_CONFIG['custom_results'].each do |cr|
       CustomResult.find_or_create_by_name cr
