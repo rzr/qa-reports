@@ -65,6 +65,10 @@ class ApiController < ApplicationController
 
     rescue ActiveRecord::UnknownAttributeError => error
       return send_error(error.message)
+    rescue Exception => error
+      logger.error "ERROR: #{error.message}. Request parameters:"
+      logger.error params
+      return send_error(error.message)
     end
 
     # Check the errors
@@ -126,6 +130,10 @@ class ApiController < ApplicationController
         # TODO: Could we get reasonable error messages somehow? e.g. MeegoTestCase
         # may add an error from custom results but this just has a very generic error message
         return send_error(errors.message)
+      rescue Exception => error
+        logger.error "ERROR: #{error.message}. Request parameters:"
+        logger.error params
+        return send_error(error.message)
       end
 
       if parse_err.present?
