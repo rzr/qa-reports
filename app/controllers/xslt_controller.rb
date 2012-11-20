@@ -22,6 +22,8 @@ require 'xml/smart'
 require 'xml/xslt'
 
 class XsltController < ApplicationController
+  caches_page :show
+
   def show
     xmlfile = params[:xml]
     xmlfile = "./public/files/attachments/" + xmlfile
