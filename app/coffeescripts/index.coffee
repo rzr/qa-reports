@@ -123,7 +123,9 @@ $(document).ready ->
 
   Spine.Route.add "/:release/:scope": (params) ->
     $.get "/#{params.release}/categories.json?scope=#{params.scope}", (view_model) ->
-      $('a[href="/' + params.scope + '"]', '#report_filters').parent().addClass('current').siblings().removeClass('current').end()
+      # Set active tab
+      $.merge($('a[href="/' + params.scope + '"]', '#report_filters'),
+              $('a[href="/' + params.release + '"]', '#release_filters')).parent().addClass('current').siblings().removeClass('current').end()
       $navigation.render(view_model, directives).show()
 
   Spine.Route.setup()
