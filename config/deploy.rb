@@ -78,7 +78,7 @@ after "deploy:update_code" do
   run "ln -nfs #{shared_path}/files #{latest_release}/public/"
 end
 
-after "deploy:symlink" do
+after "deploy:create_symlink" do
   # Remove empty token file that comes with deployment and symlink to shared
   run "rm -rf #{current_path}/config/registeration_token"
   run "ln -nfs #{shared_path}/config/registeration_token #{current_path}/config/registeration_token"
