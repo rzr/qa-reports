@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911122704) do
+ActiveRecord::Schema.define(:version => 20121129103008) do
 
   create_table "custom_results", :force => true do |t|
     t.string "name"
@@ -71,24 +71,24 @@ ActiveRecord::Schema.define(:version => 20120911122704) do
   add_index "meego_test_cases", ["meego_test_session_id"], :name => "index_meego_test_cases_on_meego_test_session_id"
 
   create_table "meego_test_sessions", :force => true do |t|
-    t.string   "environment",                       :default => ""
-    t.string   "product",                           :default => ""
-    t.string   "title",                                                :null => false
-    t.string   "testset",                           :default => ""
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
-    t.string   "objective_txt",     :limit => 4000, :default => "",    :null => false
-    t.string   "build_txt",         :limit => 4000, :default => "",    :null => false
-    t.string   "qa_summary_txt",    :limit => 4000, :default => "",    :null => false
-    t.string   "issue_summary_txt", :limit => 4000, :default => "",    :null => false
-    t.boolean  "published",                         :default => false
-    t.string   "environment_txt",   :limit => 4000, :default => "",    :null => false
-    t.datetime "tested_at",                                            :null => false
-    t.integer  "author_id",                                            :null => false
-    t.integer  "editor_id",                                            :null => false
-    t.integer  "release_id",                                           :null => false
-    t.string   "build_id",                          :default => ""
-    t.integer  "profile_id",                                           :null => false
+    t.string   "environment",       :default => ""
+    t.string   "product",           :default => ""
+    t.string   "title",                                :null => false
+    t.string   "testset",           :default => ""
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.text     "objective_txt",                        :null => false
+    t.text     "build_txt",                            :null => false
+    t.text     "qa_summary_txt",                       :null => false
+    t.text     "issue_summary_txt",                    :null => false
+    t.boolean  "published",         :default => false
+    t.text     "environment_txt",                      :null => false
+    t.datetime "tested_at",                            :null => false
+    t.integer  "author_id",                            :null => false
+    t.integer  "editor_id",                            :null => false
+    t.integer  "release_id",                           :null => false
+    t.string   "build_id",          :default => ""
+    t.integer  "profile_id",                           :null => false
   end
 
   add_index "meego_test_sessions", ["release_id", "testset", "product"], :name => "index_meego_test_sessions_key"
