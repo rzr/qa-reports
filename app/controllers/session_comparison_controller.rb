@@ -7,7 +7,11 @@ class SessionComparisonController < ApplicationController
     if params[:compare_id].eql?("previous")
         @reports = [MeegoTestSession.fetch_for_comparison(params[:id]).prev_session,
                     MeegoTestSession.fetch_for_comparison(params[:id])]
-        @ids = [@reports[0].id, params[:id]]
+        if @reports[0].nil?
+            raise ActionController::RoutingError.new('Not Found')
+        else
+            @ids = [@reports[0].id, params[:id]]
+        end
     else
         @ids = [params[:id], params[:compare_id]]
         @reports = [MeegoTestSession.fetch_for_comparison(@ids[0]),
