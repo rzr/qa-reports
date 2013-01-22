@@ -28,8 +28,15 @@ class RssController < ApplicationController
       sort = params[:sort]
     end
 
+    # Trailing asterisk in release version name is allowed
+    if params[:release_version] =~ /^[a-zA-Z0-9._\-\s]+\*{1}/
+      releases = Release.find(:all, :conditions => ["name like ?", "#{params[:release_version].sub(/\*{1}$/, '')}%"])
+    else
+      releases = [Release.find_by_id(release.id)]
+    end
+
     filter = {
-        :release_id => release.id,
+        :release_id => [releases.collect(&:id)],
         :profile_id => Profile.find_by_name(params[:target]).try(:id),
         :testset    => testset,
         :product    => product
@@ -38,7 +45,7 @@ class RssController < ApplicationController
     @report_shows = MeegoTestSession.published.where(filter).order("#{sort} DESC").limit(10).map{|report| ReportShow.new(report)}
 
     response.headers["Content-Type"] = "application/xml; charset=utf-8"
-    
+
     respond_to do |format|
       format.xml
     end
