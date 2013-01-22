@@ -1,3 +1,20 @@
+def create_user()
+  @user = FactoryGirl.create(:user,
+    :name                  => 'Johnny Depp',
+    :email                 => 'john@meego.com',
+    :password              => 'buzzword',
+    :password_confirmation => 'buzzword')
+end
+
+def ui_login()
+  create_user()
+
+  click_link_or_button  'Sign In'
+  fill_in               'Email',    :with => 'john@meego.com'
+  fill_in               'Password', :with => 'buzzword'
+  click_link_or_button  'Login'
+end
+
 Given %r/^I am not logged in$/ do
   visit destroy_user_session_path
 end
@@ -8,16 +25,7 @@ Given %r/^I am viewing a test report$/ do
 end
 
 When %r/^I log in with valid credentials$/ do
-  user = FactoryGirl.create(:user,
-    :name                  => 'Johnny Depp',
-    :email                 => 'john@meego.com',
-    :password              => 'buzzword',
-    :password_confirmation => 'buzzword')
-
-  click_link_or_button  'Sign In'
-  fill_in               'Email',    :with => 'john@meego.com'
-  fill_in               'Password', :with => 'buzzword'
-  click_link_or_button  'Login'
+  ui_login()
 end
 
 Then %r/^I should be redirected back to the report I was viewing$/ do
@@ -48,7 +56,7 @@ end
 
 Given %r/^I am logged in$/ do
   visit '/'
-  step "I log in with valid credentials"
+  ui_login()
 end
 
 When %r/^I log out$/ do
