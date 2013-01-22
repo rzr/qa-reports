@@ -41,6 +41,12 @@ Feature: RSS Feed
     And I should see "N900"
     And I should see "2008-01-01" within "item:last"
 
+  Scenario: Fetch RSS feed with target profile wildcard
+    When I fetch the rss feed for "1.1/*/Sanity"
+    Then I should see 4 instances of "item"
+    And I should see "Core"
+    And I should see "Sanity"
+
   Scenario: Verify that offered RSS feeds change according to the page
     When I view the page for the release version "1.1"
     Then I should see the page header offer RSS feed for "1.1"
