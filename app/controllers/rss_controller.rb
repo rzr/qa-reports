@@ -35,6 +35,8 @@ class RssController < ApplicationController
       releases = [Release.find_by_id(release.id)]
     end
 
+    @wildcards_used = params[:release_version] =~ /\*{1}/ || params[:target] == "*"
+
     filter = {
         :release_id => [releases.collect(&:id)],
         :profile_id => Profile.find_by_name(params[:target]).try(:id),
