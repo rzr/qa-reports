@@ -26,6 +26,12 @@ xml.rss "version" => "2.0" do
 
     route = [release.name, profile.name, testset, product].compact.join('/')
 
+    # Set the route from first session if we have any so it would match
+    # at least to some extent if using wildcards
+    if @report_shows.length > 0 && @wildcards_used
+      route = [@report_shows[0].release.name, @report_shows[0].profile.name, testset, product].compact.join '/'
+    end
+
     xml.title route + " QA reports"
     xml.link root_url
     xml.description "#{APP_CONFIG['app_name']} for #{route}"
