@@ -24,7 +24,8 @@ class ApiController < ApplicationController
   include CacheHelper
 
   cache_sweeper :meego_test_session_sweeper, :only => [:import_data]
-  before_filter :api_authentication, :except => [:reports_by_limit_and_time]
+  before_filter :api_authentication, :except => [:reports_by_limit_and_time,
+                                                 :query_items]
 
   def record_not_found
     head :not_found
@@ -164,6 +165,23 @@ class ApiController < ApplicationController
     rescue ArgumentError => error
       return send_error(error.message)
     end
+  end
+
+  def query_items
+    data = []
+
+    if params[:item]
+      data = case params[:item]
+      when "releases"
+        Release.include_root_in_json = false
+        Release.select([:id, :name])
+      end
+    else
+      # TODO what to return?
+      Rails.logger.debug "Jou"
+    end
+
+    render json: data
   end
 
   private
