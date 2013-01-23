@@ -204,6 +204,21 @@ When %r/^I view the (updated )?report$/ do |unused_param|
   step %{I view the report "1.2/Core/Automated/N900"}
 end
 
+When %r/^I request API "(.*?)"$/ do |uri|
+  response = get uri
+  @json = ActiveSupport::JSON.decode response.body
+end
+
+Then %r/^I should get all releases existing in database$/ do
+  releases = Release.find(:all)
+  @json.length.should == releases.length
+
+  releses.each do |release|
+    elem = @json.to_a.detect {|e| e['name'] == release.name}
+    elem.should_not be_nil
+  end
+end
+
 Then %r/^I should be able to view the latest created report$/ do
   step %{I view the latest report "1.2/Core/Automated/N900"}
 end
