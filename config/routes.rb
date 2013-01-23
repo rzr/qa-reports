@@ -21,6 +21,8 @@ Meegoqa::Application.routes.draw do
   match '/api/merge/:id' => 'api#merge_result', :via => "post"
   match '/api/reports' => 'api#reports_by_limit_and_time', :via => "get"
 
+  match '/api/query/:item' => 'api#query_items', :via => "get"
+
   match '/download' => 'csv_export#export_report', :via => "get"
 
   match '/fetch_bugzilla_data' => 'bugs#fetch_bugzilla_data', :via => "get"
