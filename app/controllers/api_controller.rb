@@ -175,6 +175,9 @@ class ApiController < ApplicationController
       when "releases"
         Release.include_root_in_json = false
         Release.select([:id, :name])
+      when "targets"
+        Profile.include_root_in_json = false
+        Profile.select([:id, :name])
       end
     else
       # TODO what to return?
