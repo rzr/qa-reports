@@ -15,5 +15,7 @@ Feature: Query API
     Then I should get all targets existing in database
 
   Scenario: Listing allowed test results
+    Given I enable custom results "Pending", "Blocked"
     When I request API "/api/query/results"
     Then I should get all allowed test results
+    And I disable custom results
