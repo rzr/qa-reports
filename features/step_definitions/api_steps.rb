@@ -209,14 +209,23 @@ When %r/^I request API "(.*?)"$/ do |uri|
   @json = ActiveSupport::JSON.decode response.body
 end
 
-Then %r/^I should get all releases existing in database$/ do
-  releases = Release.find(:all)
-  @json.length.should == releases.length
-
-  releases.each do |release|
-    elem = @json.to_a.detect {|e| e['name'] == release.name}
+def check_query_api_json (items)
+  @json.should_not be_nil
+  @json.length.should == items.length
+  items.each do |item|
+    elem = @json.to_a.detect {|e| e['name'] == item.name}
     elem.should_not be_nil
   end
+end
+
+Then %r/^I should get all releases existing in database$/ do
+  releases = Release.all()
+  check_query_api_json releases
+end
+
+Then %r/^I should get all targets existing in database$/ do
+  targets = Profile.all()
+  check_query_api_json targets
 end
 
 Then %r/^I should be able to view the latest created report$/ do

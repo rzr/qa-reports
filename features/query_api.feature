@@ -9,3 +9,7 @@ Feature: Query API
   Scenario: Listing existing releases
     When I request API "/api/query/releases"
     Then I should get all releases existing in database
+
+  Scenario: Listing existing targets
+    When I request API "/api/query/targets"
+    Then I should get all targets existing in database
