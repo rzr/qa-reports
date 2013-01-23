@@ -8,6 +8,7 @@ Feature: RSS Feed
     And I have created the "1.1/Handset/Sanity/Aava" report using "sim.xml"
     And I have created the "1.1/Handset/Sanity/N900" report using "sim.xml"
     And I have created the "1.1/Handset/Weekly/Aava" report using "sim.xml"
+    And I have created the "1.2/Ivi/Sanity/Aava" report using "sim.xml"
 
   Scenario: Fetch RSS feed for leaf level filter
     When I fetch the rss feed for "1.1/Core/Sanity/Aava"
@@ -46,9 +47,10 @@ Feature: RSS Feed
     # remove values that are null, i.e. it really shouldn't be an asterisk
     # but any string that does not match a target
     When I fetch the rss feed for "1.*/*/Sanity"
-    Then I should see 4 instances of "item"
+    Then I should see 5 instances of "item"
     And I should see "Core"
     And I should see "Sanity"
+    And I should see "IVI"
 
   Scenario: Verify that offered RSS feeds change according to the page
     When I view the page for the release version "1.1"
