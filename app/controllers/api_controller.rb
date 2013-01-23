@@ -178,10 +178,9 @@ class ApiController < ApplicationController
       when "targets"
         Profile.include_root_in_json = false
         Profile.select([:id, :name])
+      when "results"
+        MeegoTestCaseHelper.possible_results
       end
-    else
-      # TODO what to return?
-      Rails.logger.debug "Jou"
     end
 
     render json: data
