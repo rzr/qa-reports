@@ -228,6 +228,14 @@ Then %r/^I should get all targets existing in database$/ do
   check_query_api_json targets
 end
 
+Then %r/^I should get all allowed test results$/ do
+  @json.should_not be_nil
+  results = ['Fail', 'N/A', 'Pass', 'Measured'] # Builtin
+  results.concat APP_CONFIG['custom_results']
+  @json.length.should == results.length
+  results.should =~ @json.to_a
+end
+
 Then %r/^I should be able to view the latest created report$/ do
   step %{I view the latest report "1.2/Core/Automated/N900"}
 end

@@ -13,3 +13,7 @@ Feature: Query API
   Scenario: Listing existing targets
     When I request API "/api/query/targets"
     Then I should get all targets existing in database
+
+  Scenario: Listing allowed test results
+    When I request API "/api/query/results"
+    Then I should get all allowed test results
