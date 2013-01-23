@@ -213,7 +213,7 @@ Then %r/^I should get all releases existing in database$/ do
   releases = Release.find(:all)
   @json.length.should == releases.length
 
-  releses.each do |release|
+  releases.each do |release|
     elem = @json.to_a.detect {|e| e['name'] == release.name}
     elem.should_not be_nil
   end
