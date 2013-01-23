@@ -29,7 +29,7 @@ class RssController < ApplicationController
     end
 
     # Trailing asterisk in release version name is allowed
-    if params[:release_version] =~ /^[a-zA-Z0-9._\-\s]+\*{1}/
+    if params[:release_version] =~ /\*{1}/
       releases = Release.find(:all, :conditions => ["name like ?", "#{params[:release_version].sub(/\*{1}$/, '')}%"])
     else
       releases = [Release.find_by_id(release.id)]
