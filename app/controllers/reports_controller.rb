@@ -162,12 +162,19 @@ class ReportsController < ApplicationController
     profile_id = Profile.find_by_name(params[:target]).id
 
 
-    sessions = MeegoTestSession.where("""
+    conditions = ["""
         tested_at >= ? AND tested_at <= ? AND
-        published = 1 AND release_id = ? AND profile_id = ? AND testset = ? AND product = ?""",
-        start_date, end_date, release_id, profile_id, params[:testset], params[:product])
-      .order("tested_at ASC, created_at ASC")
-      .includes(:features, {:meego_test_cases => :feature})
+        published = 1 AND release_id = ? AND profile_id = ? AND testset = ?""",
+        start_date, end_date, release_id, profile_id, params[:testset]]
+    if params[:product]
+      conditions[0] += " AND product = ?"
+      conditions.push params[:product]
+    end
+
+    sessions = MeegoTestSession.find(:all,
+                                     :conditions => conditions,
+                                     :order      => "tested_at ASC, created_at ASC",
+                                     :include    => [:features, {:meego_test_cases => :feature}])
 
     # Save the last feature where a particular testcase occurs
     testcase_feature = {}
