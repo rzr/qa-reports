@@ -14,7 +14,6 @@ set :scm, :git
 set :repository, "http://github.com/leonidas/qa-reports.git"
 
 ssh_options[:forward_agent] = true
-ssh_options[:user] = "www-data"
 
 after "deploy:setup" do
   # Create shared directories
