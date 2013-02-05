@@ -89,3 +89,11 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
     And I should get the cumulative summary for each feature
     And I should get the cumulative result for each test case
 
+  Scenario: Cumulative result summary from test set level as JSON
+    Given I am a user with a REST authentication token
+    And three report files with variation in statuses and cases have been uploaded
+
+    When I request a cumulative report over all reports under "1.2/Core/automated" as JSON
+    Then I should get the cumulative summary for the whole report
+    And I should get the cumulative summary for each feature
+    And I should get the cumulative result for each test case

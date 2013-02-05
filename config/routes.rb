@@ -51,7 +51,7 @@ Meegoqa::Application.routes.draw do
     match '/:release_version/:target/:testset/:product/:id/print'       => 'reports#print',            :via => "get", :as => :print_report
     match '/:release_version/:target/:testset/:product/:id/summary.json'=> 'reports#summary',          :via => "get"
 
-    match '/:release_version/:target/:testset(/:product)/cumulative'      => 'reports#cumulative',       :via => "get"
+    match '/:release_version/:target/:testset(/:product)/cumulative'    => 'reports#cumulative',       :via => "get"
 
     match '(/:release_version(/:target(/:testset(/:product))))/upload'  => 'upload#upload_form',       :via => "get", :as => :new_report
 
