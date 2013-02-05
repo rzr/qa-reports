@@ -116,6 +116,17 @@ When %r/^I request the report summary as json$/ do
   @json = ActiveSupport::JSON.decode(response.body)
 end
 
+When %r/^I request the report summary as json from shortcut uri$/ do
+  response = get "/1.2/Core/automated/N900.json"
+  json = ActiveSupport::JSON.decode(response.body)
+
+  json.length.should == 1
+  json[0]['id'].should_not be_nil
+
+  response = get "/reports/#{json[0]['id']}/summary.json"
+  @json = ActiveSupport::JSON.decode(response.body)
+end
+
 Then %r/^I should get the summary for the whole report$/ do
   summary = @json['summary']
 

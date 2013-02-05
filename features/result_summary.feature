@@ -69,6 +69,14 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
     Then I should get the summary for the whole report
     And I should get the summary for each feature
 
+  Scenario: Result summary as json from shortcut URI
+    Given the report for "results_by_feature.csv" exists on the service
+
+    When I request the report summary as json from shortcut uri
+
+    Then I should get the summary for the whole report
+    And I should get the summary for each feature
+
   Scenario: Result summary as JSON when custom results are enabled
     Given I am a user with a REST authentication token
     And I enable custom results "Pending", "Blocked"
