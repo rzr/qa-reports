@@ -1,6 +1,3 @@
-require "erb"
-include ERB::Util
-
 class BugsController < ApplicationController
 
   caches_action :fetch_bugzilla_data,
@@ -53,17 +50,10 @@ class BugsController < ApplicationController
       end
 
       response = http.request(req)
+      if (charset = /charset=(.*)$/.match(response.header['content-type']).try(:captures)).try(:length) == 1
+        response.body.force_encoding(charset[0])
+      end
       content  = response.body
-    end
-
-    # XXX: bugzilla seems to encode its exported csv to utf-8 twice
-    # so we convert from utf-8 to iso-8859-1, which is then interpreted
-    # as utf-8
-    begin
-      content = Iconv.iconv("iso-8859-1", "utf-8", content).join '\n'
-    rescue Iconv::IllegalSequence
-      # Better to return something than nothing if conversion fails,
-      # so just handle the original response in whatever charset it is
     end
 
     begin
