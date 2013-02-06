@@ -1,3 +1,7 @@
+
+require "erb"
+include ERB::Util
+
 class BugsController < ApplicationController
 
   caches_action :fetch_bugzilla_data,
