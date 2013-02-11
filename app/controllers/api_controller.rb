@@ -23,7 +23,6 @@ require 'cache_helper'
 class ApiController < ApplicationController
   include CacheHelper
 
-  cache_sweeper :meego_test_session_sweeper, :only => [:import_data]
   before_filter :api_authentication, :except => [:reports_by_limit_and_time,
                                                  :query_items]
 
@@ -79,6 +78,8 @@ class ApiController < ApplicationController
 
     begin
       @test_session.save!
+      expire_caches_for(@test_session)
+      expire_index_for(@test_session)
 
       report_url = url_for :controller => 'reports', :action => 'show', :release_version => @test_session.release.name, :target => params[:target], :testset => params[:testset], :product => params[:product], :id => @test_session.id
       render :json => {:ok => '1', :url => report_url}
