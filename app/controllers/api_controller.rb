@@ -61,7 +61,6 @@ class ApiController < ApplicationController
 
       @test_session.author = current_user
       @test_session.editor = current_user
-      @test_session.published = true
 
     rescue ActiveRecord::UnknownAttributeError => error
       return send_error(error.message)
@@ -78,6 +77,9 @@ class ApiController < ApplicationController
 
     begin
       @test_session.save!
+      @test_session.published = true
+      @test_session.save!
+
       expire_caches_for(@test_session)
       expire_index_for(@test_session)
 
