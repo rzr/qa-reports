@@ -17,6 +17,7 @@ module CacheHelper
     return if not test_session
     expire_fragment "show_page_#{test_session.id}"
     expire_fragment "print_page_#{test_session.id}"
+    expire_fragment "edit_page_#{test_session.id}"
   end
 
   def expire_caches_for(test_session, results = false)
