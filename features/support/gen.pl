@@ -29,7 +29,7 @@ for (my $i = 0; $i < SUITES; $i++)
 
 			for (my $l = 0; $l < MEASUREMENTS_IN_CASE; $l++)
 			{
-				print "<measurement name=\"ms_" . $i . "_" . $j . "_" . $k . "_" . $l . "\" unit=\"ms\" value=\"" . int(rand(10)) . "\" target=\"5\" fail=\"2\"/>\n";
+				print "<measurement name=\"ms_" . $i . "_" . $j . "_" . $k . "_" . $l . "\" unit=\"ms\" value=\"" . int(rand(10)) . "\" target=\"5\" failure=\"2\"/>\n";
 			}
 
 			print "</case>\n";

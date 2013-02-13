@@ -80,7 +80,7 @@ class ApiController < ApplicationController
       @test_session.published = true
       @test_session.save!
 
-      expire_caches_for(@test_session)
+      expire_caches_for(@test_session, true)
       expire_index_for(@test_session)
 
       report_url = url_for :controller => 'reports', :action => 'show', :release_version => @test_session.release.name, :target => params[:target], :testset => params[:testset], :product => params[:product], :id => @test_session.id

@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
   layout        'report'
   before_filter :authenticate_user!,         :except => [:index, :categories, :show, :print, :compare, :summary, :cumulative]
   before_filter :validate_path_params,       :only   => [:show, :print]
-  cache_sweeper :meego_test_session_sweeper, :only   => [:update, :delete, :publish]
+  cache_sweeper :meego_test_session_sweeper, :only   => [:update, :destroy, :publish]
 
   def index
     @index_model = Index.find_by_release(release, params[:show_all])

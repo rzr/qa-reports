@@ -3,37 +3,15 @@ class MeegoTestSessionSweeper < ActionController::Caching::Sweeper
 
   def after_save(record)
     test_session = record.is_a?(MeegoTestSession) ? record : record.meego_test_session
-    expire_cache(test_session)
+    return true unless test_session.published
+
+    expire_caches_for(test_session, true)
     expire_index_for(test_session)
   end
 
-  private
-
-
-  def expire_index_for(test_session)
-    expire_paging_action :controller => "report_groups", :action => "show", :release_version => test_session.release.name, :target => test_session.profile.name, :testset => test_session.testset, :product => test_session.product
-    expire_paging_action :controller => "report_groups", :action => "show", :release_version => test_session.release.name, :target => test_session.profile.name, :testset => test_session.testset
-    expire_paging_action :controller => "report_groups", :action => "show", :release_version => test_session.release.name, :target => test_session.profile.name
+  def after_destroy(record)
+    test_session = record.is_a?(MeegoTestSession) ? record : record.meego_test_session
+    expire_caches_for(test_session, true)
+    expire_index_for(test_session)
   end
-
-  def expire_fragments_for(test_session)
-  	return if not test_session
-    expire_fragment "show_page_#{test_session.id}"
-    expire_fragment "print_page_#{test_session.id}"
-    expire_fragment "edit_page_#{test_session.id}"
-  end
-
-  def expire_cache(test_session)
-    expire_fragments_for test_session
-
-  	prev_session = test_session.prev_session
-  	next_session = test_session.next_session
-
-  	expire_fragments_for prev_session
-  	expire_fragments_for next_session
-
-  	next_session = next_session.try(:next_session)
-  	expire_fragments_for next_session
-  end
-
 end
