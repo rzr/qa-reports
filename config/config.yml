@@ -53,3 +53,20 @@ date_format: '%d %B %Y'
 # http://meego.gitorious.org/meego-quality-assurance/test-definition
 # Example: xml_stylesheet = './lib/xslt/testdefinition-results.xsl'
 xml_stylesheet: ''
+
+# You can map the grouping related API parameters in case your organization
+# does not actually group your results under the current names. So if you
+# use e.g. SW Platform instead of a Release Version you can define mapping
+# from release_version to sw_platform so API users can use terms they're
+# familiar with. The mappings are checked in order default order, so you
+# can define e.g. 'target': 'testset' but not 'product': 'testset' because
+# the value assigned to the "real" testset would be delete when checking
+# mapping for product.
+#
+# Be careful as you could map over any of the other fields such as
+# created_at and then the upload will fail
+api_mapping:
+  release_version: ''
+  target: ''
+  testset: ''
+  product: ''
