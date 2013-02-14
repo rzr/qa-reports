@@ -27,6 +27,10 @@ When "the client sends a basic test result file via deprecated API" do
   step %{the client sends file "features/resources/sim.xml" via the deprecated REST API}
 end
 
+When "the client sends a basic test result file via custom mapped API" do
+  step %{the client sends file "features/resources/sim.xml" via custom mapped REST API}
+end
+
 When "the client sends a report with tests without features" do
   step %{the client sends file "spec/fixtures/no_features.xml" via the REST API}
 end
@@ -60,6 +64,13 @@ end
 When "the client sends a basic test result file with deprecated product parameter" do
   @response = api_import @default_version_2_api_opts.merge({
     "report.1" => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
+  })
+end
+
+# Custom mapped API params
+When %r/^the client sends file "([^"]*)" via custom mapped REST API$/ do |file|
+  @response = api_import @mapped_api_opts.merge({
+    "result_files[]" => Rack::Test::UploadedFile.new("#{file}", "text/xml")
   })
 end
 
@@ -408,4 +419,12 @@ Given "three report files with variation in statuses and cases have been uploade
   step %{session "cumulative1.csv" has been tested at "2011-01-01 01:01"}
   step %{session "cumulative2.csv" has been tested at "2011-02-01 01:01"}
   step %{session "cumulative3.csv" has been tested at "2011-03-01 01:01"}
+end
+
+Given "I define a mapping for API parameters" do
+  APP_CONFIG['api_mapping'] = {'release_version' => 'platform', 'target' => 'product', 'testset' => 'team', 'product' => 'testtype'}
+end
+
+Then "I disable mapping of API parameters" do
+  APP_CONFIG['api_mapping'] = {'release_version' => '', 'target' => '', 'testset' => '', 'product' => ''}
 end

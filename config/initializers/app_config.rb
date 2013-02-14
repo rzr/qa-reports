@@ -10,6 +10,7 @@ APP_CONFIG['documantation_link'] ||= 'https://github.com/leonidas/qa-reports/wik
 APP_CONFIG['idea_link']          ||= 'https://github.com/leonidas/qa-reports/issues'
 APP_CONFIG['date_format']        ||= '%d %B %Y'
 APP_CONFIG['xml_stylesheet']     ||= ''
+APP_CONFIG['api_mapping']        ||= {'release_version' => '', 'target' => '', 'testset' => '', 'product' => ''}
 
 # Check that the xsl file exists
 if !APP_CONFIG['xml_stylesheet'].empty? && !File.exists?(APP_CONFIG['xml_stylesheet'])

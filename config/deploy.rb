@@ -99,6 +99,11 @@ after "deploy:create_symlink" do
 end
 
 namespace :deploy do
+  desc "Deploy new version of config.yml"
+  task :app_settings do
+    upload("config/config.yml", "#{shared_path}/config/config.yml")
+  end
+
   desc "Restart the app server"
   task :restart, :roles => :app do
     run "touch #{current_path}/tmp/restart.txt"

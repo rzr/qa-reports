@@ -35,6 +35,14 @@ class ApiController < ApplicationController
     fix_request_params(params, errors)
     return send_error("Request contained invalid files: " + errors.join(',')) if not errors.empty?
 
+    # Check for API parameter mapping.
+    ['release_version', 'target', 'testset', 'product'].each do |original|
+      mapped = APP_CONFIG['api_mapping'][original]
+      if mapped != ''
+        params[original] = params.delete(mapped)
+      end
+    end
+
     # Map deprecated API params to current ones
     params[:hardware] ||= params[:hwproduct]
     params[:product]  ||= params[:hardware]
