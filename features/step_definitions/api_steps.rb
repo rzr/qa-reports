@@ -422,15 +422,9 @@ Given "three report files with variation in statuses and cases have been uploade
 end
 
 Given "I define a mapping for API parameters" do
-  APP_CONFIG['api_map_release_version'] = 'platform'
-  APP_CONFIG['api_map_target']          = 'product'
-  APP_CONFIG['api_map_testset']         = 'team'
-  APP_CONFIG['api_map_product']         = 'testset'
+  APP_CONFIG['api_mapping'] = {'release_version' => 'platform', 'target' => 'product', 'testset' => 'team', 'product' => 'testset'}
 end
 
 Then "I disable mapping of API parameters" do
-  APP_CONFIG['api_map_release_version'] = ''
-  APP_CONFIG['api_map_target']          = ''
-  APP_CONFIG['api_map_testset']         = ''
-  APP_CONFIG['api_map_product']         = ''
+  APP_CONFIG['api_mapping'] = {'release_version' => '', 'target' => '', 'testset' => '', 'product' => ''}
 end
