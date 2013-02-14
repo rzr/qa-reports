@@ -40,7 +40,7 @@ Before do
     "platform"        => "1.2",
     "product"         => "Core",
     "team"            => "automated",
-    "testset"         => "N900",
+    "testtype"        => "N900",
     "tested_at"       => Date.today.to_s,
     "result_files[]"  => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   }
