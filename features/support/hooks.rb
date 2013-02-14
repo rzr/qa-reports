@@ -34,6 +34,16 @@ Before do
     "hardware"        => "N900"
   })
   @default_version_2_api_opts.delete("product")
+
+  @mapped_api_opts = {
+    "auth_token"      => "foobar",
+    "platform"        => "1.2",
+    "product"         => "Core",
+    "team"            => "automated",
+    "testset"         => "N900",
+    "tested_at"       => Date.today.to_s,
+    "result_files[]"  => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
+  }
 end
 
 After do

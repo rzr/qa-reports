@@ -165,3 +165,12 @@ Feature: Import API
 
     And I should be able to view the created report
     And I should see the defined test cases
+
+  Scenario: Sending results using custom API parameters
+    Given I define a mapping for API parameters
+
+    When the client sends a basic test result file via custom mapped API
+    Then the upload succeeds
+    And I should be able to view the created report
+
+    And I disable mapping of API parameters
