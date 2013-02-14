@@ -35,6 +35,29 @@ class ApiController < ApplicationController
     fix_request_params(params, errors)
     return send_error("Request contained invalid files: " + errors.join(',')) if not errors.empty?
 
+    # Check for API parameter mapping.
+    ['release_version', 'target', 'testset', 'product'].each do |original|
+      mapped = APP_CONFIG['api_mapping'][original]
+      if mapped != ''
+        params[original] = params.delete(mapped)
+      end
+    end
+
+    # Map deprecated API params to current ones
+    params[:hardware] ||= params[:hwproduct]
+    params[:product]  ||= params[:hardware]
+    params[:testset]  ||= params[:testtype]
+    params[:build_id] ||= params.delete(:build_id_txt) if params[:build_id_txt]
+    params.delete(:hwproduct)
+    params.delete(:testtype)
+    params.delete(:hardware)
+
+    # Then fix some other possible problems -- if the request contains e.g.
+    # parameter release then ReportFactory.build would try to use that
+    # instead of getting a model instance
+    params[:release_version] ||= params.delete(:release)
+    params[:target]          ||= params.delete(:profile)
+
     [:release_version, :target, :product, :testset].each do |f|
       return send_error({f => "can't be blank"}) if not params[f]
     end
@@ -213,29 +236,6 @@ class ApiController < ApplicationController
     params.delete(:auth_token)
     params.delete(:controller)
     params.delete(:action)
-
-    # Check for API parameter mapping.
-    ['release_version', 'target', 'testset', 'product'].each do |original|
-      mapped = APP_CONFIG['api_mapping'][original]
-      if mapped != ''
-        params[original] = params.delete(mapped)
-      end
-    end
-
-    # Map deprecated API params to current ones
-    params[:hardware] ||= params[:hwproduct]
-    params[:product]  ||= params[:hardware]
-    params[:testset]  ||= params[:testtype]
-    params[:build_id] ||= params.delete(:build_id_txt) if params[:build_id_txt]
-    params.delete(:hwproduct)
-    params.delete(:testtype)
-    params.delete(:hardware)
-
-    # Then fix some other possible problems -- if the request contains e.g.
-    # parameter release then ReportFactory.build would try to use that
-    # instead of getting a model instance
-    params[:release_version] ||= params.delete(:release)
-    params[:target]          ||= params.delete(:profile)
 
     # Fix result files and attachments.
     params[:result_files] ||= []
