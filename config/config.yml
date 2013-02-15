@@ -54,6 +54,17 @@ date_format: '%d %B %Y'
 # Example: xml_stylesheet = './lib/xslt/testdefinition-results.xsl'
 xml_stylesheet: ''
 
+# You can change the labels used for grouping the test results. Default
+# grouping goes like release_version / target / testset / product, but
+# your organization likely uses some other names for the fields. You can
+# define custom name (for the UI) for each field. Notice, that you can also
+# change the names for the API using 'api_mapping' section below
+group_labels:
+  release_version: ''
+  target: ''
+  testset: ''
+  product: ''
+
 # You can map the grouping related API parameters in case your organization
 # does not actually group your results under the current names. So if you
 # use e.g. SW Platform instead of a Release Version you can define mapping
