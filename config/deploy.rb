@@ -100,8 +100,9 @@ end
 
 namespace :deploy do
   desc "Deploy new version of config.yml"
-  task :app_settings do
-    upload("config/config.yml", "#{shared_path}/config/config.yml")
+  task :app_settings, :roles => :app do
+    # https://gist.github.com/mrchrisadams/3084229/#comment-575046
+    top.upload("config/config.yml", "#{shared_path}/config/config.yml")
   end
 
   desc "Restart the app server"
