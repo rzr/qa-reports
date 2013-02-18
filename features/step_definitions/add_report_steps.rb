@@ -3,6 +3,10 @@ Given %r/^I upload a new report with different comments$/ do
   report.features << FactoryGirl.build(:feature, :name => "WLAN")
 end
 
+Given /^I set custom labels for release, target etc\.$/ do
+  APP_CONFIG['group_labels'] = {'release_version' => 'Platform', 'target' => 'Version', 'testset' => 'Team', 'product' => 'Test type'}
+end
+
 And %r/^(?:|I )upload the report "([^"]*)" with different comments$/ do |report|
     When %{I follow "Add report"}
     And %{I select target "Core", test set "automated" and product "N900" with date "2010-02-12"}
@@ -25,4 +29,8 @@ end
 
 And %r/^I ([^"]*) uploading empty result files$/ do |verb|
   APP_CONFIG['allow_empty_files'] = (verb == "enable")
+end
+
+Then /^I reset the labels$/ do
+  APP_CONFIG['group_labels'] = {'release_version' => '', 'target' => '', 'testset' => '', 'product' => ''}
 end

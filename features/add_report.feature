@@ -205,6 +205,17 @@ Feature:
 
     Then I disable custom results
 
+  Scenario: Custom labels are shown on add report page
+    Given I set custom labels for release, target etc.
+
+    When I follow "Add report"
+    Then I should see "Platform"
+    And I should see "Version"
+    And I should see "Team"
+    And I should see "Test type"
+
+    Then I reset the labels
+
   @selenium
   Scenario: Add new report with underscore in test set and product names
     When I follow "Add report"

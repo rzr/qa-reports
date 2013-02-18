@@ -11,6 +11,24 @@ APP_CONFIG['idea_link']          ||= 'https://github.com/leonidas/qa-reports/iss
 APP_CONFIG['date_format']        ||= '%d %B %Y'
 APP_CONFIG['xml_stylesheet']     ||= ''
 APP_CONFIG['api_mapping']        ||= {'release_version' => '', 'target' => '', 'testset' => '', 'product' => ''}
+APP_CONFIG['group_labels']       ||= {'release_version' => 'MeeGo release',
+                                      'target' => 'Target profile',
+                                      'testset' => 'Test set',
+                                      'product' => 'Product'}
+
+# Check the group labels and set to defaults if not defined
+if APP_CONFIG['group_labels']['release_version'].blank?
+  APP_CONFIG['group_labels']['release_version'] = 'MeeGo release'
+end
+if APP_CONFIG['group_labels']['target'].blank?
+  APP_CONFIG['group_labels']['target'] = 'Target profile'
+end
+if APP_CONFIG['group_labels']['testset'].blank?
+  APP_CONFIG['group_labels']['testset'] = 'Test set'
+end
+if APP_CONFIG['group_labels']['product'].blank?
+  APP_CONFIG['group_labels']['product'] = 'Product'
+end
 
 # Check that the xsl file exists
 if !APP_CONFIG['xml_stylesheet'].empty? && !File.exists?(APP_CONFIG['xml_stylesheet'])
