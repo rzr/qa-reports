@@ -38,7 +38,7 @@ Before do
   @mapped_api_opts = {
     "auth_token"      => "foobar",
     "platform"        => "1.2",
-    "product"         => "Core",
+    "branch"          => "Core",
     "team"            => "automated",
     "testtype"        => "N900",
     "tested_at"       => Date.today.to_s,

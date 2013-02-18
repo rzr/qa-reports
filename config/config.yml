@@ -72,10 +72,11 @@ group_labels:
 # familiar with. The mappings are checked in order default order, so you
 # can define e.g. 'target': 'testset' but not 'product': 'testset' because
 # the value assigned to the "real" testset would be delete when checking
-# mapping for product.
+# mapping for product. Also if you define parameters with same names as the
+# default ones, upload with default parameters likely fails.
 #
 # Be careful as you could map over any of the other fields such as
-# created_at and then the upload will fail
+# created_at and then the upload will fail.
 api_mapping:
   release_version: ''
   target: ''
