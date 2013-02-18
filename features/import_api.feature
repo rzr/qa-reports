@@ -174,3 +174,12 @@ Feature: Import API
     And I should be able to view the created report
 
     And I disable mapping of API parameters
+
+  Scenario: Sending results using default API parameters with custom parmeters enabled
+    Given I define a mapping for API parameters
+
+    When the client sends a basic test result file
+    Then the upload succeeds
+    And I should be able to view the created report
+
+    And I disable mapping of API parameters

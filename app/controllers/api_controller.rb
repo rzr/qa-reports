@@ -38,7 +38,7 @@ class ApiController < ApplicationController
     # Check for API parameter mapping.
     ['release_version', 'target', 'testset', 'product'].each do |original|
       mapped = APP_CONFIG['api_mapping'][original]
-      if mapped != ''
+      if mapped != '' and params.has_key?(mapped)
         params[original] = params.delete(mapped)
       end
     end
