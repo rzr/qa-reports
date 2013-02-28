@@ -1,21 +1,23 @@
 h2#contents_title Contents
 ol.toc
-  li 
+  li
     a href="#test_objective" Test objective
-  li 
+  li
     a href="#build" Build (image)
-  li 
+  li
     a href="#environment" Test Environment
   li
     a href="#qa_summary" Quality Summary
   li
     a href="#test_results" Test Results
   ol
-    li
-      a href="#test_results" Result Summary
-    -if @report.has_cases?
+    -if not @report.hide_summary
       li
-        a href="#test_features" Test Results by Feature
+        a href="#test_results" Result Summary
+      -if @report.has_cases?
+        li
+          a href="#test_features" Test Results by Feature
+    -if @report.has_cases?
       - if @report.has_non_nft?
         li
           a href="#detailed_results" Detailed Test Results
