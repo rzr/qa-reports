@@ -35,6 +35,10 @@ When "the client sends a report with tests without features" do
   step %{the client sends file "spec/fixtures/no_features.xml" via the REST API}
 end
 
+When "the client sends a basic test result file with option to hide summary" do
+  @response = api_import @default_api_opts.merge({"hide_summary" => true})
+end
+
 # Note: this must use the API parameters for the current API version. There
 # are other methods for using deprecated parameters.
 When %r/^the client sends file "([^"]*)" via the REST API$/ do |file|
