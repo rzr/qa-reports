@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121129103008) do
+ActiveRecord::Schema.define(:version => 20130228061601) do
 
   create_table "custom_results", :force => true do |t|
     t.string "name"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(:version => 20121129103008) do
     t.integer  "release_id",                           :null => false
     t.string   "build_id",          :default => ""
     t.integer  "profile_id",                           :null => false
+    t.boolean  "hide_summary",      :default => false
   end
 
   add_index "meego_test_sessions", ["release_id", "testset", "product"], :name => "index_meego_test_sessions_key"
