@@ -54,7 +54,7 @@ class MeegoTestSession < ActiveRecord::Base
   has_many :result_files,     :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'result_file'}
   has_many :attachments,      :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'attachment'}
 
-  has_many :metrics, :dependent => :delete_all, :order => "group_name ASC"
+  has_many :metrics, :dependent => :delete_all, :order => "group_name ASC, name ASC"
 
   validates_presence_of :title, :testset, :product
   validates_presence_of :result_files

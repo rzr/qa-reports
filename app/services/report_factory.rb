@@ -45,6 +45,7 @@ class ReportFactory
 
   def parse_result_files(params)
     features = {}
+    metrics  = []
 
     params[:result_files] ||= []
     params[:result_files_attributes] ||= []
@@ -59,6 +60,9 @@ class ReportFactory
       elsif result_attachment.filename =~ /.xml$/i
         begin
           new_features = XMLResultFileParser.new.parse(file)
+
+          file.pos = 0 # Back to start of the file
+          new_metrics  = XMLResultFileParser.new.parse_metrics(file)
         rescue Nokogiri::XML::SyntaxError => e
           raise ParseError.new(result_attachment.filename), result_attachment.filename + ": " + e.message
         end
@@ -69,11 +73,15 @@ class ReportFactory
       raise ParseError.new(result_attachment.filename), result_attachment.filename + " didn't contain any valid test cases" if new_features.empty? and not APP_CONFIG['allow_empty_files']
 
       merge_results(features, new_features)
+      # TODO: Now there can be more than one by the same group/name. Should
+      # we instead replace if existing group/name exists?
+      metrics.concat new_metrics
     end
 
     params[:features_attributes] = features.map do |feature, test_cases|
       { :name => feature, :meego_test_cases_attributes => test_cases.values }
     end
+    params[:metrics_attributes] = metrics
   end
 
   def merge_results(features, new_features)
