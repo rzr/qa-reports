@@ -54,7 +54,7 @@ class MeegoTestSession < ActiveRecord::Base
   has_many :result_files,     :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'result_file'}
   has_many :attachments,      :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'attachment'}
 
-  has_many :metrics, :dependent => :delete_all, :order => "group_name ASC, name ASC"
+  has_many :metrics, :dependent => :delete_all, :order => "id ASC"
 
   validates_presence_of :title, :testset, :product
   validates_presence_of :result_files
@@ -192,6 +192,11 @@ class MeegoTestSession < ActiveRecord::Base
   def test_case_by_name(feature_key, name)
     @test_case_hash ||= meego_test_cases.to_nested_hash [:feature_key, :name]
     @test_case_hash[feature_key][name] unless @test_case_hash[feature_key].nil?
+  end
+
+  def grouped_metrics
+    # Group by group_name
+    @metrics_groups ||= metrics.group_by {|m| m[:group_name]}
   end
 
   ###############################################
