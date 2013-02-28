@@ -88,7 +88,11 @@ Then /^I disable custom results$/ do
 end
 
 When /^I hide the report summary$/ do
-  with_scope(".result_summary") do
+  with_scope("#test_results") do
     click_link "Remove"
   end
+end
+
+When /^I enable the report summary$/ do
+  step %{I hide the report summary}
 end

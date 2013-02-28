@@ -1,7 +1,9 @@
-h2#test_results
+h2#test_results class="#{if @editing and @report.hide_summary then 'removed' end}"
+  -if @editing
+    a.toggle_summary(href="#" class="#{if @report.hide_summary then 'undo_remove_list_item' else 'remove_list_item' end}" id="report_id_#{@report.id}") Remove
   | Test Results
   span.heading_actions= back_to_top
-.section.emphasized_section
+.section.emphasized_section.result_summary class="#{if @editing and @report.hide_summary then 'removed' end}"
   .container
     = yield :test_result_navigation
 

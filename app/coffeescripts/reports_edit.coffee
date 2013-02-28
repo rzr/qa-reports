@@ -337,6 +337,19 @@ toggleRemoveTestCase = (eventObject) ->
     $testCaseRow.find('.testcase_notes').toggleClass 'edit'
     $testCaseRow.find('.testcase_result').toggleClass 'edit'
 
+toggleRemoveSummary = (id) ->
+    $summary = $('.result_summary')
+
+    if $summary.hasClass 'removed'
+        $.post "/reports/#{id}", {"_method": "put", "report": {"hide_summary": "false"}}
+    else
+        $.post "/reports/#{id}", {"_method": "put", "report": {"hide_summary": "true"}}
+
+    $summary.toggleClass 'removed'
+    $summary.prev('h2').toggleClass 'removed'
+    $('.toggle_summary').toggleClass 'remove_list_item'
+    $('.toggle_summary').toggleClass 'undo_remove_list_item'
+
 removeTestCase = (id, callback) ->
     $.post "/test_cases/#{id}", {"_method": "put", "test_case": {"deleted": "true"}}, () ->
         callback? this
@@ -396,6 +409,11 @@ $(document).ready () ->
     $('.toggle_testcase').click (eObj) ->
         toggleRemoveTestCase eObj
         return false
+
+    $('.toggle_summary').on 'click', (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        toggleRemoveSummary $(this).attr('id').split('_').pop()
 
     fetchBugzillaInfo()
     prepareCategoryUpdate "#category-dialog"
