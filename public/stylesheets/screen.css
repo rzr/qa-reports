@@ -1454,6 +1454,15 @@ textarea.txt_edit {
     float: left;
     width: 780px; }
 
+.floating_table {
+    float: left;
+    width: 400px;
+}
+
+.floating_table td {
+    vertical-align: top;
+}
+
 #test_result_overview .value {
     width: 40px;}
 

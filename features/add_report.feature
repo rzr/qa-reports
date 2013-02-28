@@ -230,8 +230,7 @@ Feature:
     Then I should see "Test_set" within ".index_month .odd .report_name"
     Then I should see "Hardware_32" within ".index_month .odd .report_name"
 
-  @javascript
-  Scenario: Custom statuses shown for test cases
+  Scenario: Report with metrics can be added
     When I follow "Add report"
     And I select target "Handset", test set "Custom Results" and product "N990"
     And I attach the report "xml_with_metrics.xml"
@@ -240,3 +239,5 @@ Feature:
 
     Then I should see "Reliability Summary"
     And I should see "Load Summary"
+    And I should see "Average CPU load"
+    And I should see "Response time under load"

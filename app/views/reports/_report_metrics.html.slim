@@ -1,0 +1,16 @@
+h2#report_metrics
+  | Metrics
+  span.heading_actions= back_to_top
+.section.emphasized_section
+  .container
+    = yield :test_result_navigation
+    - @report.grouped_metrics.each_with_index do |(group, metrics), i|
+      h3(class="#{if i == 0 then 'first' end}" id="report_metrics_#{i}")= group
+
+      .wrap
+        table.floating_table
+          - metrics.each_with_index do |m, i|
+            tr(class="#{cycle 'even', 'odd'}")
+              td.name= m.name
+              td.value= m.value
+              td= m.unit
