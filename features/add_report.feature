@@ -230,3 +230,13 @@ Feature:
     Then I should see "Test_set" within ".index_month .odd .report_name"
     Then I should see "Hardware_32" within ".index_month .odd .report_name"
 
+  @javascript
+  Scenario: Custom statuses shown for test cases
+    When I follow "Add report"
+    And I select target "Handset", test set "Custom Results" and product "N990"
+    And I attach the report "xml_with_metrics.xml"
+    And I press "Next"
+    And I press "Publish"
+
+    Then I should see "Reliability Summary"
+    And I should see "Load Summary"

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <!-- Notice: Metrics section is NOT compliant with the original MeeGo
+       test definition XML schema. -->
+  <metrics>
+    <group name="Reliability Summary">
+      <metric name="First crash" value="38" unit="hours"/>
+      <metric name="Average CPU load" value="37" unit="%"/>
+    </group>
+    <group name="Load Summary">
+      <metric name="Response time under load" value="5.9" unit="ms"/>
+    </group>
+  </metrics>
+  <suite name="Suite">
+    <set name="Set">
+      <case name="Case" result="PASS"/>
+    </set>
+  </suite>
+</testresults>
