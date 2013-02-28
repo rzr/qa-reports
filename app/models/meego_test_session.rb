@@ -54,6 +54,8 @@ class MeegoTestSession < ActiveRecord::Base
   has_many :result_files,     :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'result_file'}
   has_many :attachments,      :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'attachment'}
 
+  has_many :metrics, :dependent => :delete_all, :order => "group_name ASC"
+
   validates_presence_of :title, :testset, :product
   validates_presence_of :result_files
   validates_presence_of :author
@@ -61,7 +63,7 @@ class MeegoTestSession < ActiveRecord::Base
   validates             :tested_at, :date_time => true
   validate              :validate_profile_testset_and_product
 
-  accepts_nested_attributes_for :features, :result_files
+  accepts_nested_attributes_for :features, :result_files, :metrics
 
   scope :published,  where(:published => true)
   scope :release,    lambda { |release| published.joins(:release).where(:releases => {:name => release}) }
