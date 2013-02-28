@@ -147,3 +147,12 @@ Feature: Edit Report
 
     Then I should see "edited comment"
 
+  @javascript
+  Scenario: I hide report summary
+    When I edit the report "1.2/Core/automated/N900"
+
+    And I hide the report summary
+    And I press "Done"
+
+    Then I return to view the report "1.2/Core/automated/N900"
+    And I should not see "Result Summary"

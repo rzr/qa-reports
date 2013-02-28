@@ -86,3 +86,9 @@ end
 Then /^I disable custom results$/ do
   APP_CONFIG['custom_results'] = []
 end
+
+When /^I hide the report summary$/ do
+  with_scope(".result_summary") do
+    click_link "Remove"
+  end
+end
