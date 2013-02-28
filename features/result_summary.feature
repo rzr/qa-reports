@@ -117,4 +117,4 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
     And I should not see "Result Summary"
     And I should not see "Test Results by Feature" within ".toc"
     And I should not see "Test Results by Feature"
-    And I should not see "Test Results" within "#test_results"
+
