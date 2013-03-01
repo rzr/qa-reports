@@ -147,3 +147,37 @@ Feature: Edit Report
 
     Then I should see "edited comment"
 
+  @javascript
+  Scenario: I hide and reshow report summary
+    When I edit the report "1.2/Core/automated/N900"
+
+    And I hide the report summary
+    And I press "Done"
+
+    Then I return to view the report "1.2/Core/automated/N900"
+    And I should not see "Result Summary"
+
+    Then I edit the report "1.2/Core/automated/N900"
+    And I enable the report summary
+    And I press "Done"
+
+    Then I return to view the report "1.2/Core/automated/N900"
+    And I should see "Result Summary"
+
+  @javascript
+  Scenario: I hide and reshow report metrics
+    Given the report for "xml_with_metrics.xml" exists on the service
+    When I edit the report "1.2/Core/automated/N900"
+
+    And I hide the report metrics
+    And I press "Done"
+
+    Then I return to view the report "1.2/Core/automated/N900"
+    And I should not see "Metrics"
+
+    Then I edit the report "1.2/Core/automated/N900"
+    And I enable the report metrics
+    And I press "Done"
+
+    Then I return to view the report "1.2/Core/automated/N900"
+    And I should see "Metrics"

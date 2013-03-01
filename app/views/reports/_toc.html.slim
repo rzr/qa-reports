@@ -8,6 +8,13 @@ ol.toc
     a href="#environment" Test Environment
   li
     a href="#qa_summary" Quality Summary
+  -if @report.metrics.present? and not @report.hide_metrics
+    li
+      a href="#report_metrics" Metrics
+    ol
+      - @report.grouped_metrics.each_with_index do |(group, metrics), i|
+        li
+          a(href="#report_metrics_#{i}")= group
   li
     a href="#test_results" Test Results
   ol

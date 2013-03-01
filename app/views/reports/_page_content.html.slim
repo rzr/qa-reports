@@ -31,7 +31,9 @@
     = render :partial => 'editable_text', :locals => {:anchor => 'build', :title => "Build (image)", :field => 'build'}
     = render :partial => 'editable_text', :locals => {:anchor => 'environment', :title => "Test Environment", :field => 'environment'}
     = render :partial => 'editable_text', :locals => {:anchor => 'qa_summary', :title => "Quality Summary", :field => 'qa_summary'}
-    -if not @report.hide_summary
+    -if @report.metrics.present? and (not @report.hide_metrics or @editing)
+      =render :partial => 'reports/report_metrics'
+    -if not @report.hide_summary or @editing
       = render :partial => 'reports/test_results'
 
     = yield :result_edit_notification

@@ -25,3 +25,5 @@ $(window).load () ->
     g.data 'n/a',  summary_na,     '#ddd'
     g.labels = summary_labels
     g.draw()
+
+    # Then draw graphs for metrics

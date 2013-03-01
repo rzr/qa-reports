@@ -54,6 +54,8 @@ class MeegoTestSession < ActiveRecord::Base
   has_many :result_files,     :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'result_file'}
   has_many :attachments,      :class_name => 'FileAttachment', :as => :attachable, :dependent => :destroy, :conditions => {:attachment_type => 'attachment'}
 
+  has_many :metrics, :dependent => :delete_all, :order => "id ASC"
+
   validates_presence_of :title, :testset, :product
   validates_presence_of :result_files
   validates_presence_of :author
@@ -61,7 +63,7 @@ class MeegoTestSession < ActiveRecord::Base
   validates             :tested_at, :date_time => true
   validate              :validate_profile_testset_and_product
 
-  accepts_nested_attributes_for :features, :result_files
+  accepts_nested_attributes_for :features, :result_files, :metrics
 
   scope :published,  where(:published => true)
   scope :release,    lambda { |release| published.joins(:release).where(:releases => {:name => release}) }
@@ -190,6 +192,19 @@ class MeegoTestSession < ActiveRecord::Base
   def test_case_by_name(feature_key, name)
     @test_case_hash ||= meego_test_cases.to_nested_hash [:feature_key, :name]
     @test_case_hash[feature_key][name] unless @test_case_hash[feature_key].nil?
+  end
+
+  def metric_by_name(group_name, name)
+    grouped_metrics[group_name].select {|m| m[:name] == name} .first unless grouped_metrics[group_name].nil?
+  end
+
+  def grouped_metrics
+    # Group by group_name
+    @metrics_groups ||= metrics.group_by {|m| m[:group_name]}
+  end
+
+  def charted_metrics
+    @charted_metrics ||= metrics.where("chart = ?", true)
   end
 
   ###############################################
@@ -420,12 +435,26 @@ class MeegoTestSession < ActiveRecord::Base
 
   def merge!(report_hash)
     current_features = features.index_by &:name
+    current_metrics  = metrics.index_by {|m| "#{m[:group_name]}_#{m[:name]}"}
+
     to_update, to_create = report_hash[:features_attributes].
                            partition {|fh| current_features.has_key? fh[:name]}
 
     to_update.each { |fh| current_features[fh[:name]].merge! fh }
 
     to_create.each { |fh| features.create fh }
+
+    # Then metrics,given that we have any
+    unless report_hash[:metrics_attributes].nil?
+      to_update, to_create = report_hash[:metrics_attributes].
+                             partition {|m| current_metrics.has_key? "#{m[:group_name]}_#{m[:name]}"}
+
+      to_update.each do |m|
+        metric_by_name(m[:group_name], m[:name]).update_attributes(m)
+      end
+
+      to_create.each {|m| metrics.create m}
+    end
 
     # Store only if there are no errors and the session is valid.
     # Error count is checked separately because the model may be

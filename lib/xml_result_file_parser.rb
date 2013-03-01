@@ -13,6 +13,15 @@ class XMLResultFileParser
     end
   end
 
+  # Parse <metrics> section separately
+  def parse_metrics(io)
+    Nokogiri::XML(io) { |config| config.strict } .css('metrics group') .inject([]) do |metrics, group|
+      group_metrics = parse_group_metrics(group)
+      metrics.concat group_metrics
+      metrics
+    end
+  end
+
   def parse_test_cases(set)
     set.css('case, testcase').map do |test_case|
       raise Nokogiri::XML::SyntaxError.new("Missing test case name") unless test_case['name'].present?
@@ -61,6 +70,18 @@ class XMLResultFileParser
   end
 
   private
+
+  def parse_group_metrics(group)
+    group.css('metric').map do |metric|
+      {
+        :group_name => group['name'].try(:strip),
+        :name       => metric['name'].try(:strip),
+        :unit       => metric['unit'] || "",
+        :value      => metric['value'],
+        :chart      => metric['chart'] || false
+      }
+    end
+  end
 
   def get_result(test_case)
     # MeeGo test definition

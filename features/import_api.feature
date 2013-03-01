@@ -183,3 +183,14 @@ Feature: Import API
     And I should be able to view the created report
 
     And I disable mapping of API parameters
+
+  Scenario: Sending result file with metrics
+    When the client sends result file with metrics
+    Then the upload succeeds
+
+    And I should be able to view the created report
+
+    And I should see "Reliability Summary"
+    And I should see "Load Summary"
+    And I should see "Average CPU load"
+    And I should see "Response time under load"

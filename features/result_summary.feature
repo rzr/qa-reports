@@ -106,7 +106,7 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
     And I should get the cumulative summary for each feature
     And I should get the cumulative result for each test case
 
-  Scenario: Result summary is hidden if defined so in result XML
+  Scenario: Result summary is hidden if defined so in REST params
     Given I am a user with a REST authentication token
 
     When the client sends a basic test result file with option to hide summary
@@ -117,4 +117,16 @@ I want to see pass, fail and N/A totals. Additionally, I want to see run rate, p
     And I should not see "Result Summary"
     And I should not see "Test Results by Feature" within ".toc"
     And I should not see "Test Results by Feature"
+
+  Scenario: Result summary is hidden if defined so in REST params
+    Given I am a user with a REST authentication token
+
+    When the client sends a test result with metrics with option to hide metrics
+    Then the upload succeeds
+    And I should be able to view the created report
+
+    Then I should not see "Metrics" within ".toc"
+    And I should not see "Metrics"
+    And I should not see "Reliability Summary" within ".toc"
+    And I should not see "Reliability Summary"
 

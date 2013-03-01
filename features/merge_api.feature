@@ -150,3 +150,19 @@ Feature: Merge API
 
     When I view the latest report
     Then I should not see "custom_statuses.xml" within "#result_file_drag_drop_area .file_list"
+
+  Scenario: Merge reports with metrics
+    When the client sends result file with metrics
+    Then the upload succeeds
+
+    When I merge with the latest report using result file "xml_with_metrics_2.xml"
+    Then the API responds ok
+
+    When I view the latest report
+
+    Then I should see "Reliability Summary"
+    And I should see "Load Summary"
+    And I should see "Average CPU load"
+    And I should see "Response time under load"
+    And I should see "Some new metric"
+    And I should see "25" within "td.value"

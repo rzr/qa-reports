@@ -39,6 +39,12 @@ When "the client sends a basic test result file with option to hide summary" do
   @response = api_import @default_api_opts.merge({"hide_summary" => true})
 end
 
+When "the client sends a test result with metrics with option to hide metrics" do
+  @response = api_import @default_api_opts.merge({"hide_metrics" => true,
+    "result_files[]" => Rack::Test::UploadedFile.new("features/resources/xml_with_metrics.xml", "text/xml")})
+end
+
+
 # Note: this must use the API parameters for the current API version. There
 # are other methods for using deprecated parameters.
 When %r/^the client sends file "([^"]*)" via the REST API$/ do |file|
@@ -122,6 +128,11 @@ end
 When "the client sends googletest result file" do
   step %{the client sends file "features/resources/googletest.xml" via the REST API}
 end
+
+When "the client sends result file with metrics" do
+  step %{the client sends file "features/resources/xml_with_metrics.xml" via the REST API}
+end
+
 
 When %r/^the client sends a request with string value instead of a file$/ do
     @response = api_import @default_api_opts.merge("report.1" => "Foo!")
