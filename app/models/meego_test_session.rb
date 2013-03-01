@@ -444,15 +444,17 @@ class MeegoTestSession < ActiveRecord::Base
 
     to_create.each { |fh| features.create fh }
 
-    # Then metrics
-    to_update, to_create = report_hash[:metrics_attributes].
-                           partition {|m| current_metrics.has_key? "#{m[:group_name]}_#{m[:name]}"}
+    # Then metrics,given that we have any
+    unless report_hash[:metrics_attributes].nil?
+      to_update, to_create = report_hash[:metrics_attributes].
+                             partition {|m| current_metrics.has_key? "#{m[:group_name]}_#{m[:name]}"}
 
-    to_update.each do |m|
-      metric_by_name(m[:group_name], m[:name]).update_attributes(m)
+      to_update.each do |m|
+        metric_by_name(m[:group_name], m[:name]).update_attributes(m)
+      end
+
+      to_create.each {|m| metrics.create m}
     end
-
-    to_create.each {|m| metrics.create m}
 
     # Store only if there are no errors and the session is valid.
     # Error count is checked separately because the model may be

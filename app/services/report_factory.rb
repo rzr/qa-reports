@@ -60,9 +60,10 @@ class ReportFactory
       elsif result_attachment.filename =~ /.xml$/i
         begin
           new_features = XMLResultFileParser.new.parse(file)
-
-          file.pos = 0 # Back to start of the file
-          new_metrics  = XMLResultFileParser.new.parse_metrics(file)
+          if file.respond_to?(:pos)
+            file.pos = 0 # Back to start of the file
+            new_metrics  = XMLResultFileParser.new.parse_metrics(file)
+          end
         rescue Nokogiri::XML::SyntaxError => e
           raise ParseError.new(result_attachment.filename), result_attachment.filename + ": " + e.message
         end
