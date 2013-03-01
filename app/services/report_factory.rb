@@ -74,7 +74,7 @@ class ReportFactory
 
       merge_results(features, new_features)
       # Concatenate for now, remove duplicates later
-      metrics.concat new_metrics
+      metrics.concat new_metrics unless new_metrics.nil?
     end
 
     params[:features_attributes] = features.map do |feature, test_cases|
