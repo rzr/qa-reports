@@ -337,18 +337,15 @@ toggleRemoveTestCase = (eventObject) ->
     $testCaseRow.find('.testcase_notes').toggleClass 'edit'
     $testCaseRow.find('.testcase_result').toggleClass 'edit'
 
-toggleRemoveSummary = (id) ->
-    $summary = $('.result_summary')
+toggleRemoveSection = (id, field, $section, $button) ->
+    obj = {}
+    obj[field] = !$section.hasClass('removed')
+    $.post "/reports/#{id}", {"_method": "put", "report": obj}
 
-    if $summary.hasClass 'removed'
-        $.post "/reports/#{id}", {"_method": "put", "report": {"hide_summary": "false"}}
-    else
-        $.post "/reports/#{id}", {"_method": "put", "report": {"hide_summary": "true"}}
-
-    $summary.toggleClass 'removed'
-    $summary.prev('h2').toggleClass 'removed'
-    $('.toggle_summary').toggleClass 'remove_list_item'
-    $('.toggle_summary').toggleClass 'undo_remove_list_item'
+    $section.toggleClass 'removed'
+    $section.prev('h2').toggleClass 'removed'
+    $button.toggleClass 'remove_list_item'
+    $button.toggleClass 'undo_remove_list_item'
 
 removeTestCase = (id, callback) ->
     $.post "/test_cases/#{id}", {"_method": "put", "test_case": {"deleted": "true"}}, () ->
@@ -410,10 +407,16 @@ $(document).ready () ->
         toggleRemoveTestCase eObj
         return false
 
-    $('.toggle_summary').on 'click', (e) ->
+    $('.toggle_summary, .toggle_metrics').on 'click', (e) ->
         e.preventDefault()
         e.stopPropagation()
-        toggleRemoveSummary $(this).attr('id').split('_').pop()
+
+        $elem    = $(this)
+        id       = $elem.attr('id').split('_').pop()
+        $section = $elem.parents('h2').next('.section')
+        field    = $elem.attr('data-field')
+
+        toggleRemoveSection id, field, $section, $elem
 
     fetchBugzillaInfo()
     prepareCategoryUpdate "#category-dialog"

@@ -1537,10 +1537,10 @@ td.dec em {
 .th_grading {
 	width: 30px;}
 
-.result_summary.removed {
+.section.removed {
     background-color: #f8f8f8;
 }
-.result_summary.removed * {
+.section.removed * {
     text-decoration: line-through;
     color: #ccc;
 }

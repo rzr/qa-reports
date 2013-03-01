@@ -8,7 +8,7 @@ ol.toc
     a href="#environment" Test Environment
   li
     a href="#qa_summary" Quality Summary
-  -if @report.metrics.present?
+  -if @report.metrics.present? and not @report.hide_metrics
     li
       a href="#report_metrics" Metrics
     ol
