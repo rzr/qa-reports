@@ -1450,14 +1450,10 @@ textarea.txt_edit {
     height: 150px;
     float:none;}
 
+.floating_table,
 #test_result_overview {
     float: left;
     width: 780px; }
-
-.floating_table {
-    float: left;
-    width: 400px;
-}
 
 .floating_table td {
     vertical-align: top;

@@ -8,9 +8,14 @@ h2#report_metrics
       h3(class="#{if i == 0 then 'first' end}" id="report_metrics_#{i}")= group
 
       .wrap
-        table.floating_table
+        table.floating_table.report_metrics
           - metrics.each_with_index do |m, i|
-            tr(class="#{cycle 'even', 'odd'}")
+            tr(class="#{cycle 'even', 'odd'} #{if m.chart then 'metrics_chart' end}")
               td.name= m.name
               td.value= m.value
               td= m.unit
+              -if i == 0
+                td rowspan="#{metrics.length}" style="background-color: white;"
+                  .metrics_graph_wrapper
+                    // Zero height canvas because we may not draw anything
+                    canvas.metrics_graph_canvas height="0" width="395"
