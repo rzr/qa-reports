@@ -74,8 +74,8 @@ class XMLResultFileParser
   def parse_group_metrics(group)
     group.css('metric').map do |metric|
       {
-        :group_name => group['name'],
-        :name       => metric['name'],
+        :group_name => group['name'].try(:strip),
+        :name       => metric['name'].try(:strip),
         :unit       => metric['unit'] || "",
         :value      => metric['value'],
         :chart      => metric['chart'] || false

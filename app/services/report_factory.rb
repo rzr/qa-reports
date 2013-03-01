@@ -73,15 +73,15 @@ class ReportFactory
       raise ParseError.new(result_attachment.filename), result_attachment.filename + " didn't contain any valid test cases" if new_features.empty? and not APP_CONFIG['allow_empty_files']
 
       merge_results(features, new_features)
-      # TODO: Now there can be more than one by the same group/name. Should
-      # we instead replace if existing group/name exists?
+      # Concatenate for now, remove duplicates later
       metrics.concat new_metrics
     end
 
     params[:features_attributes] = features.map do |feature, test_cases|
       { :name => feature, :meego_test_cases_attributes => test_cases.values }
     end
-    params[:metrics_attributes] = metrics
+    # Remove duplicate group_name / name -pairs from the metrics
+    params[:metrics_attributes] = metrics.uniq {|m| "#{m[:group_name]}_#{m[:name]}"}
   end
 
   def merge_results(features, new_features)
