@@ -96,3 +96,13 @@ end
 When /^I enable the report summary$/ do
   step %{I hide the report summary}
 end
+
+When /^I hide the report metrics$/ do
+  with_scope("#report_metrics") do
+    click_link "Remove"
+  end
+end
+
+Then /^I enable the report metrics$/ do
+  step %{I hide the report metrics}
+end
