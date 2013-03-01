@@ -4,11 +4,11 @@
        test definition XML schema. -->
   <metrics>
     <group name="Reliability Summary">
-      <metric name="First crash" value="38" unit="hours"/>
+      <metric name="First crash" value="38" unit="hours" chart="true"/>
       <metric name="Average CPU load" value="37" unit="%"/>
     </group>
     <group name="Load Summary">
-      <metric name="Response time under load" value="5.9" unit="ms"/>
+      <metric name="Response time under load" value="5.9" unit="ms" chart="true"/>
     </group>
   </metrics>
   <suite name="Suite">

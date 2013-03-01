@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130228115850) do
+ActiveRecord::Schema.define(:version => 20130228143241) do
 
   create_table "custom_results", :force => true do |t|
     t.string "name"
@@ -96,10 +96,11 @@ ActiveRecord::Schema.define(:version => 20130228115850) do
 
   create_table "metrics", :force => true do |t|
     t.integer "meego_test_session_id"
-    t.string  "group_name"
-    t.string  "name"
+    t.string  "group_name",                               :null => false
+    t.string  "name",                                     :null => false
     t.string  "unit"
-    t.float   "value"
+    t.float   "value",                                    :null => false
+    t.boolean "chart",                 :default => false
   end
 
   create_table "profiles", :force => true do |t|

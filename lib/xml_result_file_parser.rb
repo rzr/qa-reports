@@ -78,6 +78,7 @@ class XMLResultFileParser
         :name       => metric['name'],
         :unit       => metric['unit'] || "",
         :value      => metric['value'],
+        :chart      => metric['chart'] || false
       }
     end
   end
