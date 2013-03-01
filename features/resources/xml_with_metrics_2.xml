@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <metrics>
+    <group name="Reliability Summary">
+      <metric name="First crash" value="25" unit="hours" chart="true"/>
+      <metric name="Some new metric" value="49" unit="ms"/>
+    </group>
+  </metrics>
+  <suite name="Suite">
+    <set name="Set">
+      <case name="New Case" result="PASS"/>
+    </set>
+  </suite>
+</testresults>
