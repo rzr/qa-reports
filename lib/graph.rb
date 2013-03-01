@@ -22,7 +22,6 @@ module Graph
   class Data
     attr_accessor :passed, :failed, :na, :measured, :total
     attr_accessor :labels
-    attr_accessor :metrics
   end
 
   def html_graph(passed, failed, na, max_cases)

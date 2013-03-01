@@ -218,17 +218,6 @@ class MeegoTestSession < ActiveRecord::Base
     data.measured  = measured = []
     data.labels    = labels   = []
 
-    # Initialize metrics summary data from current report -- since the
-    # values that are charted are defined in the XMLs they may not be the
-    # same in previous reports. However if this report defines to chart
-    # metric A, the value of A will be fetched from the two previous
-    # reports as well. Hash by group_name and then by metric name
-    data.metrics = metrics = Hash.new {|h,k|
-      h[k] = Hash.new {|h1,k1|
-        h1[k1] = {:unit => "", :values => []}
-      }
-    }
-
     prev = prev_session
     if prev
       pp = prev.prev_session
@@ -245,7 +234,6 @@ class MeegoTestSession < ActiveRecord::Base
         measured  << 0
         labels    << ""
       end
-      summary_charted_metrics metrics, pp
 
       passed    << prev.total_passed
       failed    << prev.total_failed
@@ -259,14 +247,12 @@ class MeegoTestSession < ActiveRecord::Base
       measured  << 0
       labels    << ""
     end
-    summary_charted_metrics metrics, prev
 
     passed    << total_passed
     failed    << total_failed
     na        << total_na
     measured  << total_measured
     labels    << "Current"
-    summary_charted_metrics metrics, self
 
     data
   end
@@ -281,17 +267,6 @@ class MeegoTestSession < ActiveRecord::Base
 
   def small_graph_img_tag(max_cases)
     html_graph(total_passed, total_failed, total_na, max_cases)
-  end
-
-  def summary_charted_metrics(metrics, session)
-    charted_metrics.each do |m|
-      metrics[m.group_name][m.name][:unit] = m.unit
-      if session.nil?
-        metrics[m.group_name][m.name][:values] << 0
-      else
-        metrics[m.group_name][m.name][:values] << m.find_matching_metric(session).try(:value)
-      end
-    end
   end
 
   ###############################################

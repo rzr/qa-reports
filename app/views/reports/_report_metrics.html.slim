@@ -4,18 +4,29 @@ h2#report_metrics
 .section.emphasized_section
   .container
     = yield :test_result_navigation
-    - @report.grouped_metrics.each_with_index do |(group, metrics), i|
-      h3(class="#{if i == 0 then 'first' end}" id="report_metrics_#{i}")= group
+    - @report.grouped_metrics.each_with_index do |(group, metrics), k|
+      h3(class="#{if k == 0 then 'first' end} metrics_group" id="report_metrics_#{k}")= group
 
       .wrap
         table.floating_table.report_metrics
           - metrics.each_with_index do |m, i|
             tr(class="#{cycle 'even', 'odd'} #{if m.chart then 'metrics_chart' end}")
               td.name= m.name
-              td.value= m.value
-              td= m.unit
+              td.value
+                span.value= m.value
+                - if m.chart
+                  span.history(style="display:none") =m.get_metric_history.join(',')
+              td.unit= m.unit
               -if i == 0
-                td rowspan="#{metrics.length}" style="background-color: white;"
+                td rowspan="#{metrics.length}" style="background-color: white; width:491px;"
                   .metrics_graph_wrapper
                     // Zero height canvas because we may not draw anything
-                    canvas.metrics_graph_canvas height="0" width="395"
+                    canvas.metrics_graph_canvas(id="metrics_canvas_#{k}") height="0" width="395"
+
+- data = @report.summary_data
+
+div style="display:none"
+  span#metrics_summary_labels
+    #{data.labels.join(',')}
+
+= javascript_include_tag 'report_metrics'
