@@ -19,4 +19,8 @@ class Metric < ActiveRecord::Base
     data << value
     data
   end
+
+  def html_value
+    value.to_i == value ? value.to_i : value
+  end
 end

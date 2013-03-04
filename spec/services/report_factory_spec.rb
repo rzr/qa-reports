@@ -16,6 +16,12 @@ describe ReportFactory do
       @result_file1.stub!(:path).and_return("/var/tmp/bluetooth.xml")
       @result_file2.stub!(:path).and_return("/var/tmp/wlan.csv")
 
+      @result_file1.stub!(:close).and_return(true)
+      @result_file2.stub!(:close).and_return(true)
+
+      @result_file1.stub!(:pos=)
+      @result_file2.stub!(:pos=)
+
       @result_attachment1 = FileAttachment.new
       @result_attachment2 = FileAttachment.new
 
@@ -58,6 +64,8 @@ describe ReportFactory do
 
       @xml_parser.stub!(:parse).and_return(@results1)
       @csv_parser.stub!(:parse).and_return(@results2)
+
+      @xml_parser.stub!(:parse_metrics).and_return(nil)
 
       FileUtils.stub!(:move)
       @report = ReportFactory.new.build(@report_attributes)

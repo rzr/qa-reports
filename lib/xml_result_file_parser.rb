@@ -73,6 +73,8 @@ class XMLResultFileParser
 
   def parse_group_metrics(group)
     group.css('metric').map do |metric|
+      raise Nokogiri::XML::SyntaxError.new("Missing name for a metric") unless metric['name'].present?
+      raise Nokogiri::XML::SyntaxError.new("Missing value for metric #{metric['name']}") unless metric['value'].present?
       {
         :group_name => group['name'].try(:strip),
         :name       => metric['name'].try(:strip),
