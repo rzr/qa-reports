@@ -15,7 +15,7 @@ h2#report_metrics class="#{if @editing and @report.hide_metrics then 'removed' e
             tr(class="#{cycle 'even', 'odd'} #{if m.chart then 'metrics_chart' end}")
               td.name= m.name
               td.value
-                span.value= m.value
+                span.value= m.html_value
                 - if m.chart
                   span.history(style="display:none") =m.get_metric_history.join(',')
               td.unit= m.unit
