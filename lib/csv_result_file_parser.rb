@@ -93,7 +93,7 @@ class CSVResultFileParser
   ############################################################################
 
   def normalize_col(s)
-    s.gsub("\xa0"," ").force_encoding('UTF-8').strip if s
+    s.encode('UTF-8', 'ASCII-8BIT', :invalid => :replace, :undef => :replace, :replace => ' ').strip if s
   end
 
   def parse_row(row)
