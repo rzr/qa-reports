@@ -19,6 +19,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 ## Migration Notes
 
+*   11 March 2013: Ruby 2.0 compatible.
 *   11 September 2012: Added application configuration file `config/config.yml`. You
     will need to run `cap deploy:setup` again, or create a copy of the file to your
     servers `qa-reports/shared/config` folder before deploying.
