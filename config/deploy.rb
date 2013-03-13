@@ -5,6 +5,9 @@ require 'capistrano/ext/multistage'
 require './config/deploy/capistrano_database_yml'
 require 'bundler/capistrano'
 require 'yaml'
+require "rvm/capistrano"
+set :rvm_ruby_string, '1.9.3'
+set :rvm_type, :user
 
 set :user, "www-data"
 set :use_sudo, false

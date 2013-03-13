@@ -29,6 +29,7 @@ group :development do
   gem 'guard-migrate'
   gem 'capistrano'
   gem 'capistrano-ext'
+  gem 'rvm-capistrano'
 end
 
 group :staging do
