@@ -13,12 +13,12 @@ Feature: Authentication
   Scenario: Log in with incorrect email
     Given I am not logged in
     When  I log in with incorrect email
-    Then  I should see "The email address or password you entered is incorrect"
+    Then  I should see "Invalid email or password"
 
   Scenario: Log in with correct email but incorrect password
     Given I am not logged in
     When  I log in with incorrect password
-    And   I should see "The email address or password you entered is incorrect"
+    And   I should see "Invalid email or password"
 
   Scenario: Logging out
     Given I am logged in
