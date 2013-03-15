@@ -166,6 +166,15 @@ Feature: Import API
     And I should be able to view the created report
     And I should see the defined test cases
 
+  Scenario: Sending xUnit result file
+    When the client sends xUnit result file
+    Then the upload succeeds
+
+    And I should be able to view the created report
+
+    Then I press "See all"
+    And I should see the test cases from xUnit result file
+
   Scenario: Sending results using custom API parameters
     Given I define a mapping for API parameters
 
