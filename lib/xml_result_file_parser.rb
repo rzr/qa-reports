@@ -96,7 +96,9 @@ class XMLResultFileParser
       return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::FAIL]
     end
 
-    # Otherwise
-    raise Nokogiri::XML::SyntaxError.new(test_case['name'] + ": Missing result")
+    # xUnit test (or incorrect MeeGo test but pretty hard to tell. We could
+    # though look at the root element to identify MeeGo test cases)
+    return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::PASS] if test_case.css('failure, error').length < 1
+    return MeegoTestCaseHelper::RESULT_TO_TXT[MeegoTestCase::FAIL]
   end
 end
