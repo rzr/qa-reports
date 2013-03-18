@@ -129,6 +129,10 @@ When "the client sends googletest result file" do
   step %{the client sends file "features/resources/googletest.xml" via the REST API}
 end
 
+When "the client sends xUnit result file" do
+  step %{the client sends file "features/resources/xunit.xml" via the REST API}
+end
+
 When "the client sends result file with metrics" do
   step %{the client sends file "features/resources/xml_with_metrics.xml" via the REST API}
 end
@@ -334,6 +338,12 @@ Then "I should see the defined test cases" do
   step %{I should see "NonContradiction_2"}
   step %{I should see "Addition"}
   step %{I should see "Value of: add(1, 1)"}
+end
+
+Then "I should see the test cases from xUnit result file" do
+  step %{I should really see "passing_test"}
+  step %{I should really see "test_with_failures"}
+  step %{I should really see "test_with_errors"}
 end
 
 Then "the upload succeeds" do

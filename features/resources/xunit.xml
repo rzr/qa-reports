@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="xUnit suite">
+    <testcase name="passing_test"/>
+    <testcase name="test_with_failures">
+      <failure message="failure"/>
+    </testcase>
+    <testcase name="test_with_errors">
+      <error message="error"/>
+    </testcase>
+  </testsuite>
+</testsuites>
