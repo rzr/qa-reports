@@ -37,7 +37,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 *   `config/config.yml`: Bugzilla integration configuration
     * QA Reports can show bug information from Bugzilla. Bugzilla server settings are defined in this file.
 *   `config/deploy.rb` and `config/deploy/production.rb`: Deployment settings
-*   `config/environment.rb`: Environment specific configuration, e.g. email settings
+*   `config/environments/production.rb`: Environment specific configuration, e.g. email settings
 
 When running `cap production deploy:setup` you will be prompted for the most important settings. There are a bunch of Ruby files in the `config` folder that can be adjusted as well if you wish. Notice however that no local changes apart from the ones `deploy:setup` asks are effective on the server since Capistrano loads the software from Github upon deployment.
 
