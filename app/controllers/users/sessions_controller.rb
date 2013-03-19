@@ -11,7 +11,11 @@ class Users::SessionsController < Devise::SessionsController
     # TODO: Redirectin go referrer is baad. Should be so that login link
     # gives next in e.g. query string, and if entering directly to a page
     # requiring authentication the request uri is set to the query string param
-    session[:return_to] = request.referrer unless URI::parse(request.referrer).path == '/users/sign_in'
+    begin
+      session[:return_to] = request.referrer unless URI::parse(request.referrer).path == '/users/sign_in'
+    rescue URI::InvalidURIError
+      session[:return_to] = nil
+    end
   end
 
   def after_sign_in_path_for(resource)
