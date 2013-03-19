@@ -50,8 +50,7 @@ module Meegoqa
     config.active_record.observers = :meego_test_session_observer, :meego_test_case_observer
 
     # Disable the asset pipeline
-    config.assets.enabled = true
-    config.assets.paths << "#{Rails.root}/app/coffeescripts"
+    config.assets.enabled = false
 
     # Since Rails 3 rescuing routing errors is odd/not working. We can however
     # set the exceptions app to our own router and route /404 from there.
