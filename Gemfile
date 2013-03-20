@@ -15,6 +15,7 @@ gem "rake"
 gem 'ruby-xslt'
 gem 'ruby-xml-smart'
 gem 'exception_notification', '~>3.0.1'
+gem "dynamic_form", "~> 1.1.4"
 
 group :production do
   gem 'newrelic_rpm'
