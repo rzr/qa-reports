@@ -8,6 +8,11 @@ allow_empty_files: false
 # from the front page (target is the 2nd level of hierarchy)
 hide_empty_targets: false
 
+# Inline image attachments. By default report attachment list contains
+# only links to the attachments. If set to true, image attachments
+# (jpg|jpeg|gif|png|bmp) are inlined using <img> tags
+inline_images: false
+
 # QA Reports accepts Pass, Fail, N/A, and Measured as valid results for
 # a test case by default. It can be configured to accept additional ones
 # as well by defining them here. Notice that currently all tests with
