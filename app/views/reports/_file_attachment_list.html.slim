@@ -2,4 +2,7 @@
   li id="attachment_#{index}"
     - if @editing
       a.remove_list_item href="#" onclick="removeAttachment(#{file.id}, function(){ $('#attachment_#{index}').hide();}); return false;" Remove
-    a class="" href=file.pretty_url target="_blank" =file.filename
+    - if APP_CONFIG['inline_images'] && file.image?
+      img src=file.pretty_url
+    - else
+      a class="" href=file.pretty_url target="_blank" =file.filename

@@ -1,14 +1,13 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~>3.2.12'
-gem 'i18n', '0.6.0'
 gem 'mysql2'
 gem 'nokogiri', '~>1.3'
 gem 'devise'
 gem 'slim'
 gem 'paperclip', '~>2.3.15'
 gem 'coffee-script', '~>2.2'
-gem 'therubyracer', '~>0.9.0', :require => false
+gem 'therubyracer', '~>0.11.0', :require => false
 gem 'barista', '>= 0.5.0'
 gem 'rest-client', :require => 'rest_client'
 gem 'activerecord-import'

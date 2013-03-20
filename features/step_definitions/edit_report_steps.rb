@@ -106,3 +106,11 @@ end
 Then /^I enable the report metrics$/ do
   step %{I hide the report metrics}
 end
+
+Given /^I enable inlining images$/ do
+  APP_CONFIG['inline_images'] = true
+end
+
+Then /^I disable inlining images$/ do
+  APP_CONFIG['inline_images'] = false
+end
