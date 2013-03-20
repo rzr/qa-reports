@@ -287,6 +287,13 @@ Then "I should see the uploaded attachments" do
   step %{I should see "icon_alert.gif" within "#{list}"}
 end
 
+# Attachments as imgs when inlining enabled
+Then /^I should see the two attached images$/ do
+  img = "//div[@id='attachment_drag_drop_area']//img"
+  page.should have_xpath("#{img}[contains(@src, 'ajax-loader.gif')]")
+  page.should have_xpath("#{img}[contains(@src, 'icon_alert.gif')]")
+end
+
 # Checking for a feature named N/A when had cases without a feature
 Then "I should see an unnamed feature section" do
   step %{I should see "N/A" within ".feature_name"}

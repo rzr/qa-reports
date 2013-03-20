@@ -19,6 +19,15 @@ Feature: Import API
     Then I should see names of the two features
     And I should see the uploaded attachments
 
+  Scenario: Uploading a test report with image attachments and inlining enabled
+    Given I enable inlining images
+    When the client sends files with attachments
+    Then the upload succeeds
+    And I should be able to view the created report
+
+    Then I should see the two attached images
+    And I disable inlining images
+
   Scenario: Uploading a test report with single basic file using deprecated API
     When the client sends a basic test result file via deprecated API
     Then the upload succeeds
