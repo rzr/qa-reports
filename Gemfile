@@ -14,6 +14,8 @@ gem 'activerecord-import'
 gem "rake"
 gem 'ruby-xslt'
 gem 'ruby-xml-smart'
+gem 'exception_notification', '~>3.0.1'
+gem "dynamic_form", "~> 1.1.4"
 
 group :production do
   gem 'newrelic_rpm'
@@ -38,9 +40,9 @@ end
 
 group :development, :test do
   gem 'launchy'
-  gem 'rspec', '~>2.6.0'
-  gem 'rspec-core','2.6.0'
-  gem 'rspec-rails', '2.6.1'
+  gem 'rspec', '~>2.13.0'
+  gem 'rspec-core','2.13.0'
+  gem 'rspec-rails', '2.13.0'
   gem 'capybara-webkit'
   gem 'capybara'
   gem 'spork', '~> 0.9.0.rc'
