@@ -40,9 +40,9 @@ end
 
 group :development, :test do
   gem 'launchy'
-  gem 'rspec', '~>2.6.0'
-  gem 'rspec-core','2.6.0'
-  gem 'rspec-rails', '2.6.1'
+  gem 'rspec', '~>2.13.0'
+  gem 'rspec-core','2.13.0'
+  gem 'rspec-rails', '2.13.0'
   gem 'capybara-webkit'
   gem 'capybara'
   gem 'spork', '~> 0.9.0.rc'
