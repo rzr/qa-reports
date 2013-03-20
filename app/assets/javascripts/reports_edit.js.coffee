@@ -1,3 +1,9 @@
+htmlEscape = (s) ->
+    s = s.replace('&', '&amp;')
+    s = s.replace('<', '&lt;')
+    s = s.replace('>', '&gt;')
+    s
+
 linkEditButtons = () ->
     $('.editable_area').each (i, node) ->
         initInplaceEdit node, '.editcontent', 'textarea', true
