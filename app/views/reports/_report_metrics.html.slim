@@ -30,5 +30,3 @@ h2#report_metrics class="#{if @editing and @report.hide_metrics then 'removed' e
 div style="display:none"
   span#metrics_summary_labels
     #{data.labels.join(',')}
-
-= javascript_include_tag 'report_metrics'

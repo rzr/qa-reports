@@ -1,6 +1,10 @@
+#
+# Methods for fetching and applying bug info from Bugzilla
+#
+
 bugzillaCache = []
 
-@applyBugzillaInfo = (node, info) ->
+applyBugzillaInfo = (node, info) ->
   $node = $(node)
 
   if info?
@@ -33,7 +37,7 @@ bugzillaCache = []
   links = $('.bugzilla.fetch')
   links.each (i, node) ->
     id = $.trim($(node).text())
-    if id in bugzillaCache
+    if bugzillaCache[id]?
       applyBugzillaInfo(node, bugzillaCache[id])
     else
       bugIds.push(id) if $.inArray(id, bugIds) == -1
@@ -44,12 +48,8 @@ bugzillaCache = []
     hash = []
     for i in [1..data.length - 1]
       row = data[i]
-
-      id         = row[0]
-      summary    = row[1]
-      status     = row[2]
-      resolution = row[3]
-      hash[id.toString()] = summary: row[1], status:row[2], resolution:row[3]
+      id  = row[0]
+      hash[id.toString()] = summary: row[1], status: row[2], resolution: row[3]
 
     $('.bugzilla.fetch').each (i, node) ->
       id = $.trim($(node).text())
