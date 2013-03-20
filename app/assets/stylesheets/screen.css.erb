@@ -1240,7 +1240,7 @@ div.formError, #error, form .error {
 
 #session {
     top:10px;
-    background: transparent url(<% asset_data_uri 'session_btm.png' %>) no-repeat left bottom;
+    background: transparent url(<%= asset_data_uri 'session_btm.png' %>) no-repeat left bottom;
     padding-bottom: 12px;}
 
 #session .username {
@@ -1264,14 +1264,14 @@ div.formError, #error, form .error {
     float: left;
     margin: 0;
     padding-right: 1px;
-    background: transparent url(<% asset_data_uri 'version_navi_div.png' %>) no-repeat right bottom;	}
+    background: transparent url(<%= asset_data_uri 'version_navi_div.png' %>) no-repeat right bottom;	}
 
 #version_navi ul li {
-    background: #fff url(<% asset_data_uri 'version_navi_active_bg.png' %>) repeat-x 0 bottom;
+    background: #fff url(<%= asset_data_uri 'version_navi_active_bg.png' %>) repeat-x 0 bottom;
     float: left;}
 
 #version_navi ul li:hover {
-    background: #fff url(<% asset_data_uri 'version_navi_hover_bg.png' %>) repeat-x right bottom;}
+    background: #fff url(<%= asset_data_uri 'version_navi_hover_bg.png' %>) repeat-x right bottom;}
 
 
 #version_navi ul li.current {
@@ -1285,7 +1285,7 @@ div.formError, #error, form .error {
     line-height: 1;
     font-weight: bold;
     text-decoration: none;
-    background: transparent url(<% asset_data_uri 'version_navi_div.png' %>) no-repeat left bottom;}
+    background: transparent url(<%= asset_data_uri 'version_navi_div.png' %>) no-repeat left bottom;}
 
 #version_navi ul li.current a {
     border-right: 1px solid #cacaca;
@@ -1433,13 +1433,13 @@ h2 .compare {
 
 .heading_actions a {
     padding-right: 10px;
-    background: url(<% asset_data_uri 'backtotop.png' %>) no-repeat right; }
+    background: url(<%= asset_data_uri 'backtotop.png' %>) no-repeat right; }
 
 a.edit {
     color: #ed0089;
     font-weight: bold;
     text-decoration: none;
-    background: url(<% asset_data_uri 'edit_icon.png' %>) no-repeat right top;
+    background: url(<%= asset_data_uri 'edit_icon.png' %>) no-repeat right top;
     padding-right: 21px;
     position: absolute;
     right: 90px;
@@ -1471,7 +1471,7 @@ textarea.txt_edit {
 }
 
 .editable_text:hover {
-    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 86% 10px;
+    background: #fff8de url(<%= asset_data_uri 'edit_icon.png' %>) no-repeat 86% 10px;
     cursor: pointer;}
 
 #test_results_navi {
@@ -1496,11 +1496,11 @@ td em {
     font-style: normal; }
 
 td.inc em {
-    background-image: url(<% asset_data_uri 'inc.png' %>);
+    background-image: url(<%= asset_data_uri 'inc.png' %>);
     white-space:nowrap; }
 
 td.dec em {
-    background-image: url(<% asset_data_uri 'dec.png' %>);
+    background-image: url(<%= asset_data_uri 'dec.png' %>);
     white-space:nowrap; }
 
 .th_feature {
@@ -1622,7 +1622,7 @@ tr.feature_name td{
     font-size: 13px;
     border-bottom: 1px solid #eee;
     padding-top: 13px;
-    background: #e1e1e1 url(<% asset_data_uri 'heading_shade.png' %>) repeat-x 0 bottom;
+    background: #e1e1e1 url(<%= asset_data_uri 'heading_shade.png' %>) repeat-x 0 bottom;
     padding-left: 14px;
     padding-bottom: 3px; }
 
@@ -1661,7 +1661,7 @@ td.feature_record_notes {
     margin-bottom: 0;}
 
 td.feature_record_notes.edit:hover {
-    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
+    background: #fff8de url(<%= asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
     cursor: pointer;}
 
 td.feature_record_notes p {
@@ -1696,7 +1696,7 @@ td.feature_record_grading {
 	text-align:center;}
 
 td.feature_record_grading.edit:hover {
-    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
+    background: #fff8de url(<%= asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
     cursor: pointer;}
 
 .grading_red,
@@ -1706,13 +1706,13 @@ td.feature_record_grading.edit:hover {
 	padding:0 6px;}
 
 .grading_red {
-	background-image: url(<% asset_data_uri 'grade_red.png' %>);}
+	background-image: url(<%= asset_data_uri 'grade_red.png' %>);}
 
 .grading_yellow {
-	background-image: url(<% asset_data_uri 'grade_yellow.png' %>);}
+	background-image: url(<%= asset_data_uri 'grade_yellow.png' %>);}
 
 .grading_green {
-	background-image: url(<% asset_data_uri 'grade_green.png' %>);}
+	background-image: url(<%= asset_data_uri 'grade_green.png' %>);}
 
 .grading_white {}
 
@@ -1793,7 +1793,7 @@ td.testcase_name p {
 .changed_result,
 .unchanged_result {
 		text-align: left;
-    background: url(<% asset_data_uri 'changed_arrow.png' %>) 50% 0.7em no-repeat;
+    background: url(<%= asset_data_uri 'changed_arrow.png' %>) 50% 0.7em no-repeat;
    	padding-left: 20px;}
 
 .testcase td.changed_result {
@@ -1809,14 +1809,14 @@ td.testcase_name p {
 	background: transparent no-repeat left 0.8em;}
 
 .changed_from_fail {
-	background-image: url(<% asset_data_uri 'changed_from_fail.png' %>);}
+	background-image: url(<%= asset_data_uri 'changed_from_fail.png' %>);}
 
 .changed_from_pass {
-	background-image: url(<% asset_data_uri 'changed_from_pass.png' %>);}
+	background-image: url(<%= asset_data_uri 'changed_from_pass.png' %>);}
 
 .changed_from_na,
 .changed_from_measured {
-	background-image: url(<% asset_data_uri 'changed_from_na.png' %>);}
+	background-image: url(<%= asset_data_uri 'changed_from_na.png' %>);}
 
 td.testcase_result.edit:hover {
     background: #fff8de;
@@ -1836,14 +1836,14 @@ td.testcase_notes .content {
 	position: relative;}
 
 td.testcase_notes.edit:hover {
-    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
+    background: #fff8de url(<%= asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
     cursor: pointer;}
 
 td.testcase_notes.edit:hover .note_attachment {
 	display: none;}
 
 td.testcase_notes .field.inplace .attachment {
-    background: #f4f4f4 url(<% asset_data_uri 'attachment_icon.png' %>) no-repeat 4px 5px;
+    background: #f4f4f4 url(<%= asset_data_uri 'attachment_icon.png' %>) no-repeat 4px 5px;
     border: 1px solid #eee;
     padding: 3px 5px 4px 25px;
     margin-bottom: 3px;
@@ -1854,13 +1854,13 @@ td.testcase_notes .field.inplace .attachment .delete {
     display: block;
     width: 14px;
     height: 13px;
-    background: transparent url(<% asset_data_uri 'remove_list_item.png' %>) no-repeat left top;
+    background: transparent url(<%= asset_data_uri 'remove_list_item.png' %>) no-repeat left top;
     text-indent: -99999px;
     margin: 2px 2px 0 0;
 }
 
 td.testcase_notes .field.inplace .attachment .delete:hover {
-    background-image: url(<% asset_data_uri 'remove_list_item_hover.png' %>);
+    background-image: url(<%= asset_data_uri 'remove_list_item_hover.png' %>);
 }
 
 td.testcase_notes p {
@@ -1889,7 +1889,7 @@ td.fail {
 	color: #2a7438;}
 
 .history_result {
-	background: transparent no-repeat right 0.8em url(<% asset_data_uri 'history_arrow.png' %>);}
+	background: transparent no-repeat right 0.8em url(<%= asset_data_uri 'history_arrow.png' %>);}
 
 .history_result,
 .current_result {
@@ -1909,7 +1909,7 @@ a:hover .unit {
     vertical-align: 40%;}
 
 .dl_link {
-	background: transparent url(<% asset_data_uri 'download_arrow.png' %>) no-repeat right 50%;
+	background: transparent url(<%= asset_data_uri 'download_arrow.png' %>) no-repeat right 50%;
 	font-size: 10px;
 	color: #ccc;
 	padding: 0px 7px 2px 3px;
@@ -1920,11 +1920,11 @@ a:hover .unit {
 	behavior: url(/javascripts/pie.htc);}
 
 .dl_link:hover {
-	background: transparent url(<% asset_data_uri 'download_hover_arrow.png' %>) no-repeat right 50%;}
+	background: transparent url(<%= asset_data_uri 'download_hover_arrow.png' %>) no-repeat right 50%;}
 
 .loading {
 	background: #fff; /* fallback for ancient browsers */
-	background: transparent url(<% asset_data_uri 'white_transp_70.png' %>);
+	background: transparent url(<%= asset_data_uri 'white_transp_70.png' %>);
 	position: absolute;
 	z-index: 9999;
 	width: 2000px;
@@ -1935,7 +1935,7 @@ a:hover .unit {
 
 .loading strong {
 	display: block;
-	background: transparent no-repeat 0 30px url(<% asset_data_uri 'table_preloader.gif' %>);
+	background: transparent no-repeat 0 30px url(<%= asset_data_uri 'table_preloader.gif' %>);
 	height: 100px;
 }
 
@@ -1956,11 +1956,11 @@ width: 35px;
 
 .nft_trend_button {
 	padding-right: 17px;
-	background: transparent no-repeat right 2px url(<% asset_data_uri 'nft_trend_icon.png' %>);
+	background: transparent no-repeat right 2px url(<%= asset_data_uri 'nft_trend_icon.png' %>);
 	text-decoration:none;}
 
 .nft_trend_button:hover {
-	background-image: url(<% asset_data_uri 'nft_trend_icon_hover.png' %>);
+	background-image: url(<%= asset_data_uri 'nft_trend_icon_hover.png' %>);
 	cursor: pointer;
 }
 
@@ -1998,7 +1998,7 @@ width: 35px;
 
 .modal_close span {
 	display: block;
-	background: transparent no-repeat center center url(<% asset_data_uri 'close_icon.png' %>);
+	background: transparent no-repeat center center url(<%= asset_data_uri 'close_icon.png' %>);
 	text-indent: -9999px;
 	width: 23px;
 	height: 23px;
@@ -2006,7 +2006,7 @@ width: 35px;
 
 .nft_graph_options {
 	border-top:1px solid #b2b2b2;
-	background: transparent repeat-x top url(<% asset_data_uri 'gray_to_transp_short.png' %>);
+	background: transparent repeat-x top url(<%= asset_data_uri 'gray_to_transp_short.png' %>);
 	margin-top: 20px;
 	margin-left: -40px;
 	margin-right: -40px;
@@ -2027,11 +2027,11 @@ width: 35px;
 	margin-left: 5px;
 	z-index: 100;
 	text-indent: -9999px;
-	background: transparent no-repeat 5px 0 url(<% asset_data_uri 'attachment_icon.png' %>);
+	background: transparent no-repeat 5px 0 url(<%= asset_data_uri 'attachment_icon.png' %>);
 }
 
 .note_attachment:hover {
-	background-image: url(<% asset_data_uri 'attachment_icon_hover.png' %>);
+	background-image: url(<%= asset_data_uri 'attachment_icon_hover.png' %>);
 	cursor: pointer; }
 
 .attachment_to_notes_dialog img {
@@ -2117,10 +2117,10 @@ span#wizard_finalize {
     position: relative; }
 
 span#wizard_upload {
-    background: url(<% asset_data_uri 'progress_1.png' %>) no-repeat;}
+    background: url(<%= asset_data_uri 'progress_1.png' %>) no-repeat;}
 
 span#wizard_finalize {
-    background: url(<% asset_data_uri 'progress_2.png' %>) no-repeat;}
+    background: url(<%= asset_data_uri 'progress_2.png' %>) no-repeat;}
 
 #wizard_progress #upload,
 #wizard_progress #publish,
@@ -2251,7 +2251,7 @@ div.field.last {
     color: #aaa;
     text-decoration: none;
     font-weight: bold;
-    background: transparent url(<% asset_data_uri 'home_edit_icon.png' %>) no-repeat right 0px;
+    background: transparent url(<%= asset_data_uri 'home_edit_icon.png' %>) no-repeat right 0px;
     display: block;
     width: 16px;
     height: 16px;
