@@ -22,6 +22,6 @@
 
 class ErrorsController < ApplicationController
   def not_found
-    render :file => "#{Rails.root}/public/404.html", :status => :not_found, :layout => false
+    render :file => "public/404", :status => :not_found, :layout => false
   end
 end
