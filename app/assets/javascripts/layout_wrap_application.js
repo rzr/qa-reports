@@ -1,0 +1,10 @@
+//= require jquery.min
+//= require jquery-ui-1.9.1.custom.min
+//= require bluff/js-class
+//= require bluff/excanvas
+//= require bluff/bluff-min
+//= require application
+//= require string
+//= require spine
+//= require route
+//= require transparency.min

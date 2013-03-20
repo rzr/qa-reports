@@ -9,12 +9,7 @@ html
     - if use_custom_layout?
       link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
     = csrf_meta_tag
-    = javascript_include_tag "jquery.min.js"
-    = javascript_include_tag 'bluff/js-class.js'
-    = javascript_include_tag 'bluff/excanvas.js'
-    = javascript_include_tag 'bluff/bluff-min.js'
-    = javascript_include_tag 'dygraph-combined.js'
-    = javascript_include_tag 'string'
+    = javascript_include_tag "layout_wrap_report"
     = yield :view_specific_js_head
     = google_analytics_tag
 
@@ -45,7 +40,6 @@ html
               | Shift-drag to pan.
               br/
               | Doubleclick to zoom out.
-    = javascript_include_tag "jquery-ui-1.9.1.custom.min.js"
 
     /! Modal dialog template for viewing test case image attachments
     #attachment_template.jqmWindow.attachment_to_notes_dialog style="display:none;"

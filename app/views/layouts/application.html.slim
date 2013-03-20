@@ -7,16 +7,7 @@ html
     = stylesheet_link_tag 'application'
     - if use_custom_layout?
       link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
-    = javascript_include_tag "jquery.min.js"
-    = javascript_include_tag "jquery-ui-1.9.1.custom.min.js"
-    = javascript_include_tag 'bluff/js-class.js'
-    = javascript_include_tag 'bluff/excanvas.js'
-    = javascript_include_tag 'bluff/bluff-min.js'
-    = javascript_include_tag 'application'
-    = javascript_include_tag 'string'
-    = javascript_include_tag 'spine.js'
-    = javascript_include_tag 'route.js'
-    = javascript_include_tag 'transparency.min.js'
+    = javascript_include_tag "layout_wrap_application"
     = csrf_meta_tag
     - if @show_rss
       link href=rss_path rel="alternate" title="RSS" type="application/rss+xml"
