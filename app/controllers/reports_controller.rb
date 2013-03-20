@@ -70,6 +70,7 @@ class ReportsController < ApplicationController
   end
 
   def show
+    raise new Exception("hj")
     populate_report_fields
     @history      = history(@report, 5)
     @build_diff   = build_diff(@report, 4)
