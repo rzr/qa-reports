@@ -1,5 +1,8 @@
 $(window).load () ->
 
+  # If result ovewview is hidden, no point to try draw graphs
+  if $('#test_result_overview').length > 0
+
     summary_passed = (parseInt num for num in $('#summary_passed').text().split(','))
     summary_failed = (parseInt num for num in $('#summary_failed').text().split(','))
     summary_na     = (parseInt num for num in $('#summary_na').text().split(','))
@@ -25,5 +28,3 @@ $(window).load () ->
     g.data 'n/a',  summary_na,     '#ddd'
     g.labels = summary_labels
     g.draw()
-
-    # Then draw graphs for metrics

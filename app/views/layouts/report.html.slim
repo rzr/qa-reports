@@ -9,7 +9,6 @@ html
     - if use_custom_layout?
       link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
     = csrf_meta_tag
-    = javascript_include_tag "layout_wrap_report"
     = yield :view_specific_js_head
 
   body
@@ -98,5 +97,4 @@ html
               br/
               | Doubleclick to zoom out.
 
-    = javascript_include_tag 'application', 'jqModal', 'layout_report'
     = yield :view_specific_js

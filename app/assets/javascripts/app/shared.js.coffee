@@ -9,42 +9,154 @@
     $a = $(this)
     $a.parent().prevAll('input').val $a.text()
 
-# TODO: Move to a separate file
-$ = jQuery
-$.fn.autogrow = (options) ->
-  this.filter('textarea').each ->
-    $this      = $(this)
-    minHeight  = $this.height()
-    lineHeight = $this.css('lineHeight')
 
-    shadow = $('<div></div>').css
-      position:   'absolute'
-      top:        -10000
-      left:       -10000
-      width:      $(this).width() - parseInt($this.css('paddingLeft')) - parseInt($this.css('paddingRight'))
-      fontSize:   $this.css('fontSize')
-      fontFamily: $this.css('fontFamily')
-      lineHeight: $this.css('lineHeight')
-      resize:     'none'
-    .appendTo(document.body)
+@filterResults = (rowsToHide, typeText) ->
+  updateToggle = ($tbody, $this) ->
+    count = $tbody.find("tr:hidden").length
+    if count > 0
+      $this.text("+ see #{count} #{typeText}")
+    else
+      $this.text("- hide #{typeText}")
 
-    update = ->
-      times = (string, number) ->
-        _res = ''
-        _res = _res + string for i in [1..number]
-        _res
+    if $tbody.find(rowsToHide).length == 0
+      $this.hide()
 
-      val = this.value.replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/&/g, '&amp;')
-        .replace(/\n$/, '<br/>&nbsp;')
-        .replace(/\n/g, '<br/>')
-        .replace(/[ ]{2,}/g, (space) -> times('&nbsp;', space.length - 1) + ' ')
+  updateToggles = ->
+    $("a.see_all_toggle").each ->
+      $tbody = $(this).parents("tbody").next("tbody")
+      updateToggle($tbody, $(this))
 
-      shadow.html(val);
-      $(this).css('height', Math.max(shadow.height() + 20, minHeight))
 
-    $(this).change(update).keyup(update).keydown(update)
-    update.apply(this)
+  $(".see_feature_build_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a#detailed_feature.sort_btn").removeClass("active")
+    $("#test_results_by_feature").hide()
+    $feature_build.show()
+    $(this).addClass("active")
 
-  this
+  $(".see_feature_comment_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a#detailed_feature.sort_btn").removeClass("active")
+    $("#test_feature_build_results").hide()
+    $feature_details.show()
+    $(this).addClass("active")
+
+  $(".see_the_same_build_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a#detailed_case.sort_btn").removeClass("active")
+    $("#detailed_functional_test_results").hide()
+    $build.show()
+    $build.find(".see_the_same_build_button").addClass("active")
+
+  $(".see_history_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a#detailed_case.sort_btn").removeClass("active")
+    $("#detailed_functional_test_results").hide()
+    $history.show()
+    $history.find(".see_history_button").addClass("active")
+
+  $(".see_all_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a#detailed_case.sort_btn.non_nft_button").removeClass("active")
+    $(this).addClass("active")
+    $(rowsToHide).show()
+    updateToggles()
+
+  $(".see_all_comparison_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a.see_only_failed_comparison_button.sort_btn").removeClass("active")
+    $(this).addClass("active")
+    $(rowsToHide).show()
+    updateToggles()
+
+  $(".see_only_failed_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a#detailed_case.sort_btn.non_nft_button").removeClass("active")
+    $("a#detailed_case.sort_btn").removeClass("active")
+    $(this).addClass("active")
+    $(rowsToHide).hide()
+    updateToggles()
+
+  $(".see_only_failed_comparison_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $("a.see_all_comparison_button.sort_btn").removeClass("active")
+    $(this).addClass("active")
+    $(rowsToHide).hide()
+    updateToggles()
+
+  updateToggles()
+
+  $("a.see_all_toggle").each ->
+    $(this).click (e) ->
+      e.preventDefault()
+      e.stopPropagation()
+      $this = $(this)
+      $tbody = $this.parents("tbody").next("tbody")
+      $tbody.find(rowsToHide).toggle()
+      updateToggle($tbody, $this)
+
+  $detail  = $("table.detailed_results").first()
+  $history = $("table.detailed_results.history")
+  $build   = $("table.detailed_results.build")
+  $feature_details = $("table.feature_detailed_results").first()
+  $feature_build   = $("table.feature_detailed_results_with_build_id")
+
+  $history.find(".see_all_button").click ->
+      $history.hide()
+      $detail.show()
+      $detail.find(".see_all_button").click()
+
+  $history.find(".see_only_failed_button").click ->
+      $history.hide()
+      $detail.show()
+      $detail.find(".see_only_failed_button").click()
+
+  $history.find(".see_the_same_build_button").click ->
+      $history.hide()
+      $build.show()
+      $detail.find(".see_the_same_build_button").click()
+
+  $build.find(".see_all_button").click ->
+      $build.hide()
+      $detail.show()
+      $detail.find(".see_all_button").click()
+
+  $build.find(".see_only_failed_button").click ->
+      $build.hide()
+      $detail.show()
+      $detail.find(".see_only_failed_button").click()
+
+  $build.find(".see_history_button").click ->
+      $build.hide()
+      $history.show()
+      $detail.find(".see_the_history_button").click()
+
+  $feature_build.find(".see_feature_comment_button").click ->
+      $feature_build.hide()
+      $feature_details.show()
+      $feature_details.find(".see_feature_comment_button").click()
+
+  # NFT history
+
+  $nft_detail  = $("table.non-functional_results.detailed_results").first()
+  $nft_history = $("table.non-functional_results.detailed_results.history")
+
+  $(".see_nft_history_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $nft_detail.hide()
+    $nft_history.show()
+
+  $(".see_latest_button").click (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    $nft_history.hide()
+    $nft_detail.show()
