@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
+    meta content="IE=8" http-equiv="X-UA-Compatible"
+    title
+      = APP_CONFIG['app_name']
+      |  - The change you wanted was rejected
+    = stylesheet_link_tag 'application'
+    - if use_custom_layout?
+      link href="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
+  body
+    a name="top"
+    #wrapper
+      #header class="clearfix"
+        #logo
+          h3
+            a href="/" = APP_CONFIG['app_name']
+
+
+      #error_page
+        .error_msg_wrap
+          .error_msg
+            h1 The change you wanted was rejected.
+            p Maybe you tried to change something you didn't have access to.
+            p
+              a href="/" Back to QA Reports home
