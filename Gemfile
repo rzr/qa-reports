@@ -14,6 +14,7 @@ gem 'activerecord-import'
 gem "rake"
 gem 'ruby-xslt'
 gem 'ruby-xml-smart'
+gem 'exception_notification', '~>3.0.1'
 
 group :production do
   gem 'newrelic_rpm'
