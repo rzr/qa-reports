@@ -114,18 +114,18 @@ a.mailto {
 	background-position: right 1px;}
 
 a.external {
-	background-image: url('../images/external_icon.png');
+	background-image: url(<%= asset_data_uri 'external_icon.png' %>);
 	padding-right:15px;}
 
 a.mailto {
-	background-image: url('../images/mailto_icon.png');
+	background-image: url(<%= asset_data_uri 'mailto_icon.png' %>);
 	padding-right:20px;}
 
 a.mailto:hover {
-	background-image: url('../images/mailto_icon_hover.png');}
+	background-image: url(<%= asset_data_uri 'mailto_icon_hover.png' %>);}
 
 a.external:hover {
-	background-image: url('../images/external_icon_hover.png');}
+	background-image: url(<%= asset_data_uri 'external_icon_hover.png' %>);}
 
 /* @end */
 
@@ -290,7 +290,7 @@ tfoot {
 .column_head_1,
 .column_head_separate {
     border-bottom: none;
-    background: url("../images/bt_shade.png") repeat-x left bottom transparent;}
+    background: url(<%= asset_data_uri 'bt_shade.png' %>) repeat-x left bottom transparent;}
 
 .column_head_1 {
     border-left: 1px solid #cacaca;
@@ -391,7 +391,7 @@ tt {
 }
 
 .bugzilla.fetch {
-    background-image: url(../images/progress.gif);
+    background-image: url(<%= asset_data_uri 'progress.gif' %>);
     color: #ccc; }
 
 .bugzilla.invalid {
@@ -399,12 +399,12 @@ tt {
 }
 
 .bugzilla.unresolved {
-    background-image: url(../images/icon_alert.gif);
+    background-image: url(<%= asset_data_uri 'icon_alert.gif' %>);
     background-repeat: no-repeat;
 }
 
 .bugzilla.resolved {
-    background-image: url(../images/icon_accept.gif);
+    background-image: url(<%= asset_data_uri 'icon_accept.gif' %>);
     background-repeat: no-repeat;
 }
 
@@ -613,14 +613,14 @@ input#report_test_data.file {
 
 .big_btn.submit {
     padding-right:48px;
-    background-image: url(../images/btn_ok.png);
+    background-image: url(<%= asset_data_uri 'btn_ok.png' %>);
     background-repeat: no-repeat;
     background-position:88% 50%;
     float: right; }
 
 .big_btn.next,
 .big_btn.login {
-    background-image: url(../images/btn_arrow.png);
+    background-image: url(<%= asset_data_uri 'btn_arrow.png' %>);
     background-repeat: no-repeat;
     background-position:88% 50%;
     padding-right:48px;}
@@ -694,7 +694,7 @@ input#report_test_data.file {
     background-color: #fff;
     background-repeat: repeat-x;
     background-position: bottom;
-    background-image: url(../images/ui_btn_bg.png);
+    background-image: url(<%= asset_data_uri 'ui_btn_bg.png' %>);
     text-decoration: none;
     padding: 4px 7px;
     font-size: 10px;
@@ -706,7 +706,7 @@ input#report_test_data.file {
     box-shadow: #aaa 0px 0px 2px;}
 
 .ui_btn:active {
-    background-image: url(../images/ui_btn_bg_active.png);
+    background-image: url(<%= asset_data_uri 'ui_btn_bg_active.png' %>);
     background-position: top;}
 
 .ui_btn.inactive {
@@ -757,7 +757,7 @@ input#report_test_data.file {
 div.formError, #error, form .error {
     padding: 0;
     clear: both;
-    background: url(../images/icon_alert.gif) no-repeat left 2px;
+    background: url(<%= asset_data_uri 'icon_alert.gif' %>) no-repeat left 2px;
     padding-left: 25px;
     margin: 5px 0 5px 210px;
     color: #ed0089;
@@ -784,14 +784,14 @@ div.formError, #error, form .error {
     background-color: #c7f471;
     color: #333;
     border: 1px solid #528019;
-    background-image: url(../images/published_bg.png);
+    background-image: url(<%= asset_data_uri 'published_bg.png' %>);
     background-position: 0 bottom;
     clear: both; }
 
 .published h3 {
     color: #3a590b;
     margin: 0;
-    background: url(../images/published_icon.png) no-repeat left;
+    background: url(<%= asset_data_uri 'published_icon.png' %>) no-repeat left;
     padding-top: 10px;
     padding-bottom: 9px;
     padding-left: 40px;
@@ -805,12 +805,12 @@ div.formError, #error, form .error {
 /* error pages 500, 422, 404 */
 .error_msg_wrap {
     padding: 4em 0 4em 0;
-    background: transparent url(../images/error_msg_bg.png) repeat-x 0 bottom;}
+    background: transparent url(<%= asset_data_uri 'error_msg_bg.png' %>) repeat-x 0 bottom;}
 
 .error_msg {
     padding-left: 110px;
     margin-left: 4em;
-    background: transparent url(../images/dialog_icon.png) no-repeat 0 0em;}
+    background: transparent url(<%= asset_data_uri 'dialog_icon.png' %>) no-repeat 0 0em;}
 
 .error_msg h1{
     font-size: 3em;
@@ -862,17 +862,17 @@ div.formError, #error, form .error {
     margin-right:10px;}
 
 .collapse_toggle.open {
-    background-image: url('../images/collapse_open.png');}
+    background-image: url(<%= asset_data_uri 'collapse_open.png' %>);}
 
 .collapse_toggle.open:hover {
-    background-image: url('../images/collapse_open_hover.png');}
+    background-image: url(<%= asset_data_uri 'collapse_open_hover.png' %>);}
 
 
 .collapse_toggle.close {
-    background-image: url('../images/collapse_close.png');}
+    background-image: url(<%= asset_data_uri 'collapse_close.png' %>);}
 
 .collapse_toggle.close:hover {
-    background-image: url('../images/collapse_close_hover.png');}
+    background-image: url(<%= asset_data_uri 'collapse_close_hover.png' %>);}
 
 .see_all_toggle {
     color: #a2a2a2;
@@ -906,7 +906,7 @@ div.formError, #error, form .error {
     background-repeat: repeat-x;
     background-position: bottom;
     background-color: #fff;
-    background-image: url(../images/ui_btn_bg.png);
+    background-image: url(<%= asset_data_uri 'ui_btn_bg.png' %>);
     cursor: pointer;
     text-decoration: none;}
 
@@ -964,27 +964,27 @@ div.formError, #error, form .error {
     display: block;
     float: left;
     text-indent: -9999px;
-    background: transparent url(../images/remove_list_item.png) no-repeat;
+    background: transparent url(<%= asset_data_uri 'remove_list_item.png' %>) no-repeat;
     width: 14px;
     height: 1.3em;
     padding-right: 0.5em;
     margin-top: 2px;}
 
 .remove_list_item:hover {
-    background-image:url(../images/remove_list_item_hover.png);}
+    background-image:url(<%= asset_data_uri 'remove_list_item_hover.png' %>);}
 
 .undo_remove_list_item{
     display: block;
     float: left;
     text-indent: -9999px;
-    background: transparent url(../images/undo_remove_list_item_hover.png) no-repeat;
+    background: transparent url(<%= asset_data_uri 'undo_remove_list_item_hover.png' %>) no-repeat;
     width: 14px;
     height: 1.3em;
     padding-right: 0.5em;
     margin-top: 2px;}
 
 .undo_remove_list_item:hover {
-    background-image:url(../images/undo_remove_list_item_hover.png);}
+    background-image:url(<%= asset_data_uri 'undo_remove_list_item_hover.png' %>);}
 
 .item_list {
     list-style-type: none;
@@ -994,7 +994,7 @@ div.formError, #error, form .error {
     margin-bottom: 0.3em;}
 
 .item_list.attachment li{
-    background: transparent url(../images/attachment_icon.png) no-repeat 0 50%;
+    background: transparent url(<%= asset_data_uri 'attachment_icon.png' %>) no-repeat 0 50%;
     padding-left: 23px;}
 
 .item_list.editing li {
@@ -1011,7 +1011,7 @@ div.formError, #error, form .error {
 
 .emphasized_section h2{
     border-top-style: none;
-    background: url(../images/heading_shade.png) repeat-x 0 bottom;
+    background: url(<%= asset_data_uri 'heading_shade.png' %>) repeat-x 0 bottom;
     margin-bottom:0;
     margin-top: 0;
     padding-top: 10px;
@@ -1097,16 +1097,16 @@ div.formError, #error, form .error {
 .compare {
     padding-right: 13px;
     padding-left: 0.5em;
-    background: transparent url(../images/compare_icon.png) no-repeat right 70%;
+    background: transparent url(<%= asset_data_uri 'compare_icon.png' %>) no-repeat right 70%;
     text-decoration:none;
     color:#989898;
     font-size:0.91666em;}
 
 .compare:hover {
-    background-image:url(../images/compare_icon_hover.png);}
+    background-image:url(<%= asset_data_uri 'compare_icon_hover.png' %>);}
 
 .rss {
-	background:transparent no-repeat top left url('../images/rss_icon.png');
+	background:transparent no-repeat top left url(<%= asset_data_uri 'rss_icon.png' %>);
 	width:21px;
 	height:21px;
 	display:inline-block;
@@ -1115,7 +1115,7 @@ div.formError, #error, form .error {
 	line-height:0.6;}
 
 .rss:hover {
-	background-image:url('../images/rss_icon_hover.png');}
+	background-image:url(<%= asset_data_uri 'rss_icon_hover.png' %>);}
 
 .h-navi {
 	list-style-type: none;
@@ -1180,7 +1180,7 @@ div.formError, #error, form .error {
     height: 24px;}
 
 .page_header {
-    background: url(../images/hdiv_1.png) no-repeat 0 bottom;
+    background: url(<%= asset_data_uri 'hdiv_1.png' %>) no-repeat 0 bottom;
     padding-top: 20px;
     padding-bottom: 20px;
     overflow: hidden; }
@@ -1198,7 +1198,7 @@ div.formError, #error, form .error {
 #error_page {
     padding-bottom: 329px;
     position: relative;
-    background: url(../images/hdiv_3.png) no-repeat 50% bottom; }
+    background: url(<%= asset_data_uri 'hdiv_3.png' %>) no-repeat 50% bottom; }
 
 /* @group header */
 
@@ -1212,7 +1212,7 @@ div.formError, #error, form .error {
     width: 498px;
     height: 112px;
     text-indent: 	-9999px;
-    background-image: url(../images/meego_logo.png);
+    background-image: url(<%= asset_path 'meego_logo.png' %>);
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
@@ -1220,7 +1220,7 @@ div.formError, #error, form .error {
     -webkit-transition: opacity 0.25s linear;}
 
 #logo h3 a.hover {
-    background-image: url(../images/meego_logo_hover.png);
+    background-image: url(<%= asset_path 'meego_logo_hover.png' %>);
     background-repeat: no-repeat;
     filter:alpha(opacity=0);
     opacity:0;}
@@ -1240,7 +1240,7 @@ div.formError, #error, form .error {
 
 #session {
     top:10px;
-    background: transparent url(../images/session_btm.png) no-repeat left bottom;
+    background: transparent url(<% asset_data_uri 'session_btm.png' %>) no-repeat left bottom;
     padding-bottom: 12px;}
 
 #session .username {
@@ -1264,14 +1264,14 @@ div.formError, #error, form .error {
     float: left;
     margin: 0;
     padding-right: 1px;
-    background: transparent url(../images/version_navi_div.png) no-repeat right bottom;	}
+    background: transparent url(<% asset_data_uri 'version_navi_div.png' %>) no-repeat right bottom;	}
 
 #version_navi ul li {
-    background: #fff url(../images/version_navi_active_bg.png) repeat-x 0 bottom;
+    background: #fff url(<% asset_data_uri 'version_navi_active_bg.png' %>) repeat-x 0 bottom;
     float: left;}
 
 #version_navi ul li:hover {
-    background: #fff url(../images/version_navi_hover_bg.png) repeat-x right bottom;}
+    background: #fff url(<% asset_data_uri 'version_navi_hover_bg.png' %>) repeat-x right bottom;}
 
 
 #version_navi ul li.current {
@@ -1285,7 +1285,7 @@ div.formError, #error, form .error {
     line-height: 1;
     font-weight: bold;
     text-decoration: none;
-    background: transparent url(../images/version_navi_div.png) no-repeat left bottom;}
+    background: transparent url(<% asset_data_uri 'version_navi_div.png' %>) no-repeat left bottom;}
 
 #version_navi ul li.current a {
     border-right: 1px solid #cacaca;
@@ -1318,7 +1318,7 @@ a#csv_report_link {
 #report_navigation th,
 th.filtered {
     font: bold 28px arial, sans-serif;
-    background: url(../images/bt_shade.png) repeat-x right bottom;
+    background: url(<%= asset_data_uri 'bt_shade.png' %>) repeat-x right bottom;
     text-shadow: #fff 1px 1px 1px;
 /*border-right: 1px solid #cacaca; */
     border-left: 1px solid #fff;
@@ -1433,13 +1433,13 @@ h2 .compare {
 
 .heading_actions a {
     padding-right: 10px;
-    background: url(../images/backtotop.png) no-repeat right; }
+    background: url(<% asset_data_uri 'backtotop.png' %>) no-repeat right; }
 
 a.edit {
     color: #ed0089;
     font-weight: bold;
     text-decoration: none;
-    background: url(../images/edit_icon.png) no-repeat right top;
+    background: url(<% asset_data_uri 'edit_icon.png' %>) no-repeat right top;
     padding-right: 21px;
     position: absolute;
     right: 90px;
@@ -1471,7 +1471,7 @@ textarea.txt_edit {
 }
 
 .editable_text:hover {
-    background: #fff8de url(../images/edit_icon.png) no-repeat 86% 10px;
+    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 86% 10px;
     cursor: pointer;}
 
 #test_results_navi {
@@ -1496,11 +1496,11 @@ td em {
     font-style: normal; }
 
 td.inc em {
-    background-image: url(../images/inc.png);
+    background-image: url(<% asset_data_uri 'inc.png' %>);
     white-space:nowrap; }
 
 td.dec em {
-    background-image: url(../images/dec.png);
+    background-image: url(<% asset_data_uri 'dec.png' %>);
     white-space:nowrap; }
 
 .th_feature {
@@ -1622,7 +1622,7 @@ tr.feature_name td{
     font-size: 13px;
     border-bottom: 1px solid #eee;
     padding-top: 13px;
-    background: #e1e1e1 url(../images/heading_shade.png) repeat-x 0 bottom;
+    background: #e1e1e1 url(<% asset_data_uri 'heading_shade.png' %>) repeat-x 0 bottom;
     padding-left: 14px;
     padding-bottom: 3px; }
 
@@ -1661,7 +1661,7 @@ td.feature_record_notes {
     margin-bottom: 0;}
 
 td.feature_record_notes.edit:hover {
-    background: #fff8de url(../images/edit_icon.png) no-repeat 97% 5px;
+    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
     cursor: pointer;}
 
 td.feature_record_notes p {
@@ -1696,7 +1696,7 @@ td.feature_record_grading {
 	text-align:center;}
 
 td.feature_record_grading.edit:hover {
-    background: #fff8de url(../images/edit_icon.png) no-repeat 97% 5px;
+    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
     cursor: pointer;}
 
 .grading_red,
@@ -1706,13 +1706,13 @@ td.feature_record_grading.edit:hover {
 	padding:0 6px;}
 
 .grading_red {
-	background-image: url(../images/grade_red.png);}
+	background-image: url(<% asset_data_uri 'grade_red.png' %>);}
 
 .grading_yellow {
-	background-image: url(../images/grade_yellow.png);}
+	background-image: url(<% asset_data_uri 'grade_yellow.png' %>);}
 
 .grading_green {
-	background-image: url(../images/grade_green.png);}
+	background-image: url(<% asset_data_uri 'grade_green.png' %>);}
 
 .grading_white {}
 
@@ -1793,7 +1793,7 @@ td.testcase_name p {
 .changed_result,
 .unchanged_result {
 		text-align: left;
-    background: url('../images/changed_arrow.png') 50% 0.7em no-repeat;
+    background: url(<% asset_data_uri 'changed_arrow.png' %>) 50% 0.7em no-repeat;
    	padding-left: 20px;}
 
 .testcase td.changed_result {
@@ -1809,14 +1809,14 @@ td.testcase_name p {
 	background: transparent no-repeat left 0.8em;}
 
 .changed_from_fail {
-	background-image: url(../images/changed_from_fail.png);}
+	background-image: url(<% asset_data_uri 'changed_from_fail.png' %>);}
 
 .changed_from_pass {
-	background-image: url(../images/changed_from_pass.png);}
+	background-image: url(<% asset_data_uri 'changed_from_pass.png' %>);}
 
 .changed_from_na,
 .changed_from_measured {
-	background-image: url(../images/changed_from_na.png);}
+	background-image: url(<% asset_data_uri 'changed_from_na.png' %>);}
 
 td.testcase_result.edit:hover {
     background: #fff8de;
@@ -1836,14 +1836,14 @@ td.testcase_notes .content {
 	position: relative;}
 
 td.testcase_notes.edit:hover {
-    background: #fff8de url(../images/edit_icon.png) no-repeat 97% 5px;
+    background: #fff8de url(<% asset_data_uri 'edit_icon.png' %>) no-repeat 97% 5px;
     cursor: pointer;}
 
 td.testcase_notes.edit:hover .note_attachment {
 	display: none;}
 
 td.testcase_notes .field.inplace .attachment {
-    background: #f4f4f4 url('../images/attachment_icon.png') no-repeat 4px 5px;
+    background: #f4f4f4 url(<% asset_data_uri 'attachment_icon.png' %>) no-repeat 4px 5px;
     border: 1px solid #eee;
     padding: 3px 5px 4px 25px;
     margin-bottom: 3px;
@@ -1854,13 +1854,13 @@ td.testcase_notes .field.inplace .attachment .delete {
     display: block;
     width: 14px;
     height: 13px;
-    background: transparent url('../images/remove_list_item.png') no-repeat left top;
+    background: transparent url(<% asset_data_uri 'remove_list_item.png' %>) no-repeat left top;
     text-indent: -99999px;
     margin: 2px 2px 0 0;
 }
 
 td.testcase_notes .field.inplace .attachment .delete:hover {
-    background-image: url('../images/remove_list_item_hover.png');
+    background-image: url(<% asset_data_uri 'remove_list_item_hover.png' %>);
 }
 
 td.testcase_notes p {
@@ -1889,7 +1889,7 @@ td.fail {
 	color: #2a7438;}
 
 .history_result {
-	background: transparent no-repeat right 0.8em url(../images/history_arrow.png);}
+	background: transparent no-repeat right 0.8em url(<% asset_data_uri 'history_arrow.png' %>);}
 
 .history_result,
 .current_result {
@@ -1909,7 +1909,7 @@ a:hover .unit {
     vertical-align: 40%;}
 
 .dl_link {
-	background: transparent url('../images/download_arrow.png') no-repeat right 50%;
+	background: transparent url(<% asset_data_uri 'download_arrow.png' %>) no-repeat right 50%;
 	font-size: 10px;
 	color: #ccc;
 	padding: 0px 7px 2px 3px;
@@ -1920,11 +1920,11 @@ a:hover .unit {
 	behavior: url(/javascripts/pie.htc);}
 
 .dl_link:hover {
-	background: transparent url('../images/download_hover_arrow.png') no-repeat right 50%;}
+	background: transparent url(<% asset_data_uri 'download_hover_arrow.png' %>) no-repeat right 50%;}
 
 .loading {
 	background: #fff; /* fallback for ancient browsers */
-	background: transparent url(../images/white_transp_70.png);
+	background: transparent url(<% asset_data_uri 'white_transp_70.png' %>);
 	position: absolute;
 	z-index: 9999;
 	width: 2000px;
@@ -1935,7 +1935,7 @@ a:hover .unit {
 
 .loading strong {
 	display: block;
-	background: transparent no-repeat 0 30px url(../images/table_preloader.gif);
+	background: transparent no-repeat 0 30px url(<% asset_data_uri 'table_preloader.gif' %>);
 	height: 100px;
 }
 
@@ -1956,11 +1956,11 @@ width: 35px;
 
 .nft_trend_button {
 	padding-right: 17px;
-	background: transparent no-repeat right 2px url(../images/nft_trend_icon.png);
+	background: transparent no-repeat right 2px url(<% asset_data_uri 'nft_trend_icon.png' %>);
 	text-decoration:none;}
 
 .nft_trend_button:hover {
-	background-image: url(../images/nft_trend_icon_hover.png);
+	background-image: url(<% asset_data_uri 'nft_trend_icon_hover.png' %>);
 	cursor: pointer;
 }
 
@@ -1998,7 +1998,7 @@ width: 35px;
 
 .modal_close span {
 	display: block;
-	background: transparent no-repeat center center url(../images/close_icon.png);
+	background: transparent no-repeat center center url(<% asset_data_uri 'close_icon.png' %>);
 	text-indent: -9999px;
 	width: 23px;
 	height: 23px;
@@ -2006,7 +2006,7 @@ width: 35px;
 
 .nft_graph_options {
 	border-top:1px solid #b2b2b2;
-	background: transparent repeat-x top url(../images/gray_to_transp_short.png);
+	background: transparent repeat-x top url(<% asset_data_uri 'gray_to_transp_short.png' %>);
 	margin-top: 20px;
 	margin-left: -40px;
 	margin-right: -40px;
@@ -2027,11 +2027,11 @@ width: 35px;
 	margin-left: 5px;
 	z-index: 100;
 	text-indent: -9999px;
-	background: transparent no-repeat 5px 0 url(../images/attachment_icon.png);
+	background: transparent no-repeat 5px 0 url(<% asset_data_uri 'attachment_icon.png' %>);
 }
 
 .note_attachment:hover {
-	background-image: url(../images/attachment_icon_hover.png);
+	background-image: url(<% asset_data_uri 'attachment_icon_hover.png' %>);
 	cursor: pointer; }
 
 .attachment_to_notes_dialog img {
@@ -2049,7 +2049,7 @@ width: 35px;
 /* @group toc and meta */
 .toc,
 .meta_info {
-    background: url(../images/bt_shade.png) repeat-x 0 bottom;
+    background: url(<%= asset_data_uri 'bt_shade.png' %>) repeat-x 0 bottom;
     list-style-type: none;
     list-style-position: outside;
     margin-left: 0;
@@ -2117,10 +2117,10 @@ span#wizard_finalize {
     position: relative; }
 
 span#wizard_upload {
-    background: url(../images/progress_1.png) no-repeat;}
+    background: url(<% asset_data_uri 'progress_1.png' %>) no-repeat;}
 
 span#wizard_finalize {
-    background: url(../images/progress_2.png) no-repeat;}
+    background: url(<% asset_data_uri 'progress_2.png' %>) no-repeat;}
 
 #wizard_progress #upload,
 #wizard_progress #publish,
@@ -2251,7 +2251,7 @@ div.field.last {
     color: #aaa;
     text-decoration: none;
     font-weight: bold;
-    background: transparent url('../images/home_edit_icon.png') no-repeat right 0px;
+    background: transparent url(<% asset_data_uri 'home_edit_icon.png' %>) no-repeat right 0px;
     display: block;
     width: 16px;
     height: 16px;
