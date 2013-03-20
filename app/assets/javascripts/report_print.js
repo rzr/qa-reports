@@ -3,4 +3,6 @@
 //
 //= require jquery.min
 //= require string
-//= app/reports_print
+//= require app/shared
+//= require app/bugzilla
+//= require app/reports_print
