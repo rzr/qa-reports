@@ -5,18 +5,17 @@ $(document).ready ->
   updateProductSuggestions = (data) ->
     productSuggestions = data
     $("#report_test_product").autocomplete(source: productSuggestions)
-    activateSuggestionLinks("div.field")
 
   updateTestSetSuggestions = (data) ->
     testSetSuggestions = data
     $("#report_test_type").autocomplete(source: testSetSuggestions)
-    activateSuggestionLinks("div.field")
 
   product_url = window.location.pathname.replace(/upload(_post)?/,"product")
   testtype_url = window.location.pathname.replace(/upload(_post)?/,"testset")
 
   $.get(product_url, updateProductSuggestions)
   $.get(testtype_url, updateTestSetSuggestions)
+  activateSuggestionLinks('div.field')
 
   $(".date").datepicker(
     showOn: "both",
