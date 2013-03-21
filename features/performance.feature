@@ -38,7 +38,7 @@ Feature: Loading times
 
     And the client sends file "features/resources/4000_cases.csv" via the REST API
     And the client sends file "features/resources/4000_cases_2.csv" via the REST API
-    Then the time spent for the "import 2 reports via API" step should be less than 33 seconds
+    Then the time spent for the "import 2 reports via API" step should be less than 40 seconds
 
     When I view the group report "1.2/Core/automated/N900"
     Then the time spent for the "view short group report" step should be less than 2 seconds
