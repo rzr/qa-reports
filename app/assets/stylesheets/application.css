@@ -2,4 +2,9 @@
  *= require jquery-ui-1.9.1.custom.min
  *= require jqModal
  *= require screen
+ *
+ * Include your stylesheet here, e.g. = require themes/nokia. Place
+ * images under app/assets/images/yourtheme, use asset_path and
+ * asset_data_uri in your css file to reference the files, and add .erb
+ * to your css file name for these tags to work.
  */
