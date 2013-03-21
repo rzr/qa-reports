@@ -19,7 +19,7 @@ $(document).ready ->
 
   $(".date").datepicker(
     showOn: "both",
-    buttonImage: "/images/calendar_icon.png",
+    buttonImage: "<%= asset_path('calendar_icon.png') %>",
     buttonImageOnly: true,
     firstDay: 1,
     selectOtherMonths: true,
@@ -43,7 +43,7 @@ $(document).ready ->
       $('form input[type=submit]').attr('disabled', 'true')
       $('.formError').hide()
       $fal = $("#file_attachment_list")
-      $fal.append($('<li id="file_upload'+id+'"><a class="remove_list_item">Remove</a>'+fileName+'<img src="/images/progress.gif" /> <span id="file_upload' + id + 'ProgressBar"></span></li>'))
+      $fal.append($('<li id="file_upload'+id+'"><a class="remove_list_item">Remove</a>'+fileName+'<img src="<%= asset_path('progress.gif') %>" /> <span id="file_upload' + id + 'ProgressBar"></span></li>'))
       $this_element = $fal.children().last()
       $this_element.click ->
         uploader._handler.cancel(id);
@@ -81,7 +81,7 @@ $(document).ready ->
   dragDrop = (event) ->
     if event.preventDefault
       event.preventDefault()
-    console.log event.originalEvent.dataTransfer.files
+    console?.log event.originalEvent.dataTransfer.files
     uploader._uploadFileList(event.originalEvent.dataTransfer.files)
     false
 

@@ -1,7 +1,19 @@
 //
 // Scripts for report preview/editing
 //
-//= require report_view
+//= require jquery.min
+//= require jqModal
+//= require string
+//= require bluff/js-class
+//= require bluff/excanvas
+//= require bluff/bluff-min
+//= require dygraph-combined
+//= require app/shared
+//= require app/bugzilla
+//= require app/test_results
+//= require app/report_metrics
+//= require app/graphs
+//= require app/layout_report
 //= require fileuploader
 //= require jquery-ui-1.9.1.custom.min
 //= require datetime
