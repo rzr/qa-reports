@@ -101,8 +101,8 @@ When %r/^the client sends files with attachments$/ do
   @response = api_import @default_api_opts.merge({
       "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml"),
       "report.2"        => Rack::Test::UploadedFile.new("features/resources/bluetooth.xml", "text/xml"),
-      "attachment.1"    => Rack::Test::UploadedFile.new("public/images/ajax-loader.gif", "image/gif"),
-      "attachment.2"    => Rack::Test::UploadedFile.new("public/images/icon_alert.gif", "image/gif"),
+      "attachment.1"    => Rack::Test::UploadedFile.new("app/assets/images/white_transp_70.png", "image/png"),
+      "attachment.2"    => Rack::Test::UploadedFile.new("app/assets/images/icon_alert.gif", "image/gif"),
   })
 end
 
@@ -283,14 +283,14 @@ end
 # For uploading attachments
 Then "I should see the uploaded attachments" do
   list = "#attachment_drag_drop_area .file_list"
-  step %{I should see "ajax-loader.gif" within "#{list}"}
+  step %{I should see "white_transp_70.png" within "#{list}"}
   step %{I should see "icon_alert.gif" within "#{list}"}
 end
 
 # Attachments as imgs when inlining enabled
 Then /^I should see the two attached images$/ do
   img = "//div[@id='attachment_drag_drop_area']//img"
-  page.should have_xpath("#{img}[contains(@src, 'ajax-loader.gif')]")
+  page.should have_xpath("#{img}[contains(@src, 'white_transp_70.png')]")
   page.should have_xpath("#{img}[contains(@src, 'icon_alert.gif')]")
 end
 

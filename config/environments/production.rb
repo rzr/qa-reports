@@ -56,4 +56,9 @@ Meegoqa::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Set the digests to precompiled assets
+  config.assets.digest = true
+  # Compress JS
+  config.assets.compress = true
 end

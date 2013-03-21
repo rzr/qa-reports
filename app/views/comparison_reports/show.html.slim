@@ -1,3 +1,5 @@
+/ This view is for the comparison done between main branch and testing,
+/ ie. from the index page click 'compare' link
 - content_for :page_header do
   = render :partial => "reports/page_header"
 
@@ -12,7 +14,6 @@
       = @comparison_testset
       | :
     = profile.name
-
 
   .clearfix
     = render :partial => "shared/report_comparison_summary", :locals => {:comparison => @comparison_report}

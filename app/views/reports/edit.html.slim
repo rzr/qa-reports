@@ -23,19 +23,13 @@
 - content_for :inplace_edit_templates do
   = render :partial => "inplace_edit_templates"
 
-- content_for :view_specific_js_head do
-  = javascript_include_tag "fileuploader.js"
-
 - content_for :view_specific_js do
   div style="display:none"
     span#session_id =@report.id
     span#formatted_execute_date =@report.formatted_date
     span#bugzilla_uri =BUGZILLA_CONFIG['link_uri']
 
-  = javascript_include_tag 'datetime'
-  = javascript_include_tag 'jquery.form.js'
-  = javascript_include_tag 'reports_edit.js'
-  = javascript_include_tag "file_attachments"
+  = javascript_include_tag 'report_edit'
 
 - content_for :category_dialog do
   = render :partial => "category_dialog"

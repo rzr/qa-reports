@@ -78,4 +78,4 @@ Feature: Consolidated reports
     And I should see active "See all"
 
 
-  
+
