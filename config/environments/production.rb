@@ -59,4 +59,6 @@ Meegoqa::Application.configure do
 
   # Set the digests to precompiled assets
   config.assets.digest = true
+  # Compress JS
+  config.assets.compress = true
 end
