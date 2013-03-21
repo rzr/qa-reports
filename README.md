@@ -24,6 +24,9 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 ## Migration Notes
 
+*   21 March 2013: [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) taken in use.
+    * If you are using a custom stylesheet you should combine it to the main stylesheet (not required though). See [wiki](https://github.com/leonidas/qa-reports/wiki/Customization) for more information.
+    * With asset pipeline you can enable asset caching and can use nginx's `gzip static`. See [wiki](https://github.com/leonidas/qa-reports/wiki/Setting-up-the-production-environment#wiki-nginx) for an example.
 *   11 March 2013: Ruby 2.0 compatible.
 *   11 September 2012: Added application configuration file `config/config.yml`. You
     will need to run `cap deploy:setup` again, or create a copy of the file to your
