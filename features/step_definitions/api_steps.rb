@@ -102,7 +102,7 @@ When %r/^the client sends files with attachments$/ do
       "report.1"        => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml"),
       "report.2"        => Rack::Test::UploadedFile.new("features/resources/bluetooth.xml", "text/xml"),
       "attachment.1"    => Rack::Test::UploadedFile.new("public/images/ajax-loader.gif", "image/gif"),
-      "attachment.2"    => Rack::Test::UploadedFile.new("public/images/icon_alert.gif", "image/gif"),
+      "attachment.2"    => Rack::Test::UploadedFile.new("app/assets/images/icon_alert.gif", "image/gif"),
   })
 end
 

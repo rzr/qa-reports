@@ -37,9 +37,9 @@ describe FileStorage do
   it "should return empty array when files are not stored for target" do
     @storage.list_files(@session).should == []
   end
-  
+
   it "should be able to add file attachements of meego_test_session into storage and list them in creation order" do
-    @storage.add_file(@session, File.new('public/images/icon_alert.gif'), 'icon_alert.gif')
+    @storage.add_file(@session, File.new('app/assets/images/icon_alert.gif'), 'icon_alert.gif')
     sleep 1.1 # MacOS filesystem has 1sec resolution
     @storage.add_file(@session, File.new('public/images/ajax-loader.gif'), 'f/oo.gif')
     @storage.list_files(@session).should == [
