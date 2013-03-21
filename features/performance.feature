@@ -22,7 +22,7 @@ Feature: Loading times
     And I select target "Core", test set "Performance" and product "N990" with date "2010-11-22"
     And I attach the report "2000_cases.csv"
     And submit the form at "upload_report_submit"
-    Then the time spent for the "upload report" step should be less than 9 seconds
+    Then the time spent for the "upload report" step should be less than 12 seconds
 
     When I press "Publish"
     Then the time spent for the "publish report" step should be less than 9 seconds
@@ -38,7 +38,7 @@ Feature: Loading times
 
     And the client sends file "features/resources/4000_cases.csv" via the REST API
     And the client sends file "features/resources/4000_cases_2.csv" via the REST API
-    Then the time spent for the "import 2 reports via API" step should be less than 28 seconds
+    Then the time spent for the "import 2 reports via API" step should be less than 30 seconds
 
     When I view the group report "1.2/Core/automated/N900"
     Then the time spent for the "view short group report" step should be less than 2 seconds
