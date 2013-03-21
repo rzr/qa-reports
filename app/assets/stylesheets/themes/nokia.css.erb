@@ -10,10 +10,10 @@ a:focus, a:hover, a:active {
 	text-decoration:underline;}
 
 a.mailto:hover {
-	background-image: url('/images/nokia/mailto_icon_hover.png');}
+	background-image: url(<%= asset_data_uri 'nokia/mailto_icon_hover.png' %>);}
 
 a.external:hover {
-	background-image: url('/images/nokia/external_icon_hover.png');}
+	background-image: url(<%= asset_data_uri 'nokia/external_icon_hover.png' %>);}
 
 /* @end links*/
 
@@ -36,7 +36,7 @@ div.formError, #error, form .error {
     background-color: #00a31f;}
 
 .big_btn.submit {
-    background-image: url(../images/btn_ok.png);
+    background-image: url(<%= asset_data_uri 'btn_ok.png' %>);
  }
 
 .small_btn,
@@ -62,27 +62,21 @@ div.uploadify_button_wrapper a.hover {
 /* @end buttons */
 
 
-#logo h3 a {
-    background-image: url(/images/meego_logo.png);}
-
-/*#logo h3 a.hover {
-    background-image: url(/images/meego_logo.png);}*/
-
 .compare:hover {
-    background-image:url(/images/nokia/compare_icon_hover.png);
+    background-image:url(<%= asset_data_uri 'nokia/compare_icon_hover.png' %>);
     text-decoration:none;}
 
 .dl_link:hover {
-	background-image:url('/images/nokia/download_hover_arrow.png');}
+	background-image:url(<%= asset_data_uri 'nokia/download_hover_arrow.png' %>);}
 
 a.edit {
-    background-image: url(/images/nokia/edit_icon.png);}
+    background-image: url(<%= asset_data_uri 'nokia/edit_icon.png' %>);}
 
 .editable_text:hover {
-   background-image: url(/images/nokia/edit_icon.png);}
+   background-image: url(<%= asset_data_uri 'nokia/edit_icon.png' %>);}
 
 .remove_list_item:hover {
-    background-image:url(/images/nokia/remove_list_item_hover.png);}
+    background-image:url(<%= asset_data_uri 'nokia/remove_list_item_hover.png' %>);}
 
 .see_all_toggle:hover {
 	text-decoration:none;}
@@ -110,10 +104,10 @@ a.sort_btn {
 .toc {border-top-color: #00ba2c;}
 
 span#wizard_upload {
-    background: url(/images/nokia/progress_1.png) no-repeat;}
+    background: url(<%= asset_data_uri 'nokia/progress_1.png' %>) no-repeat;}
 
 span#wizard_finalize {
-    background: url(/images/nokia/progress_2.png) no-repeat;}
+    background: url(<%= asset_data_uri 'nokia/progress_2.png' %>) no-repeat;}
 
 
 /* @group Page structure */
@@ -126,12 +120,12 @@ span#wizard_finalize {
 }
 
 #logo h3 a {
-	background-image: url(/images/nokia/nokia_header_logo.png);
+	background-image: url(<%= asset_path 'nokia/nokia_header_logo.png' %>);
 	-webkit-transition: none;
 }
 
 #logo h3 a:hover {
-	background-image: url(/images/nokia/nokia_header_logo.png);
+	background-image: url(<%= asset_path 'nokia/nokia_header_logo.png' %>);
 }
 
 #footer {
