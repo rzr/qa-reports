@@ -1,10 +1,10 @@
 /* This CSS overrides screen.css in order to provide Nokia theme for Meego QA Reports */
 
 /* @group links */
-a {	
+a {
 	color: #14D;
 	text-decoration:none;}
-	
+
 a:focus, a:hover, a:active {
 	color: #14D;
 	text-decoration:underline;}
@@ -21,7 +21,7 @@ a.external:hover {
 
 div.formError, #error, form .error {
     color: #e25d0c;}
-  
+
 .notification {
     background-color: #00a31f;
     color: #fff;
@@ -55,7 +55,7 @@ div.uploadify_button_wrapper a.hover {
 .small_btn:active,
 .dialog-delete:active {
     background-color: #14D;}
-    
+
 .ui_btn:hover {
 	text-decoration:none;}
 
@@ -71,7 +71,7 @@ div.uploadify_button_wrapper a.hover {
 .compare:hover {
     background-image:url(/images/nokia/compare_icon_hover.png);
     text-decoration:none;}
-   
+
 .dl_link:hover {
 	background-image:url('/images/nokia/download_hover_arrow.png');}
 
@@ -79,11 +79,11 @@ a.edit {
     background-image: url(/images/nokia/edit_icon.png);}
 
 .editable_text:hover {
-   background-image: url(/images/nokia/edit_icon.png);} 
+   background-image: url(/images/nokia/edit_icon.png);}
 
 .remove_list_item:hover {
     background-image:url(/images/nokia/remove_list_item_hover.png);}
-    
+
 .see_all_toggle:hover {
 	text-decoration:none;}
 
@@ -101,10 +101,10 @@ a.sort_btn {
 	text-decoration: none;}
 
 .sort_btn:hover {
-    color: #14D;}  
-   
+    color: #14D;}
+
 .active:hover {
-	color: #fff;} 
+	color: #fff;}
 /* @end */
 
 .toc {border-top-color: #00ba2c;}
@@ -122,7 +122,7 @@ span#wizard_finalize {
     border-color:#00a31f;}
 
 #upper_header {
-/*	background: transparent no-repeat top 30px url('/images/nokia/nokia_logo.png');*/
+
 }
 
 #logo h3 a {
@@ -141,7 +141,7 @@ span#wizard_finalize {
 
 #version_navi ul li.current a {
     color: #005e00;}
-    
+
 /* @end version navigation */
 
 /* @end page structure */

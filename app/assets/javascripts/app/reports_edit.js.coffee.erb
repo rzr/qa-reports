@@ -399,7 +399,7 @@ $(document).ready () ->
 
     $("#report_test_execution_date").datepicker
         showOn: "both"
-        buttonImage: "/images/calendar_icon.png"
+        buttonImage: "<%= asset_path('calendar_icon.png') %>"
         buttonImageOnly: true
         firstDay: 1
         selectOtherMonths: true
