@@ -5,7 +5,6 @@
 //= require jqModal
 //= require string
 //= require bluff/js-class
-//= require bluff/excanvas
 //= require bluff/bluff-min
 //= require dygraph-combined
 //= require app/shared

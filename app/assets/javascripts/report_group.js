@@ -6,7 +6,6 @@
 //= require jquery.min
 //= require string
 //= require bluff/js-class
-//= require bluff/excanvas
 //= require bluff/bluff-min
 //= require transparency.min
 //= require jquery-infinite-scroll/jquery.infinitescroll

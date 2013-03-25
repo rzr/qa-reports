@@ -47,8 +47,7 @@ $ () ->
       $("#rel_button").addClass("inactive")
       draw_rel_graph()
 
-    draw_abs_graph()
-
+    draw_abs_graph() unless $.browser.msie
 
   $resultTable = $('table#infinite_scroll_results')
 

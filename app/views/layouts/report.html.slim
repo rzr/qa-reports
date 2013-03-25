@@ -8,8 +8,9 @@ html
     = stylesheet_link_tag 'application'
     - if use_custom_layout?
       link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
+    /[if lt IE 9]
+      = javascript_include_tag 'excanvas'
     = csrf_meta_tag
-    = yield :view_specific_js_head
 
   body
     a name="top"

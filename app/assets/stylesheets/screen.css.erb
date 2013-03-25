@@ -840,7 +840,7 @@ div.formError, #error, form .error {
     border-radius: 8px;
     color: #515151;
     margin-right: 0.4em;
-    behavior: url(/javascripts/pie.htc);}
+    behavior: url(<%= asset_path 'pie.htc' %>);}
 
 .sort_btn:hover {
     background-color: #ddd;
@@ -1917,7 +1917,7 @@ a:hover .unit {
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	behavior: url(/javascripts/pie.htc);}
+	behavior: url(<%= asset_path 'pie.htc' %>);}
 
 .dl_link:hover {
 	background: transparent url(<%= asset_data_uri 'download_hover_arrow.png' %>) no-repeat right 50%;}
