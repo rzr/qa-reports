@@ -51,7 +51,7 @@ module MeegoTestReport
       if line == ''
         next
       end
-      puts line
+
       # Convert markup to HTML
       # Both bold and italic
       line.gsub! /'''''(.+?)'''''/, "<b><i>\\1</i></b>"
