@@ -78,6 +78,15 @@ Feature: Edit Report
     Then I should see link to bug "9353" within ".editable_area ul li"
 
   @javascript
+  Scenario: Create a dynamic link to bugzilla
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* [[BZ#9353]]" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "9353" within ".editable_area ul li"
+
+  @javascript
   Scenario: I delete a test case
     When I edit the report "1.2/Core/automated/N900"
     And I delete the test case "SMOKE-SIM-Get_IMSI"
