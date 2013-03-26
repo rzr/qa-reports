@@ -9,7 +9,7 @@ applyBugzillaInfo = (node, info) ->
 
   if info?
     status = info.status
-    if ~['RESOLVED', 'VERIFIED'].indexOf status
+    if $.inArray(status, ['RESOLVED', 'VERIFIED'])
       $node.addClass("resolved")
       status = info.resolution
     else
