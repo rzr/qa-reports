@@ -146,13 +146,6 @@ module ApplicationHelper
     ('[' + ints.map{|v| v.to_s}.join(",") + ']').html_safe
   end
 
-  def google_analytics_tag
-    # only run analytics on the official server
-    if request.host.include? "qa-reports.meego.com"
-      render :partial => 'shared/google_analytics'
-    end
-  end
-
   def form_ajax_error_msg(cls)
     "<div style=\"display:none\" class=\"error #{cls}\">&nbsp;</div>".html_safe
   end

@@ -28,6 +28,10 @@ app_name: "MeeGo QA Reports"
 # (partially) overrides the default one. If given, the path defined
 # here is included in the HTML output.
 # Example: custom_css = '/stylesheets/themes/nokia.css'
+#
+# Notice: this is somewhat deprecated - for improved performance you
+# should use asset pipeline. See the instructions from wiki:
+# https://github.com/leonidas/qa-reports/wiki/Customization
 custom_css: ''
 
 # Help link URIs on the top of the page. Define either a http(s) URI

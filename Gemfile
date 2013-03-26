@@ -7,8 +7,6 @@ gem 'devise'
 gem 'slim'
 gem 'paperclip', '~>2.3.15'
 gem 'coffee-script', '~>2.2'
-gem 'therubyracer', '~>0.11.0', :require => false
-gem 'barista', '>= 0.5.0'
 gem 'rest-client', :require => 'rest_client'
 gem 'activerecord-import'
 gem "rake"
@@ -16,6 +14,13 @@ gem 'ruby-xslt'
 gem 'ruby-xml-smart'
 gem 'exception_notification', '~>3.0.1'
 gem "dynamic_form", "~> 1.1.4"
+
+group :assets do
+  gem 'therubyracer', '~>0.11.0', :require => false
+  gem 'sass-rails', "  ~> 3.2.3"
+  gem 'coffee-rails', "~> 3.2.1"
+  gem 'uglifier', '>= 1.0.3'
+end
 
 group :production do
   gem 'newrelic_rpm'

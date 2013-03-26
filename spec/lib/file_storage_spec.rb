@@ -37,11 +37,11 @@ describe FileStorage do
   it "should return empty array when files are not stored for target" do
     @storage.list_files(@session).should == []
   end
-  
+
   it "should be able to add file attachements of meego_test_session into storage and list them in creation order" do
-    @storage.add_file(@session, File.new('public/images/icon_alert.gif'), 'icon_alert.gif')
+    @storage.add_file(@session, File.new('app/assets/images/icon_alert.gif'), 'icon_alert.gif')
     sleep 1.1 # MacOS filesystem has 1sec resolution
-    @storage.add_file(@session, File.new('public/images/ajax-loader.gif'), 'f/oo.gif')
+    @storage.add_file(@session, File.new('app/assets/images/white_transp_70.png'), 'f/oo.gif')
     @storage.list_files(@session).should == [
         {:name => "icon_alert.gif", :path => "meego_test_sessions/1/icon_alert.gif", :url => "files/meego_test_sessions/1/icon_alert.gif"},
         {:name => "foo.gif", :path => "meego_test_sessions/1/foo.gif", :url => "files/meego_test_sessions/1/foo.gif"}
@@ -49,7 +49,7 @@ describe FileStorage do
   end
 
   it "should be able to add file attachements of meego_test_session into storage and remove them" do
-    @storage.add_file(@session, File.new('public/images/ajax-loader.gif'), 'bar.gif')
+    @storage.add_file(@session, File.new('app/assets/images/white_transp_70.png'), 'bar.gif')
     @storage.list_files(@session).should == [{:name => "bar.gif", :path => "meego_test_sessions/1/bar.gif", :url => "files/meego_test_sessions/1/bar.gif"}]
     @storage.remove_file(@session, 'bar.gif')
     @storage.list_files(@session).should == []

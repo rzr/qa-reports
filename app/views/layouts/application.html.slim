@@ -1,26 +1,17 @@
 doctype html
 html
   head
-    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
-    meta content="IE=8" http-equiv="X-UA-Compatible"
     title = APP_CONFIG['app_name']
-    = stylesheet_link_tag :all
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
+    = stylesheet_link_tag 'application'
     - if use_custom_layout?
       link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
-    = javascript_include_tag "jquery.min.js"
-    = javascript_include_tag "jquery-ui-1.9.1.custom.min.js"
-    = javascript_include_tag 'bluff/js-class.js'
-    = javascript_include_tag 'bluff/excanvas.js'
-    = javascript_include_tag 'bluff/bluff-min.js'
-    = javascript_include_tag 'application'
-    = javascript_include_tag 'string'
-    = javascript_include_tag 'spine.js'
-    = javascript_include_tag 'route.js'
-    = javascript_include_tag 'transparency.min.js'
+    /[if lt IE 9]
+      = javascript_include_tag 'bluff/excanvas'
     = csrf_meta_tag
     - if @show_rss
       link href=rss_path rel="alternate" title="RSS" type="application/rss+xml"
-    = google_analytics_tag
 
   body
     a name="top"

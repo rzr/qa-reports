@@ -60,8 +60,8 @@
       span#trend_rel_failed  #{@group_report.trend_graph_data_rel.failed.join(',')}
       span#trend_rel_na      #{@group_report.trend_graph_data_rel.na.join(',')}
 
-  = javascript_include_tag "jquery-infinite-scroll/jquery.infinitescroll.js"
-  = javascript_include_tag "report_group.js"
 
-javascript:
-  max_cases = #{{@group_report.max_cases}}
+- content_for :view_specific_js do
+  = javascript_include_tag "report_group"
+  javascript:
+    max_cases = #{{@group_report.max_cases}}

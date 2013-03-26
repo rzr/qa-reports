@@ -1,22 +1,15 @@
 doctype html
 html
   head
-    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
-    meta content="IE=8" http-equiv="X-UA-Compatible"
-
     title = APP_CONFIG['app_name']
-    = stylesheet_link_tag :all
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="text/html; charset=UTF-8" http-equiv="Content-Type"
+    = stylesheet_link_tag 'application'
     - if use_custom_layout?
       link href=="#{APP_CONFIG['custom_css']}" media="all" rel="stylesheet" type="text/css"
+    /[if lt IE 9]
+      = javascript_include_tag 'bluff/excanvas'
     = csrf_meta_tag
-    = javascript_include_tag "jquery.min.js"
-    = javascript_include_tag 'bluff/js-class.js'
-    = javascript_include_tag 'bluff/excanvas.js'
-    = javascript_include_tag 'bluff/bluff-min.js'
-    = javascript_include_tag 'dygraph-combined.js'
-    = javascript_include_tag 'string'
-    = yield :view_specific_js_head
-    = google_analytics_tag
 
   body
     a name="top"
@@ -45,7 +38,6 @@ html
               | Shift-drag to pan.
               br/
               | Doubleclick to zoom out.
-    = javascript_include_tag "jquery-ui-1.9.1.custom.min.js"
 
     /! Modal dialog template for viewing test case image attachments
     #attachment_template.jqmWindow.attachment_to_notes_dialog style="display:none;"
@@ -105,5 +97,4 @@ html
               br/
               | Doubleclick to zoom out.
 
-    = javascript_include_tag 'application', 'jqModal', 'layout_report'
     = yield :view_specific_js
