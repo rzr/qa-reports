@@ -24,7 +24,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 ## Migration Notes
 
-*   21 March 2013: [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) taken in use.
+*   26 March 2013: [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) taken in use.
     * If you are using a custom stylesheet you should combine it to the main stylesheet (not required though). See [wiki](https://github.com/leonidas/qa-reports/wiki/Customization) for more information.
     * With asset pipeline you can enable asset caching and can use nginx's `gzip static`. See [wiki](https://github.com/leonidas/qa-reports/wiki/Setting-up-the-production-environment#wiki-nginx) for an example.
 *   11 March 2013: Ruby 2.0 compatible.
@@ -37,7 +37,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 *   `config/config.yml`: General application configuration
     * Application configuration is aimed for enabling customization while keeping your fork compatible with the upstream version.
-*   `config/config.yml`: Bugzilla integration configuration
+*   `config/bugzilla.yml`: Bugzilla integration configuration
     * QA Reports can show bug information from Bugzilla. Bugzilla server settings are defined in this file.
 *   `config/deploy.rb` and `config/deploy/production.rb`: Deployment settings
 *   `config/environments/production.rb`: Environment specific configuration, e.g. email settings
