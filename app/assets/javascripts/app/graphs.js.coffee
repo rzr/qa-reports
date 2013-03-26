@@ -27,18 +27,23 @@
     if values.length > 0
       values[1] = values[0] if values.length == 1
 
-      id     = $div.attr("id")
-      canvas = document.createElement("canvas")
-      # if it is IE
-      canvas  = G_vmlCanvasManager.initElement(canvas) if G_vmlCanvasManager?
+      id      = $div.attr("id")
+      canvas  = document.createElement("canvas")
       $canvas = $(canvas)
+      bg      = $div.parent().css("background-color")
+
+      # IE, set white background if it would be transparent
+      bg = '#fff' if bg == 'transparent'
 
       $canvas.attr("id", id)
       $canvas.attr("width", "287")
       $canvas.attr("height", "46")
 
-      bg = $div.parent().css("background-color")
       $div.replaceWith($canvas)
+
+      # if it is IE. We need to put the canvas on the document before
+      # initializing it, otherwise won't work
+      canvas  = G_vmlCanvasManager.initElement(canvas) if G_vmlCanvasManager?
 
       g = new Bluff.Line(id, '287x46')
       g.tooltips = false
