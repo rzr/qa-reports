@@ -58,7 +58,8 @@ module Meegoqa
         'report_add.js',
         'report_view.js',
         'report_print.js',
-        'report_edit.js'
+        'report_edit.js',
+        'bluff/excanvas.js'
     ]
 
     # Since Rails 3 rescuing routing errors is odd/not working. We can however
