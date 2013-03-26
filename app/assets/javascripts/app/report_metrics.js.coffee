@@ -1,4 +1,4 @@
-$(document).ready ->
+on_ready_steps = ->
   labels = $('#metrics_summary_labels').text().split(',')
 
   $('.metrics_group').each () ->
@@ -40,3 +40,9 @@ $(document).ready ->
         g.data name, values
 
       g.draw()
+
+# IE hack
+if typeof G_vmlCanvasManager != 'undefined'
+  $(window).load on_ready_steps
+else
+  $(document).ready on_ready_steps
