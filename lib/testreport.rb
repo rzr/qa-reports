@@ -51,13 +51,23 @@ module MeegoTestReport
       if line == ''
         next
       end
+      puts line
+      # Convert markup to HTML
+      # Both bold and italic
       line.gsub! /'''''(.+?)'''''/, "<b><i>\\1</i></b>"
+      # Bold
       line.gsub! /'''(.+?)'''/, "<b>\\1</b>"
+      # Italic
       line.gsub! /''(.+?)''/, "<i>\\1</i>"
-      line.gsub! /#{BUGZILLA_CONFIG['link_uri']}(\d+)/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\""+BUGZILLA_CONFIG['link_uri']+"\\1\">\\1</a>"
+      # Bugzilla links (in case someone copypastes a Bugzilla uri, convert
+      # it to match bug ID format)
+      line.gsub! /#{BUGZILLA_CONFIG['link_uri'].sub("?", "\\?")}(\d+)/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\""+BUGZILLA_CONFIG['link_uri']+"\\1\">\\1</a>"
+      # Any other link
       line.gsub! /\[\[(http[s]?:\/\/.+?) (.+?)\]\]/, "<a href=\"\\1\">\\2</a>"
+      # Bug IDs [[1234]]
       line.gsub! /\[\[(\d+)\]\]/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\""+BUGZILLA_CONFIG['link_uri']+"\\1\">\\1</a>"
 
+      # Headings, lists, and the rest
       if line =~ /^====\s*(.+)\s*====$/
         html << "<h5>#{$1}</h5>"
       elsif line =~ /^===\s*(.+)\s*===$/
