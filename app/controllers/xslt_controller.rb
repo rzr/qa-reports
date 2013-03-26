@@ -38,7 +38,7 @@ class XsltController < ApplicationController
         render text:html
     else
         logger.warn "The requested xml file does not exist: %s"%xmlfile
-        render :formats => [:html], file:"public/404", :status => 404
+        render :formats => [:html], file:"#{Rails.root}/public/404.html", :status => 404
     end
   end
 end
