@@ -1,4 +1,4 @@
-$ () ->
+on_ready_steps = ->
   if $('#trend_labels').text().trim().length > 0
     trend_labels     = $('#trend_labels').text().split(',')
     trend_abs_passed = (parseInt(num) for num in $('#trend_abs_passed').text().split(','))
@@ -47,7 +47,7 @@ $ () ->
       $("#rel_button").addClass("inactive")
       draw_rel_graph()
 
-    draw_abs_graph() unless $.browser.msie
+    draw_abs_graph()
 
   $resultTable = $('table#infinite_scroll_results')
 
@@ -96,3 +96,8 @@ $ () ->
 
   $(window).trigger('infinitescroll.scrollpage', 1)
 
+# IE hack
+if typeof G_vmlCanvasManager != 'undefined'
+  $(window).load on_ready_steps
+else
+  $(document).ready on_ready_steps
