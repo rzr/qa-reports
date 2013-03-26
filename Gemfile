@@ -11,7 +11,7 @@ gem 'rest-client', :require => 'rest_client'
 gem 'activerecord-import'
 gem "rake"
 gem 'ruby-xslt'
-gem 'ruby-xml-smart'
+gem 'xml-smart'
 gem 'exception_notification', '~>3.0.1'
 gem "dynamic_form", "~> 1.1.4"
 
