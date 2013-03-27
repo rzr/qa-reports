@@ -11,20 +11,12 @@ class BugsController < ApplicationController
     ids  = params[:bugids]
     json = {}
 
+    # Group the IDs by the service handling them
     ids.group_by {|id|
-      prefix, id = /([A-Z]{1,}\#{1})?(\d+)/.match(id).try(:captures)
+      service = ExternalServiceHelper.get_external_service(id)
       # Return straight away if something odd has been given
-      return head :unprocessable_entity if id.blank?
-
-      # If prefix does not exist or is not any of the defined prefixes
-      # we will use the default service. Keeping the bug ids intact because
-      # we need to be able to return them in exactly the same form so the
-      # client side code knows where to put the value
-      prefix.sub! '#', '' unless prefix.nil?
-      if prefix.nil? or not SERVICES.map {|s| s['prefix']} .include?(prefix)
-        prefix = DEFAULT_SERVICE['prefix'] || "DEFAULT_SERVICE_PREFIX"
-      end
-      prefix
+      return head :unprocessable_entity if service.nil?
+      service['prefix']
     } .each {|prefix, ids|
       # Get the service for the prefix
       service = SERVICES.detect {|s| s['prefix'] == prefix}

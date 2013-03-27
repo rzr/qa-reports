@@ -97,6 +97,7 @@ class MeegoTestCase < ActiveRecord::Base
       result: result_name,
       comment: comment_html,
       tc_id: tc_id.present? ? tc_id : nil,
+      # TODO: Fix to handle multiple services
       bugs: comment.scan(/\[\[(\d+)\]\]/).map {|m| {id:m[0], url:"#{SERVICES[0]['link_uri']}#{m[0]}"}}
     }
   end
