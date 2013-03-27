@@ -1,0 +1,54 @@
+#
+# Configuration for external services to which QA Reports can partially
+# integrate using URLs, IDs, and query URIs. Reports may contain links to
+# IDs, prepended by prefixes if multiple services are used, in form of
+# [[1234]] or [[PREFIX#1234]]. This markup is converted to a link to the
+# external service and, depending on the service, additional information
+# may be fetched automatically.
+#
+# Examples of services include e.g. Bugzilla and Gerrit. Currently QA Reports
+# provides two handlers for the IDs - bugzilla (fetches also bug related info)
+# and link (just a link using defined base URL). Administrator will define
+# the URIs etc. in this configuration file.
+#
+# ONE of the external services here can be defined as a default. It is used
+# when more than one service is defined, and when a link without a prefix
+# or with an unknown prefix is found.
+
+# Name is shown on the UI to help users decide how to define the ID
+- name:     MeeGo Bugzilla
+  server:   bugs.meego.com
+  port:     443
+  use_ssl:  true
+
+  prefix:   BZ
+  default:  true
+
+  # Type of the service. New ones cannot be added without implementing a
+  # handler. Rest of the parameters are understood by the handler.
+  type:     bugzilla
+
+  # Query URI template (comma separated list of ids appended)
+  uri: /buglist.cgi?bugidtype=include&columnlist=short_desc%2Cbug_status%2Cresolution&query_format=advanced&ctype=csv&bug_id=
+
+  # The URL used to link to bugs (bug id appended)
+  link_uri: http://bugs.meego.com/show_bug.cgi?id=
+
+  # Proxy server for accessing the service from the application server.
+  # Leave empty if not needed
+  proxy_server:
+  proxy_port:
+
+  # HTTP Basic authentication. These are asked during deployment. Notice that
+  # you need these only if you must login with HTTP Basic Auth to access
+  # Bugzilla - i.e. your browsers displays a popup window asking for credentials.
+  http_username:
+  http_password:
+
+  # Bugzilla integrated authentication. Many Bugzilla installations require
+  # users to log in for searching and viewing bugs. Provide these creadentials
+  # if that is the case within your organization. Note: this takes use of
+  # Bugzilla_login and Bugzilla_password parameters added in Bugzilla 3.6
+  # http://www.bugzilla.org/docs/tip/en/html/api/Bugzilla/WebService.html#LOGGING_IN
+  bugzilla_username:
+  bugzilla_password:
