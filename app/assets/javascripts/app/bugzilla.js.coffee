@@ -2,14 +2,14 @@
 # Methods for fetching and applying bug info from Bugzilla
 #
 
-bugzillaCache = []
+bugzillaCache = {}
 
 applyBugzillaInfo = (node, info) ->
   $node = $(node)
 
   if info?
     status = info.status
-    if ~$.inArray(status, ['RESOLVED', 'VERIFIED'])
+    if status in ['RESOLVED', 'VERIFIED']
       $node.addClass("resolved")
       status = info.resolution
     else
@@ -36,24 +36,16 @@ applyBugzillaInfo = (node, info) ->
 
   links = $('.bugzilla.fetch')
   links.each (i, node) ->
-    id = $.trim($(node).text())
-    if bugzillaCache[id]?
+    id = $.trim($(node).attr('data-id'))
+    if id of bugzillaCache
       applyBugzillaInfo(node, bugzillaCache[id])
     else
-      bugIds.push(id) if $.inArray(id, bugIds) == -1
+      bugIds.push(id) unless id in bugIds
 
   return if bugIds.length == 0
 
   $.getJSON searchUrl, bugids: bugIds, (data) ->
-    hash = []
-    for bug in data
-      hash[bug.id.toString()] = bug
-
-    $('.bugzilla.fetch').each (i, node) ->
-      id = $.trim($(node).text())
-      if id in bugzillaCache
-        info = bugzillaCache[id]
-      else
-        info = hash[id];
-        bugzillaCache[id] = info if info?
-      applyBugzillaInfo(node, info);
+    # Merge the new data to bugzillaCache and run recrsively again to eliminate
+    # duplicated code used earlier
+    bugzillaCache[id] = obj for id, obj of data
+    fetchBugzillaInfo()

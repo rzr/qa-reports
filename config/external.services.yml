@@ -7,8 +7,8 @@
 # may be fetched automatically.
 #
 # Examples of services include e.g. Bugzilla and Gerrit. Currently QA Reports
-# provides two handlers for the IDs - bugzilla (fetches also bug related info)
-# and link (just a link using defined base URL). Administrator will define
+# provides two handlers for the IDs - 'bugzilla' (fetches also bug related info)
+# and 'link' (just a link using defined base URL). Administrator will define
 # the URIs etc. in this configuration file.
 #
 # ONE of the external services here can be defined as a default. It is used
