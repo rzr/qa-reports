@@ -11,28 +11,28 @@ class BugsController < ApplicationController
   def fetch_bugzilla_data
     ids       = params[:bugids]
 
-    uri = BUGZILLA_CONFIG['uri'] + ids.join(',')
+    uri = SERVICES[0]['uri'] + ids.join(',')
 
     content = ""
-    if not BUGZILLA_CONFIG['proxy_server'].nil?
-      @http = Net::HTTP.Proxy(BUGZILLA_CONFIG['proxy_server'], BUGZILLA_CONFIG['proxy_port']).new(BUGZILLA_CONFIG['server'], BUGZILLA_CONFIG['port'])
+    if not SERVICES[0]['proxy_server'].nil?
+      @http = Net::HTTP.Proxy(SERVICES[0]['proxy_server'], SERVICES[0]['proxy_port']).new(SERVICES[0]['server'], SERVICES[0]['port'])
     else
-      @http = Net::HTTP.new(BUGZILLA_CONFIG['server'], BUGZILLA_CONFIG['port'])
+      @http = Net::HTTP.new(SERVICES[0]['server'], SERVICES[0]['port'])
     end
 
-    @http.use_ssl     = BUGZILLA_CONFIG['use_ssl']
+    @http.use_ssl     = SERVICES[0]['use_ssl']
     @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     @http.start() do |http|
 
       cookie = nil
       # Bugzilla integrated authentication
-      if not BUGZILLA_CONFIG['bugzilla_username'].nil?
+      if not SERVICES[0]['bugzilla_username'].nil?
         # Since Bugzilla 3.6 username and password can be given as parameters
-        login_uri = "#{uri}&Bugzilla_login=#{url_encode(BUGZILLA_CONFIG['bugzilla_username'])}&Bugzilla_password=#{url_encode(BUGZILLA_CONFIG['bugzilla_password'])}"
+        login_uri = "#{uri}&Bugzilla_login=#{url_encode(SERVICES[0]['bugzilla_username'])}&Bugzilla_password=#{url_encode(SERVICES[0]['bugzilla_password'])}"
 
         req = Net::HTTP::Get.new(login_uri)
-        if not BUGZILLA_CONFIG['http_username'].nil?
-          req.basic_auth BUGZILLA_CONFIG['http_username'], BUGZILLA_CONFIG['http_password']
+        if not SERVICES[0]['http_username'].nil?
+          req.basic_auth SERVICES[0]['http_username'], SERVICES[0]['http_password']
         end
 
         response = http.request(req)
@@ -45,8 +45,8 @@ class BugsController < ApplicationController
       end
 
       req = Net::HTTP::Get.new(uri)
-      if not BUGZILLA_CONFIG['http_username'].nil?
-        req.basic_auth BUGZILLA_CONFIG['http_username'], BUGZILLA_CONFIG['http_password']
+      if not SERVICES[0]['http_username'].nil?
+        req.basic_auth SERVICES[0]['http_username'], SERVICES[0]['http_password']
       end
 
       if not cookie.nil?

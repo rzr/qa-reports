@@ -27,7 +27,7 @@
   div style="display:none"
     span#session_id =@report.id
     span#formatted_execute_date =@report.formatted_date
-    span#bugzilla_uri =BUGZILLA_CONFIG['link_uri']
+    span#bugzilla_uri =SERVICES[0]['link_uri']
 
   = javascript_include_tag 'report_edit'
 
