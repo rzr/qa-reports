@@ -15,7 +15,7 @@ applyBugzillaInfo = (node, info) ->
     else
       $node.addClass("unresolved")
 
-    text = info.summary
+    text = info.title
     if $node.closest('td.testcase_notes').length != 0
       $node.attr("title", "#{text} (#{status})")
     else if $node.hasClass("bugzilla_append")
@@ -44,12 +44,10 @@ applyBugzillaInfo = (node, info) ->
 
   return if bugIds.length == 0
 
-  $.getJSON searchUrl, "bugids[]=" + bugIds.toString(), (data) ->
+  $.getJSON searchUrl, bugids: bugIds, (data) ->
     hash = []
-    for i in [1..data.length - 1]
-      row = data[i]
-      id  = row[0]
-      hash[id.toString()] = summary: row[1], status: row[2], resolution: row[3]
+    for bug in data
+      hash[bug.id.toString()] = bug
 
     $('.bugzilla.fetch').each (i, node) ->
       id = $.trim($(node).text())

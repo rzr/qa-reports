@@ -56,13 +56,29 @@ module Bugzilla
       content  = response.body
     end
 
+    json = []
     begin
-      json = CSV.parse(content)
+      # Don't parse headers
+      csv = CSV.parse(content, :headers => true)
     rescue CSV::MalformedCSVError => e
       logger.error e.message
       logger.info  "ERROR: MALFORMED BUGZILLA DATA"
       logger.info  content
-      json = nil
+      csv = nil
+    end
+
+    # Convert to a better format
+    # TODO: Some day when we do have more than just links and Bugzilla,
+    # the JSON keys should make sense in more generic manner
+    unless csv.nil?
+      csv.each do |row|
+        json << {
+          id:         row[0],
+          title:      row[1],
+          status:     row[2],
+          resolution: row[3]
+        }
+      end
     end
 
     json

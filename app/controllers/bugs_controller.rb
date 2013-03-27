@@ -9,9 +9,10 @@ class BugsController < ApplicationController
 
   def fetch_bugzilla_data
     ids  = params[:bugids]
+    # TODO: We cannot lose the prefix.
     json = Bugzilla.fetch_data(SERVICES[0], ids)
 
-    if json.nil?
+    if json.blank?
       head :not_found
     else
       render :json => json
