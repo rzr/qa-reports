@@ -309,7 +309,7 @@ formatMarkup = (s) ->
         # Any other link
         line = line.replace /\[\[(http[s]?:\/\/.+?) (.+?)\]\]/g, "<a href=\"$1\">$2</a>"
         # Bug IDs
-        line = line.replace /\[\[(?:[A-Z]{1,}#{1})?(\d+)\]\]/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"" + BUGZILLA_URI + "$1\">$1</a>"
+        line = line.replace /\[\[([A-Z]{1,}#{1})?(\d+)\]\]/g, "<a class=\"bugzilla fetch bugzilla_append\" data-id=\"$1$2\" href=\"#{BUGZILLA_URI}$2\">$2</a>"
 
         # Headings, lists, etc.
         line = line.replace /^====\s*(.+)\s*====$/, "<h5>$1</h5>"

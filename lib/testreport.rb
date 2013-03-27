@@ -54,7 +54,7 @@ module MeegoTestReport
       # Any other link
       line.gsub! /\[\[(http[s]?:\/\/.+?) (.+?)\]\]/, "<a href=\"\\1\">\\2</a>"
       # Bug IDs [[1234]] or [[BZ#1234]]
-      line.gsub! /\[\[(?:[A-Z]{1,}\#{1})?(\d+)\]\]/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\""+SERVICES[0]['link_uri']+"\\1\">\\1</a>"
+      line.gsub! /\[\[([A-Z]{1,}\#{1})?(\d+)\]\]/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" data-id=\"\\1\\2\" href=\"#{SERVICES[0]['link_uri']}\\2\">\\2</a>"
 
       # Headings, lists, and the rest
       if line =~ /^====\s*(.+)\s*====$/
