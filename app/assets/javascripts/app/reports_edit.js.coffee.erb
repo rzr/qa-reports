@@ -298,13 +298,20 @@ formatMarkup = (s) ->
         if line == ''
             continue
 
+        # Bold and italic
         line = line.replace /'''''(.+?)'''''/g, "<b><i>$1</i></b>"
+        # Bold
         line = line.replace /'''(.+?)'''/g, "<b>$1</b>"
+        # Italic
         line = line.replace /''(.+?)''/g, "<i>$1</i>"
+        # Bugzilla links (http://bugzilla.com/show_bug....)
         line = line.replace /http\:\/\/([^\/]+)\/show_bug\.cgi\?id=(\d+)/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"http://$1/show_bug.cgi?id=$2\">$2</a>"
+        # Any other link
         line = line.replace /\[\[(http[s]?:\/\/.+?) (.+?)\]\]/g, "<a href=\"$1\">$2</a>"
-        line = line.replace /\[\[(\d+)\]\]/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"" + BUGZILLA_URI + "$1\">$1</a>"
+        # Bug IDs
+        line = line.replace /\[\[(?:[A-Z]{1,}#{1})?(\d+)\]\]/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"" + BUGZILLA_URI + "$1\">$1</a>"
 
+        # Headings, lists, etc.
         line = line.replace /^====\s*(.+)\s*====$/, "<h5>$1</h5>"
         line = line.replace /^===\s*(.+)\s*===$/, "<h4>$1</h4>"
         line = line.replace /^==\s*(.+)\s*==$/, "<h3>$1</h3>"

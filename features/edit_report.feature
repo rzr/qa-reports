@@ -68,14 +68,23 @@ Feature: Edit Report
     Then I should see "testing list" within ".editable_area ul li"
     And I should see "Test Header" within ".editable_area h3"
 
-  # @selenium
-  # Scenario: Create a dynamic link to bugzilla
-  #   When I edit the report "1.2/Core/automated/N900"
-  #   And I click the element "#test_objective"
-  #   And fill in "report[objective_txt]" with "* [[9353]]" within ".editable_area"
-  #   And I press "Save"
+  @javascript
+  Scenario: Create a dynamic link to bugzilla
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* [[9353]]" within ".editable_area"
+    And I press "Save"
 
-  #   Then I should see "[FEA] Automatic reporting interface to MeeGo QA reports" within ".editable_area ul li"
+    Then I should see link to bug "9353" within ".editable_area ul li"
+
+  @javascript
+  Scenario: Create a dynamic link to bugzilla
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* [[BZ#9353]]" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "9353" within ".editable_area ul li"
 
   @javascript
   Scenario: I delete a test case

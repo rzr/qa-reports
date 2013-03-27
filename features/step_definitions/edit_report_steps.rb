@@ -114,3 +114,9 @@ end
 Then /^I disable inlining images$/ do
   APP_CONFIG['inline_images'] = false
 end
+
+Then /^I should see link to bug "(.*?)" within "(.*?)"$/ do |id, selector|
+  with_scope(selector) do
+    page.should have_xpath("//a[contains(@href, '#{id}')]")
+  end
+end
