@@ -242,3 +242,19 @@ Feature: Import API
     And I should see a link to Bugzilla
     And I should see a link to Mozilla Bugzilla
     And I remove the other Bugzilla service
+
+  Scenario: Create dynamic link to an external link only service
+    Given I add a link only external service
+    When the client sends file patch ID in issue summary
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Gerrit
+    And I remove the link only external service
+
+  Scenario: Convert link to an external link only service
+    Given I add a link only external service
+    When the client sends file with URI to Gerrit patch in issue summary
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Gerrit
+    And I remove the link only external service

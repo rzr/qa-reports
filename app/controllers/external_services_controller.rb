@@ -27,16 +27,17 @@ class ExternalServicesController < ApplicationController
       when 'bugzilla'
         data = Bugzilla.fetch_data(service, plain_ids)
       when 'link'
+        data = ExternalLink.fetch_data(service, plain_ids)
       end
 
       # Now we still need to whole shebang - the returned data has all that we
       # need but we do need to return the same IDs as received (e.g. request
-      # contained 1234 and BZ#1234, and even if they're the same bug we will
+      # contained 1234 and BZ#1234, and even if they're the same item we will
       # return it twice to be able to show the information on correct place
       # and not e.g. for GERRIT#1234)
       ids.each {|id|
         pid      = plain_id(id)
-        json[id] = data.detect {|bug| bug[:id] == pid}
+        json[id] = data.detect {|item| item[:id] == pid}
       }
     }
 

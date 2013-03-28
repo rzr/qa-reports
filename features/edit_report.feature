@@ -120,6 +120,28 @@ Feature: Edit Report
     And I remove the other Bugzilla service
 
   @javascript
+  Scenario: Create dynamic link to an external link only service
+    Given I add a link only external service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* [[GER#9353]]" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "http://review.cyanogenmod.org/#/c/9353/" within ".editable_area ul li"
+    And I remove the link only external service
+
+  @javascript
+  Scenario: Convert link to an external link only service
+    Given I add a link only external service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* http://review.cyanogenmod.org/#/c/9353/" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "http://review.cyanogenmod.org/#/c/9353/" within ".editable_area ul li"
+    And I remove the link only external service
+
+  @javascript
   Scenario: I delete a test case
     When I edit the report "1.2/Core/automated/N900"
     And I delete the test case "SMOKE-SIM-Get_IMSI"

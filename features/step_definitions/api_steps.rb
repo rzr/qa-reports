@@ -61,6 +61,13 @@ When "the client sends file with URIs to bugs in two services in issue summary" 
     "* http://bugs.meego.com/show_bug.cgi?id=1234 https://bugzilla.mozilla.org/show_bug.cgi?id=1234"})
 end
 
+When "the client sends file patch ID in issue summary" do
+  @response = api_import @default_api_opts.merge({"issue_summary_txt" => "* [[GER#1234]]"})
+end
+
+When "the client sends file with URI to Gerrit patch in issue summary" do
+  @response = api_import @default_api_opts.merge({"issue_summary_txt" => "* http://review.cyanogenmod.org/#/c/1234/"})
+end
 
 # Note: this must use the API parameters for the current API version. There
 # are other methods for using deprecated parameters.
@@ -376,6 +383,10 @@ end
 
 Then /^I should see a link to Mozilla Bugzilla$/ do
   step %{I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editcontent ul li"}
+end
+
+Then /^I should see a link to Gerrit$/ do
+  step %{I should see link to bug "http://review.cyanogenmod.org/#/c/1234/" within ".editcontent ul li"}
 end
 
 Then "the upload succeeds" do

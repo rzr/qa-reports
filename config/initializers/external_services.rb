@@ -57,12 +57,13 @@ SERVICES.each do |s|
       puts "\033[31mERROR: Incorrect uri or link_uri for #{s['name']} - remember to escape % signs\033[0m"
       errors = true
     end
+
+    unless s['uri'].include?("%s")
+        puts "\033[31mERROR: uri for #{s['name']} missing ID placeholder (%s)\033[0m"
+        errors = true
+    end
   end
 
-  unless s['uri'].include?("%s")
-      puts "\033[31mERROR: uri for #{s['name']} missing ID placeholder (%s)\033[0m"
-      errors = true
-  end
   unless s['link_uri'].include?("%s")
       puts "\033[31mERROR: link_uri for #{s['name']} missing ID placeholder (%s)\033[0m"
       errors = true

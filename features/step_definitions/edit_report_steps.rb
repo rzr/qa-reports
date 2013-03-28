@@ -123,6 +123,14 @@ Then /^I remove the other Bugzilla service$/ do
   SERVICES.pop()
 end
 
+Given "I add a link only external service" do
+  SERVICES << @cyanogen_gerrit
+end
+
+Then "I remove the link only external service" do
+  SERVICES.pop()
+end
+
 Then /^I should see link to bug "(.*?)" within "(.*?)"$/ do |id, selector|
   with_scope(selector) do
     page.should have_xpath("//a[contains(@href, '#{id}')]")
