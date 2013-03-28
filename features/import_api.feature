@@ -212,3 +212,33 @@ Feature: Import API
     And I should see "Load Summary"
     And I should see "Average CPU load"
     And I should see "Response time under load"
+
+  Scenario: Create a dynamic link to bugzilla
+    When the client sends file with a bug ID in issue summary
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Bugzilla
+
+  Scenario: Create a dynamic link to bugzilla using a prefix
+    When the client sends file with a bug ID with prefix in issue summary
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Bugzilla
+
+  Scenario: Create dynamic links to two bugzilla servers
+    Given I add another Bugzilla service
+    When the client sends file with bugs to two services in issue summary
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Bugzilla
+    And I should see a link to Mozilla Bugzilla
+    And I remove the other Bugzilla service
+
+  Scenario: Convert links to two bugzilla servers
+    Given I add another Bugzilla service
+    When the client sends file with URIs to bugs in two services in issue summary
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Bugzilla
+    And I should see a link to Mozilla Bugzilla
+    And I remove the other Bugzilla service
