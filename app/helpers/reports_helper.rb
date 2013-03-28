@@ -51,16 +51,16 @@ module ReportsHelper
   end
 
   def print_title_link(title)
-    if bugzilla_title?(title)
-      ('<a class="bugzilla fetch" target="_blank" data-id="' + title + '" href="' + ExternalServiceHelper.get_external_url(title) + '">' + title + '</a>').html_safe
+    if ext_service_title?(title)
+      ('<a class="ext_service fetch" target="_blank" data-id="' + title + '" href="' + ExternalServiceHelper.get_external_url(title) + '">' + title + '</a>').html_safe
     else
       title
     end
   end
 
   def print_title(title)
-    if bugzilla_title?(title)
-      ('<span class="bugzilla fetch" data-id="' + title + '">' + title + '</span>').html_safe
+    if ext_service_title?(title)
+      ('<span class="ext_service fetch" data-id="' + title + '">' + title + '</span>').html_safe
     else
       title
     end
@@ -109,7 +109,7 @@ module ReportsHelper
 
 private
 
-  def bugzilla_title?(title)
+  def ext_service_title?(title)
     result = ReportParser::parse_features(title)
     result.length != 1 || result.first.is_a?(Fixnum)
   end

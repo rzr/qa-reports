@@ -56,7 +56,7 @@ module MeegoTestReport
         link = Regexp.escape(s['link_uri'])
         link.gsub! /http[s]?/, "http[s]?"
         line.gsub! /#{link}(\d+)/ do
-          "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" data-id=\"#{s['prefix']}##{$1}\" href=\"#{s['link_uri']}#{$1}\">#{$1}</a>"
+          "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{s['prefix']}##{$1}\" href=\"#{s['link_uri']}#{$1}\">#{$1}</a>"
         end
       end
 
@@ -65,7 +65,7 @@ module MeegoTestReport
 
       # External service IDs [[1234]] or [[BZ#1234]]
       line.gsub! /(\[\[([A-Z]{1,}\#{1})?(\d+)\]\])/ do
-        "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" data-id=\"#{$2}#{$3}\" href=\"#{ExternalServiceHelper.get_external_url($1)}\">#{$3}</a>"
+        "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{$2}#{$3}\" href=\"#{ExternalServiceHelper.get_external_url($1)}\">#{$3}</a>"
       end
 
       # Headings, lists, and the rest

@@ -213,7 +213,7 @@ Then %r/^I should get the test cases for each feature$/ do
 
       tc = feature['testcases'][idx]
       tc['result'].should == "Fail"
-      tc['comment'].should == "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" data-id=\"5856\" href=\"#{SERVICES[0]['link_uri']}5856\">5856</a> <a class=\"bugzilla fetch bugzilla_status bugzilla_append\" data-id=\"3551\" href=\"#{SERVICES[0]['link_uri']}3551\">3551</a> <a class=\"bugzilla fetch bugzilla_status bugzilla_append\" data-id=\"3551\" href=\"#{SERVICES[0]['link_uri']}3551\">3551</a>"
+      tc['comment'].should == "<a class=\"ext_service fetch ext_service_append\" data-id=\"5856\" href=\"#{SERVICES[0]['link_uri']}5856\">5856</a> <a class=\"ext_service fetch ext_service_append\" data-id=\"3551\" href=\"#{SERVICES[0]['link_uri']}3551\">3551</a> <a class=\"ext_service fetch ext_service_append\" data-id=\"3551\" href=\"#{SERVICES[0]['link_uri']}3551\">3551</a>"
       tc['bugs'].length.should == 3
       tc['bugs'][0]['id'].should == "5856"
       tc['bugs'][1]['id'].should == "3551"

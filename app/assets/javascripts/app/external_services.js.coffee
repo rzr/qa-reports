@@ -29,7 +29,7 @@ applyExternalInfo = (node, info) ->
     if text? and status?
       if $node.closest('td.testcase_notes').length != 0
         $node.attr("title", "#{text} (#{status})")
-      else if $node.hasClass("bugzilla_append")
+      else if $node.hasClass("ext_service_append")
         $node.after("<span> - #{text} (#{status})</span>");
       else
         $node.text(text);
@@ -47,7 +47,7 @@ applyExternalInfo = (node, info) ->
   ids       = []
   searchUrl = "/fetch_external_data"
 
-  links = $('.bugzilla.fetch')
+  links = $('.ext_service.fetch')
   links.each (i, node) ->
     id = $.trim($(node).attr('data-id'))
     if id of infoCache

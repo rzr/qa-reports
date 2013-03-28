@@ -16,7 +16,7 @@ class ExternalServicesController < ApplicationController
       # Return straight away if something odd has been given
       return head :unprocessable_entity if service.nil?
       service['prefix']
-    } .each {|prefix, ids|
+    } .each {|prefix, ids| # No parallel each for Ruby?
       # Get the service for the prefix
       service = SERVICES.detect {|s| s['prefix'] == prefix}
       # Get the plain IDs to be given to the service handler

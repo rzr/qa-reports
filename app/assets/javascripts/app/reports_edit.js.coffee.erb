@@ -315,7 +315,6 @@ handleCommentFormSubmit = () ->
 EXT_SERVICE_MATCH = /(\[\[([A-Z]+#{1})?(\d+)\]\])/g
 
 formatMarkup = (s) ->
-    BUGZILLA_URI = $('#bugzilla_uri').text()
     s = htmlEscape s
 
     lines = s.split '\n'
@@ -357,7 +356,7 @@ formatMarkup = (s) ->
         # External service IDs. re.exec() continues from where it left off
         while matches = EXT_SERVICE_MATCH.exec(line)
             prefix  = matches[2] || ""
-            uri     = "<a class=\"bugzilla fetch bugzilla_append\" data-id=\"#{prefix}#{matches[3]}\" href=\"#{extServiceHelpers.get_external_url(matches[1])}\">#{matches[3]}</a>"
+            uri     = "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{prefix}#{matches[3]}\" href=\"#{extServiceHelpers.get_external_url(matches[1])}\">#{matches[3]}</a>"
             line    = line.replace matches[1], uri
 
         # Headings, lists, etc.
