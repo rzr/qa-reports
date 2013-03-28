@@ -14,6 +14,9 @@
 # ONE of the external services here can be defined as a default. It is used
 # when more than one service is defined, and when a link without a prefix
 # or with an unknown prefix is found.
+#
+# NOTICE: Prefix must consists of A-Z characters only, and IDs can be
+#         numeric only
 
 # Name is shown on the UI to help users decide how to define the ID
 - name:     MeeGo Bugzilla
@@ -24,8 +27,7 @@
   prefix:   BZ
   default:  true
 
-  # Type of the service. New ones cannot be added without implementing a
-  # handler. Rest of the parameters are understood by the handler.
+  # Type of the service. New ones cannot be added without implementing a handler
   type:     bugzilla
 
   # Query URI template. Needs to contain %s which will be replaced with
@@ -53,3 +55,10 @@
   # http://www.bugzilla.org/docs/tip/en/html/api/Bugzilla/WebService.html#LOGGING_IN
   bugzilla_username:
   bugzilla_password:
+
+# Example of a link only service to e.g. gerrit
+# - name:     Cyanogen Gerrit
+#   prefix:   CM
+#   default:  false
+#   type:     link
+#   link_uri: "http://review.cyanogenmod.org/#/c/%s/"
