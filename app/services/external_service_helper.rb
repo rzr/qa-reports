@@ -3,7 +3,7 @@ module ExternalServiceHelper
   # Get prefix and ID from user entered ID
   def self.get_prefix_id(id)
     # Bugs are of format [[PREFIX#ID]] or [[ID]], or PREFIX#ID or ID
-    prefix, id = /(?:\[\[)?([A-Z]{1,}\#{1})?(\d+)(?:\[\[)?/.match(id).try(:captures)
+    prefix, id = /(?:\[\[)?([A-Z]+\#{1})?(\d+)(?:\]\])?/.match(id).try(:captures)
     return prefix, id
   end
 

@@ -1,8 +1,40 @@
+prefixes  = undefined
+ext_links = undefined
+
+extServiceHelpers =
+    get_prefixes: -> prefixes ||= $('span:not(.default)', '#external_services').map -> $(this).attr('data-prefix')
+
+    get_links: -> ext_links ||= $('span:not(.default)', '#external_services').map ->
+        {
+            link: $(this).attr('data-link-uri'),
+            prefix: $(this).attr('data-prefix') || "ANYDEFAULTVALUE"
+        }
+
+    get_link_base: (prefix) ->
+        if prefix? and prefix in extServiceHelpers.get_prefixes()
+            $('span[data-prefix="' +  prefix + '"]').attr('data-link-uri')
+        else
+            $('.default', '#external_services').attr('data-link-uri')
+
+    get_prefix_id: (id) ->
+        matches = /\[\[([A-Z]{1,}\#{1})?(\d+)\]\]/.exec(id)
+        prefix  = matches?[1]?.replace '#', ''
+        id      = matches?[2]
+        [prefix, id]
+
+    get_external_url: (id) ->
+        [prefix, id] = extServiceHelpers.get_prefix_id(id)
+        extServiceHelpers.get_link_base(prefix) + id
+
 htmlEscape = (s) ->
     s = s.replace('&', '&amp;')
     s = s.replace('<', '&lt;')
     s = s.replace('>', '&gt;')
     s
+
+# Escape all regexp characters
+rexexpEscape = (s) ->
+    s.replace /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&"
 
 linkEditButtons = () ->
     $('.editable_area').each (i, node) ->
@@ -280,6 +312,8 @@ handleCommentFormSubmit = () ->
 
     return false
 
+EXT_SERVICE_MATCH = /(\[\[([A-Z]+#{1})?(\d+)\]\])/g
+
 formatMarkup = (s) ->
     BUGZILLA_URI = $('#bugzilla_uri').text()
     s = htmlEscape s
@@ -304,12 +338,27 @@ formatMarkup = (s) ->
         line = line.replace /'''(.+?)'''/g, "<b>$1</b>"
         # Italic
         line = line.replace /''(.+?)''/g, "<i>$1</i>"
-        # Bugzilla links (http://bugzilla.com/show_bug....)
-        line = line.replace /http\:\/\/([^\/]+)\/show_bug\.cgi\?id=(\d+)/g, "<a class=\"bugzilla fetch bugzilla_append\" href=\"http://$1/show_bug.cgi?id=$2\">$2</a>"
+
+        # Links to external services. Convert them to regular notation first
+        # and the next search will find and fix them. Done this way because
+        # running re.exec() and replacing the matched URL there will cause
+        # more new matches and then an infinite loop
+        for info in extServiceHelpers.get_links()
+            link = rexexpEscape(info.link)
+            # Exclude links preceded by ", ', or [
+            link = link.replace /http[s]?/, "(?:^|[^\"\['])http[s]?"
+            re   = new RegExp "(?:(#{link})(\\d+))", "g"
+            while matches = re.exec(line)
+                line = line.replace $.trim(matches[1]), "[[#{info.prefix}##{matches[2]}]]"
+
         # Any other link
         line = line.replace /\[\[(http[s]?:\/\/.+?) (.+?)\]\]/g, "<a href=\"$1\">$2</a>"
-        # Bug IDs
-        line = line.replace /\[\[([A-Z]{1,}#{1})?(\d+)\]\]/g, "<a class=\"bugzilla fetch bugzilla_append\" data-id=\"$1$2\" href=\"#{BUGZILLA_URI}$2\">$2</a>"
+
+        # External service IDs. re.exec() continues from where it left off
+        while matches = EXT_SERVICE_MATCH.exec(line)
+            prefix  = matches[2] || ""
+            uri     = "<a class=\"bugzilla fetch bugzilla_append\" data-id=\"#{prefix}#{matches[3]}\" href=\"#{extServiceHelpers.get_external_url(matches[1])}\">#{matches[3]}</a>"
+            line    = line.replace matches[1], uri
 
         # Headings, lists, etc.
         line = line.replace /^====\s*(.+)\s*====$/, "<h5>$1</h5>"

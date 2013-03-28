@@ -13,7 +13,7 @@ else
   bugzilla_cfg['name']    = 'Bugzilla'
   bugzilla_cfg['type']    = 'bugzilla'
   bugzilla_cfg['default'] = true
-  bugzilla_cfg['prefix']  = 'DEFAULT_SERVICE_PREFIX'
+  bugzilla_cfg['prefix']  = 'DEFAULTSERVICEPREFIX'
 
   SERVICES = [bugzilla_cfg]
 end
