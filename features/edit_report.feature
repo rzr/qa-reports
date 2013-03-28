@@ -112,6 +112,14 @@ Feature: Edit Report
     And I remove the other Bugzilla service
 
   @javascript
+  Scenario: Markup help shows syntax for all external services
+    Given I add another Bugzilla service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    Then I should see markup help for both Bugzilla service
+    And I remove the other Bugzilla service
+
+  @javascript
   Scenario: I delete a test case
     When I edit the report "1.2/Core/automated/N900"
     And I delete the test case "SMOKE-SIM-Get_IMSI"

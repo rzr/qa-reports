@@ -39,6 +39,10 @@ if SERVICES.length > 1
       puts "\033[31mERROR: No prefix defined for #{s['name']}\033[0m"
       errors = true
     end
+
+    if s['default'] and s != DEFAULT_SERVICE
+      s['default'] = false
+    end
   end
 end
 
