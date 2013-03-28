@@ -115,6 +115,14 @@ Then /^I disable inlining images$/ do
   APP_CONFIG['inline_images'] = false
 end
 
+Given /^I add another Bugzilla service$/ do
+  SERVICES << @mozilla_bugzilla
+end
+
+Then /^I remove the other Bugzilla service$/ do
+  SERVICES.pop()
+end
+
 Then /^I should see link to bug "(.*?)" within "(.*?)"$/ do |id, selector|
   with_scope(selector) do
     page.should have_xpath("//a[contains(@href, '#{id}')]")
