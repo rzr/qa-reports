@@ -28,11 +28,12 @@
   # handler. Rest of the parameters are understood by the handler.
   type:     bugzilla
 
-  # Query URI template (comma separated list of ids appended)
-  uri: /buglist.cgi?bugidtype=include&columnlist=short_desc%2Cbug_status%2Cresolution&query_format=advanced&ctype=csv&bug_id=
+  # Query URI template. Needs to contain %s which will be replaced with
+  # a list of bug IDs. Due to this all other %-characters need to be escaped
+  uri: /buglist.cgi?bugidtype=include&columnlist=short_desc%%2Cbug_status%%2Cresolution&query_format=advanced&ctype=csv&bug_id=%s
 
   # The URL used to link to bugs (bug id appended)
-  link_uri: http://bugs.meego.com/show_bug.cgi?id=
+  link_uri: http://bugs.meego.com/show_bug.cgi?id=%s
 
   # Proxy server for accessing the service from the application server.
   # Leave empty if not needed

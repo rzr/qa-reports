@@ -15,6 +15,10 @@ else
   bugzilla_cfg['default'] = true
   bugzilla_cfg['prefix']  = 'DEFAULTSERVICEPREFIX'
 
+  # Add sprintf formatting
+  bugzilla_cfg['uri']      = bugzilla_cfg['uri'].gsub("%", "%%") + "%s"
+  bugzilla_cfg['link_uri'] = bugzilla_cfg['link_uri'].gsub("%", "%%") + "%s"
+
   SERVICES = [bugzilla_cfg]
 end
 
@@ -27,14 +31,29 @@ else
   DEFAULT_SERVICE = default
 end
 
+errors = false
 # Check for prefixes if we have more than one service defined
 if SERVICES.length > 1
-  errors = false
   SERVICES.each do |s|
     if s['prefix'].blank?
       puts "\033[31mERROR: No prefix defined for #{s['name']}\033[0m"
       errors = true
     end
   end
-  abort("#{ext_services_cfg_file} is invalid") if errors
 end
+
+# Check the sprintf formatting of string
+SERVICES.each do |s|
+  if s['type'] == 'bugzilla'
+    begin
+      s['uri'] % 'test'
+      s['link_uri'] % 'test'
+    rescue ArgumentError
+      puts "\033[31mERROR: Incorrect uri or link_uri for #{s['name']} - remember to escape % signs\033[0m"
+      errors = true
+    end
+  end
+
+end
+
+abort("#{ext_services_cfg_file} is invalid") if errors

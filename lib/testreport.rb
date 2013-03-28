@@ -55,8 +55,9 @@ module MeegoTestReport
       SERVICES.each do |s|
         link = Regexp.escape(s['link_uri'])
         link.gsub! /http[s]?/, "http[s]?"
-        line.gsub! /#{link}(\d+)/ do
-          "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{s['prefix']}##{$1}\" href=\"#{s['link_uri']}#{$1}\">#{$1}</a>"
+        link.gsub! /%s/, "(\\d+)" # URIs contain a %s for the ID
+        line.gsub! /#{link}/ do
+          "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{s['prefix']}##{$1}\" href=\"#{s['link_uri'] % $1}\">#{$1}</a>"
         end
       end
 

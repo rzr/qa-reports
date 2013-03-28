@@ -7,7 +7,7 @@ module Bugzilla
   # Fetch bug information for given ids from given service (from
   # external.services.yml configuration)
   def self.fetch_data(service, ids)
-    uri = service['uri'] + ids.join(',')
+    uri = service['uri'] % ids.join(',')
 
     content = ""
     if not service['proxy_server'].nil?

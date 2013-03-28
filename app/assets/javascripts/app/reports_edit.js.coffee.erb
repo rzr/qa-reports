@@ -2,6 +2,9 @@ prefixes  = undefined
 ext_links = undefined
 
 extServiceHelpers =
+    # A poor mans sprintf for placing the ID to url
+    sprintf: (url, id) -> url.replace /%s/, id
+
     get_prefixes: -> prefixes ||= $('span:not(.default)', '#external_services').map -> $(this).attr('data-prefix')
 
     get_links: -> ext_links ||= $('span:not(.default)', '#external_services').map ->
@@ -24,7 +27,7 @@ extServiceHelpers =
 
     get_external_url: (id) ->
         [prefix, id] = extServiceHelpers.get_prefix_id(id)
-        extServiceHelpers.get_link_base(prefix) + id
+        extServiceHelpers.sprintf extServiceHelpers.get_link_base(prefix), id
 
 htmlEscape = (s) ->
     s = s.replace('&', '&amp;')
@@ -346,7 +349,8 @@ formatMarkup = (s) ->
             link = rexexpEscape(info.link)
             # Exclude links preceded by ", ', or [
             link = link.replace /http[s]?/, "(?:^|[^\"\['])http[s]?"
-            re   = new RegExp "(?:(#{link})(\\d+))", "g"
+            link = link.replace /%s/, "(\\d+)"  # sptrinf char to regexp capture
+            re   = new RegExp "(#{link})", "g"
             while matches = re.exec(line)
                 line = line.replace $.trim(matches[1]), "[[#{info.prefix}##{matches[2]}]]"
 

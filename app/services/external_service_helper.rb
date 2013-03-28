@@ -25,7 +25,8 @@ module ExternalServiceHelper
     return '' if service.nil?
 
     prefix, id = ExternalServiceHelper.get_prefix_id(id)
-    service['link_uri'] + id
+    uri = service['link_uri'] % id
+    uri
   end
 
 end

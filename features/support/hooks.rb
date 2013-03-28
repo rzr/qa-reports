@@ -53,8 +53,8 @@ Before do
     "prefix"   => "MOZ",
     "default"  => false,
     "type"     => "bugzilla",
-    "uri"      => "/buglist.cgi?bugidtype=include&columnlist=short_desc%2Cbug_status%2Cresolution&query_format=advanced&ctype=csv&bug_id=",
-    "link_uri" => "https://bugzilla.mozilla.org/show_bug.cgi?id="
+    "uri"      => "/buglist.cgi?bugidtype=include&columnlist=short_desc%%2Cbug_status%%2Cresolution&query_format=advanced&ctype=csv&bug_id=%s",
+    "link_uri" => "https://bugzilla.mozilla.org/show_bug.cgi?id=%s"
   }
 end
 
