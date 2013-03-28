@@ -151,7 +151,7 @@ initInplaceEdit = (context, contentSelector, inputSelector, hasMarkup) ->
 
         if hasMarkup
             content.html formatMarkup val
-            fetchBugzillaInfo()
+            fetchExternalInfo()
         else
             content.text val
 
@@ -308,7 +308,7 @@ handleCommentFormSubmit = () ->
             # is the json data object returned by the server
 
             $testcase.find('.testcase_notes').html responseText
-            fetchBugzillaInfo()
+            fetchExternalInfo()
 
     return false
 
@@ -480,5 +480,5 @@ $(document).ready () ->
 
         toggleRemoveSection id, field, $section, $elem
 
-    fetchBugzillaInfo()
+    fetchExternalInfo()
     prepareCategoryUpdate "#category-dialog"

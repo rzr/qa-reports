@@ -1,4 +1,4 @@
 $(document).ready () ->
     filterResults "tr.result_pass", "passing tests"
-    fetchBugzillaInfo()
+    fetchExternalInfo()
     $('#delete-dialog').jqm(modal:true).jqmAddTrigger('#delete-button')

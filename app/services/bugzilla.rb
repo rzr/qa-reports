@@ -76,7 +76,8 @@ module Bugzilla
           id:         row[0],
           title:      row[1],
           status:     row[2],
-          resolution: row[3]
+          resolution: row[3],
+          uri:        service['link_uri'] + row[0]
         }
       end
     end

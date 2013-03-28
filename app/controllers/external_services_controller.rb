@@ -7,7 +7,7 @@ class ExternalServicesController < ApplicationController
                 :expires_in => 1.hour
 
   def fetch_data
-    ids  = params[:bugids]
+    ids  = params[:ids]
     json = {}
 
     # Group the IDs by the service handling them

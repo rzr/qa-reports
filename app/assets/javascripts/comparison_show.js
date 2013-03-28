@@ -4,5 +4,5 @@
 //= require jquery.min
 //= require string
 //= require app/shared
-//= require app/bugzilla
+//= require app/external_services
 //= require app/comparison_show
