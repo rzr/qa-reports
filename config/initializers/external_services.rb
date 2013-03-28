@@ -6,14 +6,15 @@ if File.exists?(ext_services_cfg_file)
   SERVICES = YAML.load_file(ext_services_cfg_file)
 # Using Bugzilla configuration file
 else
-  puts "\033[34mNOTICE: Using config/bugzilla.yml is deprecated. Using it anyway.\033[0m"
+  puts "\033[34mNOTICE: Using config/bugzilla.yml is deprecated. Using it anyway, but"
+  puts"        see https://github.com/leonidas/qa-reports/wiki/External-Services\033[0m"
   bugzilla_cfg = YAML.load_file(bugzilla_cfg_file)
   # Reformat the configuration a bit so it looks the same as loading a single
   # service from the new configuration file format.
   bugzilla_cfg['name']    = 'Bugzilla'
   bugzilla_cfg['type']    = 'bugzilla'
   bugzilla_cfg['default'] = true
-  bugzilla_cfg['prefix']  = 'DEFAULTSERVICEPREFIX'
+  bugzilla_cfg['prefix']  = 'BZ'
 
   # Add sprintf formatting
   bugzilla_cfg['uri']      = bugzilla_cfg['uri'].gsub("%", "%%") + "%s"
