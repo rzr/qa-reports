@@ -58,6 +58,14 @@ SERVICES.each do |s|
     end
   end
 
+  unless s['uri'].include?("%s")
+      puts "\033[31mERROR: uri for #{s['name']} missing ID placeholder (%s)\033[0m"
+      errors = true
+  end
+  unless s['link_uri'].include?("%s")
+      puts "\033[31mERROR: link_uri for #{s['name']} missing ID placeholder (%s)\033[0m"
+      errors = true
+  end
 end
 
 abort("#{ext_services_cfg_file} is invalid") if errors
