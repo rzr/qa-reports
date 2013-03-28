@@ -25,7 +25,7 @@ Meegoqa::Application.routes.draw do
 
   match '/download' => 'csv_export#export_report', :via => "get"
 
-  match '/fetch_bugzilla_data' => 'bugs#fetch_bugzilla_data', :via => "get"
+  match '/fetch_external_data' => 'external_services#fetch_data', :via => "get"
 
   # to test exception notifier
   match '/raise_exception' => 'exceptions#index' unless Rails.env.production?

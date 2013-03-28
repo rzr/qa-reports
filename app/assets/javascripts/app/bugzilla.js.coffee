@@ -32,7 +32,7 @@ applyBugzillaInfo = (node, info) ->
 
 @fetchBugzillaInfo = ->
   bugIds    = []
-  searchUrl = "/fetch_bugzilla_data"
+  searchUrl = "/fetch_external_data"
 
   links = $('.bugzilla.fetch')
   links.each (i, node) ->

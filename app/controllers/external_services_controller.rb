@@ -1,13 +1,12 @@
 
 
+class ExternalServicesController < ApplicationController
 
-class BugsController < ApplicationController
-
-  caches_action :fetch_bugzilla_data,
-                :cache_path => Proc.new { |controller| controller.bugzilla_cache_key },
+  caches_action :fetch_data,
+                :cache_path => Proc.new { |controller| controller.ext_service_cache_key },
                 :expires_in => 1.hour
 
-  def fetch_bugzilla_data
+  def fetch_data
     ids  = params[:bugids]
     json = {}
 
@@ -50,9 +49,9 @@ class BugsController < ApplicationController
 
   protected
 
-  def bugzilla_cache_key
+  def ext_service_cache_key
     h = Digest::SHA1.hexdigest params.to_hash.to_a.map{|k,v| if v.respond_to?(:join) then k+v.join(",") else k+v end}.join(';')
-    "bugzilla_#{h}"
+    "ext_service_#{h}"
   end
 
   def plain_id(str)
