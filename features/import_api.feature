@@ -133,6 +133,7 @@ Feature: Import API
     And I should see the defined environment information
     And I should see the defined quality summary
     And I should see the defined issue summary
+    And I should see the defined patches included
 
   # Tests for additional parameters end
 

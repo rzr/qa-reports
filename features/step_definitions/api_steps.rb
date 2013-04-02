@@ -353,6 +353,10 @@ Then "I should see the defined issue summary" do
   step %{I should see "No major issues found"}
 end
 
+Then "I should see the defined patches included" do
+  step %{I should see "No patches included"}
+end
+
 Then "I should see the objective of previous report" do
   step %{I should see the defined test objective}
 end

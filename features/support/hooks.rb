@@ -18,7 +18,8 @@ Before do
     "build_id"             => "1234.78a",
     "environment_txt"      => "Laboratory environment",
     "qa_summary_txt"       => "Ready to ship",
-    "issue_summary_txt"    => "No major issues found"
+    "issue_summary_txt"    => "No major issues found",
+    "patches_included_txt" => "No patches included"
   })
 
   # The oldest API (hwproduct and testtype have since been renamed)
