@@ -50,6 +50,10 @@
   div style="display:none"
     span#session_id
       #{@report.id}
+    span#external_services
+      span.default(data-prefix="#{DEFAULT_SERVICE['prefix']}" data-link-uri="#{DEFAULT_SERVICE['link_uri']}")
+      - SERVICES.each do |service|
+        span(data-prefix="#{service['prefix']}" data-link-uri="#{service['link_uri']}")
 
   = javascript_include_tag 'report_edit'
 
