@@ -237,6 +237,14 @@ class ApiController < ApplicationController
     params.delete(:controller)
     params.delete(:action)
 
+    # Turn CSV shortcuts to markup format if found. Notice: these will not
+    # overwrite the txt version if provided
+    params[:issue_summary_txt]    ||= ExternalServiceHelper.convert_to_markup(params[:issue_summary_csv])
+    params[:patches_included_txt] ||= ExternalServiceHelper.convert_to_markup(params[:patches_included_csv])
+
+    params.delete(:issue_summary_csv)
+    params.delete(:patches_included_csv)
+
     # Fix result files and attachments.
     params[:result_files] ||= []
     params[:attachments]  ||= []
