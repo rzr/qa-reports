@@ -13,6 +13,11 @@ hide_empty_targets: false
 # (jpg|jpeg|gif|png|bmp) are inlined using <img> tags
 inline_images: false
 
+# Show link to registration page on login page. By default registration
+# URL is not made publicly available but setting this to true will add
+# a link to login page.
+show_registration_link: false
+
 # QA Reports accepts Pass, Fail, N/A, and Measured as valid results for
 # a test case by default. It can be configured to accept additional ones
 # as well by defining them here. Notice that currently all tests with
