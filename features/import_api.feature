@@ -136,7 +136,7 @@ Feature: Import API
     And I should see the defined patches included
 
   Scenario: Sending a report using the CSV shortcut
-    When the client sends a request CSV parameters for issues summary and patches included
+    When the client sends a request with CSV parameters for issues summary and patches included
     Then the upload succeeds
     And I should be able to view the created report
 
@@ -266,4 +266,14 @@ Feature: Import API
     Then the upload succeeds
     And I should be able to view the created report
     And I should see a link to Gerrit
+    And I remove the link only external service
+
+  Scenario: Defined default prefixes for CSV shortcuts are used if not provided
+    Given I add a link only external service
+    And I set the default prefix for patches included CSV shortcut
+    When the client sends a request with an ID only in patches included CSV
+    Then the upload succeeds
+    And I should be able to view the created report
+    And I should see a link to Gerrit
+    And I remove the default prefix for patches included CSV shortcut
     And I remove the link only external service
