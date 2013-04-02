@@ -135,6 +135,14 @@ Feature: Import API
     And I should see the defined issue summary
     And I should see the defined patches included
 
+  Scenario: Sending a report using the CSV shortcut
+    When the client sends a request CSV parameters for issues summary and patches included
+    Then the upload succeeds
+    And I should be able to view the created report
+
+    And I should see a list of issues in issue summary
+    And I should see a list of patches in patches included
+
   # Tests for additional parameters end
 
   Scenario: Test objective is copied from previous report if not given

@@ -234,6 +234,10 @@ When "the client sends a request with all optional parameters defined" do
   @response = api_import @default_api_opts_all
 end
 
+When "the client sends a request CSV parameters for issues summary and patches included" do
+  @response = api_import @defalt_api_opts_csv_shortcut
+end
+
 When %r/^I view the latest report "([^"]*)"/ do |report_string|
   #TODO: Use scopes
   version, target, test_type, product = report_string.downcase.split('/')
@@ -363,6 +367,14 @@ end
 
 Then "I should see the defined report title" do
   step %{I should see "My Test Report"}
+end
+
+Then "I should see a list of issues in issue summary" do
+  step %{I should see link to bug "9353" within ".editcontent ul li"}
+end
+
+Then "I should see a list of patches in patches included" do
+  step %{I should see link to bug "5678" within ".editcontent ul li"}
 end
 
 Then %r/^I should see test cases with result Blocked/ do

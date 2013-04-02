@@ -36,6 +36,11 @@ Before do
   })
   @default_version_2_api_opts.delete("product")
 
+  @defalt_api_opts_csv_shortcut = @default_api_opts.merge({
+    "issue_summary_csv"     => "BZ#9353, BZ#1234",
+    "patches_included_csv"  => "5678, 2582"
+  })
+
   @mapped_api_opts = {
     "auth_token"      => "foobar",
     "platform"        => "1.2",
