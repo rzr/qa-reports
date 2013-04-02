@@ -44,6 +44,26 @@ Before do
     "tested_at"       => Date.today.to_s,
     "result_files[]"  => Rack::Test::UploadedFile.new("features/resources/sim.xml", "text/xml")
   }
+
+  @mozilla_bugzilla = {
+    "name"     => "Mozilla Bugzilla",
+    "server"   => "bugzilla.mozilla.org",
+    "port"     => 443,
+    "use_ssl"  => true,
+    "prefix"   => "MOZ",
+    "default"  => false,
+    "type"     => "bugzilla",
+    "uri"      => "/buglist.cgi?bugidtype=include&columnlist=short_desc%%2Cbug_status%%2Cresolution&query_format=advanced&ctype=csv&bug_id=%s",
+    "link_uri" => "https://bugzilla.mozilla.org/show_bug.cgi?id=%s"
+  }
+
+  @cyanogen_gerrit = {
+    "name"      => "Cyanogen Gerrit",
+    "prefix"    => "GER",
+    "link_uri"  => "http://review.cyanogenmod.org/#/c/%s/",
+    "default"   => false,
+    "type"      => "link"
+  }
 end
 
 After do

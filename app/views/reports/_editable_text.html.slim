@@ -1,7 +1,7 @@
 - if @editing
   | <div class="editable_text editable_area">
 
-h2 id=anchor 
+h2 id=anchor
   = title
   span.heading_actions= back_to_top
 
@@ -17,14 +17,23 @@ h2 id=anchor
       input.small_btn.cancel type="button" value="Cancel"
     .help
       strong Markup Reference
-      pre
-        | == Header ==
-          === Subheader ===
-          ''italics''
-          '''bold'''
-          * bulleted list
-          [[http://foo.bar/ Link]]
-          [[1234]] (Bugzilla issue link)
+      .markuphelp
+        p
+          | == Header ==
+        p
+          | === Subheader ===
+        p
+          | ''italics''
+        p
+          | '''bold'''
+        p
+          | * bulleted list
+        p [[http://foo.bar/ Link]]
+        - SERVICES.each do |s|
+          p
+            - if s['default']
+              ' [[1234]] or
+            | [[#{s['prefix']}#1234]] (#{s['name']} link)
 
 - if @editing
   | </div>

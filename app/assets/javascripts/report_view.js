@@ -8,7 +8,7 @@
 //= require bluff/bluff-min
 //= require dygraph-combined
 //= require app/shared
-//= require app/bugzilla
+//= require app/external_services
 //= require app/test_results
 //= require app/report_metrics
 //= require app/reports_view

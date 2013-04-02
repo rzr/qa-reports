@@ -115,8 +115,31 @@ Then /^I disable inlining images$/ do
   APP_CONFIG['inline_images'] = false
 end
 
+Given /^I add another Bugzilla service$/ do
+  SERVICES << @mozilla_bugzilla
+end
+
+Then /^I remove the other Bugzilla service$/ do
+  SERVICES.pop()
+end
+
+Given "I add a link only external service" do
+  SERVICES << @cyanogen_gerrit
+end
+
+Then "I remove the link only external service" do
+  SERVICES.pop()
+end
+
 Then /^I should see link to bug "(.*?)" within "(.*?)"$/ do |id, selector|
   with_scope(selector) do
     page.should have_xpath("//a[contains(@href, '#{id}')]")
+  end
+end
+
+Then "I should see markup help for both Bugzilla service" do
+  with_scope('.markuphelp') do
+    page.should have_content "[[1234]] or [[BZ#1234]] (MeeGo Bugzilla link)"
+    page.should have_content "[[MOZ#1234]] (Mozilla Bugzilla link)"
   end
 end

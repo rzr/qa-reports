@@ -78,13 +78,68 @@ Feature: Edit Report
     Then I should see link to bug "9353" within ".editable_area ul li"
 
   @javascript
-  Scenario: Create a dynamic link to bugzilla
+  Scenario: Create a dynamic link to bugzilla using a prefix
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
     And fill in "report[objective_txt]" with "* [[BZ#9353]]" within ".editable_area"
     And I press "Save"
 
     Then I should see link to bug "9353" within ".editable_area ul li"
+
+  @javascript
+  Scenario: Create dynamic links to two bugzilla servers
+    Given I add another Bugzilla service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* [[BZ#9353]] [[MOZ#1234]] [[1234]]" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=9353" within ".editable_area ul li"
+    And I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=1234" within ".editable_area ul li"
+    And I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editable_area ul li"
+    And I remove the other Bugzilla service
+
+  @javascript
+  Scenario: Convert links to two bugzilla servers
+    Given I add another Bugzilla service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* http://bugs.meego.com/show_bug.cgi?id=9353 https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=9353" within ".editable_area ul li"
+    And I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editable_area ul li"
+    And I remove the other Bugzilla service
+
+  @javascript
+  Scenario: Markup help shows syntax for all external services
+    Given I add another Bugzilla service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    Then I should see markup help for both Bugzilla service
+    And I remove the other Bugzilla service
+
+  @javascript
+  Scenario: Create dynamic link to an external link only service
+    Given I add a link only external service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* [[GER#9353]]" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "http://review.cyanogenmod.org/#/c/9353/" within ".editable_area ul li"
+    And I remove the link only external service
+
+  @javascript
+  Scenario: Convert link to an external link only service
+    Given I add a link only external service
+    When I edit the report "1.2/Core/automated/N900"
+    And I click the element "#test_objective"
+    And fill in "report[objective_txt]" with "* http://review.cyanogenmod.org/#/c/9353/" within ".editable_area"
+    And I press "Save"
+
+    Then I should see link to bug "http://review.cyanogenmod.org/#/c/9353/" within ".editable_area ul li"
+    And I remove the link only external service
 
   @javascript
   Scenario: I delete a test case

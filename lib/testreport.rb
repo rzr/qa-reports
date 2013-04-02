@@ -20,6 +20,8 @@
 # 02110-1301 USA
 #
 
+require 'external_service_helper'
+
 module MeegoTestReport
 
   def MeegoTestReport.format_txt(txt)
@@ -48,13 +50,24 @@ module MeegoTestReport
       line.gsub! /'''(.+?)'''/, "<b>\\1</b>"
       # Italic
       line.gsub! /''(.+?)''/, "<i>\\1</i>"
-      # Bugzilla links (in case someone copypastes a Bugzilla uri, convert
-      # it to match bug ID format)
-      line.gsub! /#{BUGZILLA_CONFIG['link_uri'].sub("?", "\\?")}(\d+)/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\""+BUGZILLA_CONFIG['link_uri']+"\\1\">\\1</a>"
+
+      # Links to external services
+      SERVICES.each do |s|
+        link = Regexp.escape(s['link_uri'])
+        link.gsub! /http[s]?/, "http[s]?"
+        link.gsub! /%s/, "(\\d+)" # URIs contain a %s for the ID
+        line.gsub! /#{link}/ do
+          "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{s['prefix']}##{$1}\" href=\"#{s['link_uri'] % $1}\">#{$1}</a>"
+        end
+      end
+
       # Any other link
       line.gsub! /\[\[(http[s]?:\/\/.+?) (.+?)\]\]/, "<a href=\"\\1\">\\2</a>"
-      # Bug IDs [[1234]] or [[BZ#1234]]
-      line.gsub! /\[\[(?:[A-Z]{1,}\#{1})?(\d+)\]\]/, "<a class=\"bugzilla fetch bugzilla_status bugzilla_append\" href=\""+BUGZILLA_CONFIG['link_uri']+"\\1\">\\1</a>"
+
+      # External service IDs [[1234]] or [[BZ#1234]]
+      line.gsub! /(\[\[([A-Z]{1,}\#{1})?(\d+)\]\])/ do
+        "<a class=\"ext_service fetch ext_service_append\" data-id=\"#{$2}#{$3}\" href=\"#{ExternalServiceHelper.get_external_url($1)}\">#{$3}</a>"
+      end
 
       # Headings, lists, and the rest
       if line =~ /^====\s*(.+)\s*====$/
