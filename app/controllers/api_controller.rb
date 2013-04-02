@@ -239,8 +239,8 @@ class ApiController < ApplicationController
 
     # Turn CSV shortcuts to markup format if found. Notice: these will not
     # overwrite the txt version if provided
-    params[:issue_summary_txt]    ||= ExternalServiceHelper.convert_to_markup(params[:issue_summary_csv])
-    params[:patches_included_txt] ||= ExternalServiceHelper.convert_to_markup(params[:patches_included_csv])
+    params[:issue_summary_txt]    ||= ExternalServiceHelper.convert_to_markup(params[:issue_summary_csv], APP_CONFIG['issue_summary_default_prefix'])
+    params[:patches_included_txt] ||= ExternalServiceHelper.convert_to_markup(params[:patches_included_csv], APP_CONFIG['patches_included_default_prefix'])
 
     params.delete(:issue_summary_csv)
     params.delete(:patches_included_csv)

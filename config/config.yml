@@ -91,3 +91,17 @@ api_mapping:
   target: ''
   testset: ''
   product: ''
+
+# Default prefixes for Issue Summary and Patches Included CSV API shortcuts.
+# The API provides shortcut methods for these two fields that will convert
+# bug IDs to the markup format. If defined here the given prefix is added
+# to IDs not having a prefix defined, e.g. if patches_included_csv contains
+# 1234,5678 they're converted to [[1234]] and [[5678]] if default prefix
+# is not defined here, and then they will be linked to the service defined
+# as default in external.services.yml. However, if you define a prefix for
+# patches included field, e.g. PREFIX, then that prefix is added for those
+# without one, e.g. [[PREFIX#1234]] and [[PREFIX#5678]]. If you use these
+# make sure to communicate this clearly to users because it can be a bit
+# confusing since the general default service for [[xxxx]] is not used.
+patches_included_default_prefix: ''
+issue_summary_default_prefix: ''

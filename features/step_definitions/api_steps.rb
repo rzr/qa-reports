@@ -234,7 +234,7 @@ When "the client sends a request with all optional parameters defined" do
   @response = api_import @default_api_opts_all
 end
 
-When "the client sends a request CSV parameters for issues summary and patches included" do
+When "the client sends a request with CSV parameters for issues summary and patches included" do
   @response = api_import @defalt_api_opts_csv_shortcut
 end
 
