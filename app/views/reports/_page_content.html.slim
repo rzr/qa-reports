@@ -143,6 +143,8 @@
 
     = render :partial => 'editable_text', :locals => {:anchor => 'issue_summary', :title => "Issue Summary", :field => 'issue_summary'}
 
+    = render :partial => 'editable_text', :locals => {:anchor => 'patches_included', :title => "Patches Included", :field => 'patches_included'}
+
     = render :partial => 'reports/file_attachments'
 
     = render :partial => 'reports/raw_result_files', :locals => {:result_files => @report.result_files}

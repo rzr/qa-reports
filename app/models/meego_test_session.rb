@@ -325,6 +325,15 @@ class MeegoTestSession < ActiveRecord::Base
     end
   end
 
+  def patches_included_html
+    txt = patches_included_txt
+    if txt == ""
+      "Included patches not filled in yet"
+    else
+      MeegoTestReport::format_txt(txt)
+    end
+  end
+
   def validate_profile_testset_and_product
     # \A and \z instead of ^ and $ cause multiline strings to fail validation.
     # And for the record: at least these characters break the navigation:
