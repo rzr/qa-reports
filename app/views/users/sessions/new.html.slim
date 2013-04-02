@@ -17,3 +17,7 @@
         = f.label :remember_me, "Remember me for 2 weeks", :class => "inline_label small"
     #wizard_actions
       = f.submit "Login", :class =>"big_btn login"
+
+      - if APP_CONFIG['show_registration_link']
+        p.registration_url
+          a(href="#{new_user_registration_path}") Need an account? Register here.
