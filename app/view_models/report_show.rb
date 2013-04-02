@@ -24,6 +24,7 @@ class ReportShow < SummaryShow
       environment: @report.environment_txt,
       qa_summary: @report.qa_summary_txt,
       issue_summary: @report.issue_summary_txt,
+      patches_included: @report.patches_included_txt,
       summary:  super,
       features: features.map {|f| f.as_json(options)},
       prev_session_id: @report.prev_session.nil? == false ? @report.prev_session.id : ''

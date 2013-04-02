@@ -29,4 +29,19 @@ module ExternalServiceHelper
     uri
   end
 
+  # Convert given CSV representation to markup format
+  def self.convert_to_markup(csv, prefix)
+    return "" if csv.blank?
+    ids = csv.gsub(/[;\s]/, ',').split(',').map(&:strip).reject(&:empty?)
+      .map {|id|
+        # Prepend with prefix if given and not defined
+        if not prefix.blank? and id.match(/^\d+$/)
+          id = "#{prefix}##{id}"
+        end
+        id.gsub! /((?:[A-Z]+\#{1})?\d+)/, "* [[\\1]]\n"
+        id
+      }.join('')
+    ids
+  end
+
 end

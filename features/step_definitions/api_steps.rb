@@ -234,6 +234,14 @@ When "the client sends a request with all optional parameters defined" do
   @response = api_import @default_api_opts_all
 end
 
+When "the client sends a request with CSV parameters for issues summary and patches included" do
+  @response = api_import @defalt_api_opts_csv_shortcut
+end
+
+When "the client sends a request with an ID only in patches included CSV" do
+  @response = api_import @default_api_opts.merge({"patches_included_csv" => "1234"})
+end
+
 When %r/^I view the latest report "([^"]*)"/ do |report_string|
   #TODO: Use scopes
   version, target, test_type, product = report_string.downcase.split('/')
@@ -353,12 +361,24 @@ Then "I should see the defined issue summary" do
   step %{I should see "No major issues found"}
 end
 
+Then "I should see the defined patches included" do
+  step %{I should see "No patches included"}
+end
+
 Then "I should see the objective of previous report" do
   step %{I should see the defined test objective}
 end
 
 Then "I should see the defined report title" do
   step %{I should see "My Test Report"}
+end
+
+Then "I should see a list of issues in issue summary" do
+  step %{I should see link to bug "9353" within ".editcontent ul li"}
+end
+
+Then "I should see a list of patches in patches included" do
+  step %{I should see link to bug "5678" within ".editcontent ul li"}
 end
 
 Then %r/^I should see test cases with result Blocked/ do
@@ -487,6 +507,14 @@ Given "three report files with variation in statuses and cases have been uploade
   step %{session "cumulative1.csv" has been tested at "2011-01-01 01:01"}
   step %{session "cumulative2.csv" has been tested at "2011-02-01 01:01"}
   step %{session "cumulative3.csv" has been tested at "2011-03-01 01:01"}
+end
+
+Given "I set the default prefix for patches included CSV shortcut" do
+  APP_CONFIG['patches_included_default_prefix'] = "GER"
+end
+
+Then "I remove the default prefix for patches included CSV shortcut" do
+  APP_CONFIG['patches_included_default_prefix'] = ""
 end
 
 Given "I define a mapping for API parameters" do

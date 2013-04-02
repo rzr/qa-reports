@@ -17,6 +17,9 @@ APP_CONFIG['group_labels']       ||= {'release_version' => 'MeeGo release',
                                       'testset' => 'Test set',
                                       'product' => 'Product'}
 
+APP_CONFIG['patches_included_default_prefix'] ||= ''
+APP_CONFIG['issue_summary_default_prefix']    ||= ''
+
 # Check the group labels and set to defaults if not defined
 if APP_CONFIG['group_labels']['release_version'].blank?
   APP_CONFIG['group_labels']['release_version'] = 'MeeGo release'

@@ -18,7 +18,8 @@ Before do
     "build_id"             => "1234.78a",
     "environment_txt"      => "Laboratory environment",
     "qa_summary_txt"       => "Ready to ship",
-    "issue_summary_txt"    => "No major issues found"
+    "issue_summary_txt"    => "No major issues found",
+    "patches_included_txt" => "No patches included"
   })
 
   # The oldest API (hwproduct and testtype have since been renamed)
@@ -34,6 +35,11 @@ Before do
     "hardware"        => "N900"
   })
   @default_version_2_api_opts.delete("product")
+
+  @defalt_api_opts_csv_shortcut = @default_api_opts.merge({
+    "issue_summary_csv"     => "BZ#9353, BZ#1234",
+    "patches_included_csv"  => "5678, 2582"
+  })
 
   @mapped_api_opts = {
     "auth_token"      => "foobar",
