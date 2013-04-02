@@ -2,7 +2,7 @@ ext_services_cfg_file = "#{::Rails.root.to_s}/config/external.services.yml"
 bugzilla_cfg_file     = "#{::Rails.root.to_s}/config/bugzilla.yml"
 
 # Using the new configuration file
-if File.exists?(ext_services_cfg_file)
+if not File.exists?(bugzilla_cfg_file)
   SERVICES = YAML.load_file(ext_services_cfg_file)
 # Using Bugzilla configuration file
 else

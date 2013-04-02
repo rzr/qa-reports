@@ -16,14 +16,15 @@ QA Reports is built with Ruby on Rails.
 
 *   Clone the repository
 *   Edit `config/deploy.rb` and `config/deploy/production.rb`
-*   Edit `config/bugzilla.yml` and `config/config.yml`
+*   Edit `config/external.services.yml` and `config/config.yml`
 *   Run `cap production deploy:setup`
-*   Run `cap production deploy`
+*   Run `cap production deploy:migrations`
 
 For very thorough documentation see the instructions in [wiki](https://github.com/leonidas/qa-reports/wiki/Setting-up-the-production-environment).
 
 ## Migration Notes
 
+*   02 April 2013: New external configuration and service support taken in use. This will replace the old `bugzilla.yml` configuration file. Upgrading is not mandatory, `bugzilla.yml` will still work if it exist. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
 *   26 March 2013: [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) taken in use.
     * If you are using a custom stylesheet you should combine it to the main stylesheet (not required though). See [wiki](https://github.com/leonidas/qa-reports/wiki/Customization) for more information.
     * With asset pipeline you can enable asset caching and can use nginx's `gzip static`. See [wiki](https://github.com/leonidas/qa-reports/wiki/Setting-up-the-production-environment#wiki-nginx) for an example.
@@ -37,8 +38,8 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 *   `config/config.yml`: General application configuration
     * Application configuration is aimed for enabling customization while keeping your fork compatible with the upstream version.
-*   `config/bugzilla.yml`: Bugzilla integration configuration
-    * QA Reports can show bug information from Bugzilla. Bugzilla server settings are defined in this file.
+*   `config/external.service.yml`: External services integration configuration
+    * QA Reports can show bug information from Bugzilla. Bugzilla server settings are defined in this file. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
 *   `config/deploy.rb` and `config/deploy/production.rb`: Deployment settings
 *   `config/environments/production.rb`: Environment specific configuration, e.g. email settings
 

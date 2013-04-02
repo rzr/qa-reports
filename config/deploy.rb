@@ -28,6 +28,17 @@ after "deploy:setup",           "qareports:setup:setup"
 after "deploy:update_code",     "qareports:symlink_shared_folders"
 after "deploy:create_symlink",  "qareports:symlink_shared_files"
 
+# http://stackoverflow.com/questions/1661586/how-can-you-check-to-see-if-a-file-exists-on-the-remote-server-in-capistrano/15436165#15436165
+def remote_file_exists?(path)
+  results = []
+
+  invoke_command("if [ -e '#{path}' ]; then echo -n 'true'; fi") do |ch, stream, out|
+    results << (out == 'true')
+  end
+
+  results == [true]
+end
+
 namespace :qareports do
 
   namespace :setup do
@@ -145,9 +156,21 @@ namespace :qareports do
     # Symlink exception notifier config to shared
     run "ln -nfs #{shared_path}/config/exception_notifier #{current_path}/config/exception_notifier"
 
-    # Remove current bugzilla config file and symlink to shared
+    # Remove current external services config file and symlink to shared
     run "rm #{current_path}/config/external.services.yml"
     run "ln -nfs #{shared_path}/config/external.services.yml #{current_path}/config/external.services.yml"
+
+    # If old bugzilla config file exists, symlink it so it will be used
+    if remote_file_exists?("#{shared_path}/config/bugzilla.yml")
+      puts "\033[34mNOTICE: Using config/bugzilla.yml is deprecated. Using it anyway, but"
+      puts"        see https://github.com/leonidas/qa-reports/wiki/External-Services\033[0m"
+      # Remove filr from current if it exists (this may happen if someone keeps the
+      # file in their own clone even if it is removed from upstream)
+      if remote_file_exists?("#{current_path}/config/bugzilla.yml")
+        run "rm #{current_path}/config/bugzilla.yml"
+      end
+      run "ln -nfs #{shared_path}/config/bugzilla.yml #{current_path}/config/bugzilla.yml"
+    end
 
     # Remove current app config file and symlink to shared
     run "rm #{current_path}/config/config.yml"
