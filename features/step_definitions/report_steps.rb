@@ -139,6 +139,11 @@ Then %r/^I should get the summary for the whole report$/ do
   @json['issue_summary'].should == 'No major issues found'
   @json['prev_session_id'].nil?.should == false
 
+  @json['release'].should == "1.2"
+  @json['profile'].should == "Core"
+  @json['testset'].should == "automated"
+  @json['product'].should == "N900"
+
 
   summary['Total'].should == 25
   summary['Pass'].should == 16

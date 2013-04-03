@@ -17,6 +17,10 @@ class ReportShow < SummaryShow
 
   def as_json(options = nil)
     {
+      release: @report.release.name,
+      profile: @report.profile.name,
+      testset: @report.testset,
+      product: @report.product,
       title: @report.title,
       objective: @report.objective_txt,
       build: @report.build_txt,
