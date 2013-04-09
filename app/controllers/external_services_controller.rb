@@ -22,23 +22,29 @@ class ExternalServicesController < ApplicationController
       # Get the plain IDs to be given to the service handler
       plain_ids = ids.map {|id| plain_id(id)} .uniq
 
-      # TODO: Better way to define what to execute?
-      case service['type']
-      when 'bugzilla'
-        data = Bugzilla.fetch_data(service, plain_ids)
-      when 'link'
-        data = ExternalLink.fetch_data(service, plain_ids)
-      end
+      begin
+        # TODO: Better way to define what to execute?
+        case service['type']
+        when 'bugzilla'
+          data = Bugzilla.fetch_data(service, plain_ids)
+        when 'link'
+          data = ExternalLink.fetch_data(service, plain_ids)
+        end
 
-      # Now we still need to whole shebang - the returned data has all that we
-      # need but we do need to return the same IDs as received (e.g. request
-      # contained 1234 and BZ#1234, and even if they're the same item we will
-      # return it twice to be able to show the information on correct place
-      # and not e.g. for GERRIT#1234)
-      ids.each {|id|
-        pid      = plain_id(id)
-        json[id] = data.detect {|item| item[:id] == pid}
-      }
+        # Now we still need to whole shebang - the returned data has all that we
+        # need but we do need to return the same IDs as received (e.g. request
+        # contained 1234 and BZ#1234, and even if they're the same item we will
+        # return it twice to be able to show the information on correct place
+        # and not e.g. for GERRIT#1234)
+        ids.each {|id|
+          pid      = plain_id(id)
+          json[id] = data.detect {|item| item[:id] == pid}
+        }
+
+      rescue Errno::ETIMEDOUT
+        # Do not set data to json if the request timed out - otherwise we
+        # would have response like {'BZ#1234': null} which is uncalled for
+      end
     }
 
     if json.blank?
