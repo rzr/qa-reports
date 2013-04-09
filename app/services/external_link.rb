@@ -1,6 +1,9 @@
-module ExternalLink
+require "celluloid"
 
-  def self.fetch_data(service, ids)
+class ExternalLink
+  include Celluloid
+
+  def fetch_data(service, ids, prefixed_ids)
     json = []
     ids.each do |id|
       json << {
@@ -8,6 +11,10 @@ module ExternalLink
         uri:  service['link_uri'] % id
       }
     end
-    json
+
+    {
+      data: json,
+      ids:  prefixed_ids
+    }
   end
 end

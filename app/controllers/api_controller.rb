@@ -116,7 +116,10 @@ class ApiController < ApplicationController
 
     if report.errors.empty? && report.save
       report.update_attribute(:editor, current_user)
-      head :ok
+      expire_caches_for(report, true)
+      expire_index_for(report)
+
+      render :json => {:ok => '1'}
     else
       return send_error(report.errors)
     end
