@@ -1,12 +1,14 @@
 require "erb"
+require "celluloid"
 include ERB::Util
 
 # Fetch bug information from Bugzilla
-module Bugzilla
+class Bugzilla
+  include Celluloid
 
   # Fetch bug information for given ids from given service (from
   # external.services.yml configuration)
-  def self.fetch_data(service, ids)
+  def fetch_data(service, ids, prefixed_ids)
     uri = service['uri'] % ids.join(',')
 
     content = ""
@@ -82,6 +84,9 @@ module Bugzilla
       end
     end
 
-    json
+    {
+      data: json,
+      ids:  prefixed_ids
+    }
   end
 end

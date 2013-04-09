@@ -14,6 +14,7 @@ gem 'ruby-xslt'
 gem 'xml-smart'
 gem 'exception_notification', '~>3.0.1'
 gem "dynamic_form", "~> 1.1.4"
+gem 'celluloid'
 
 group :assets do
   gem 'therubyracer', '~>0.11.0', :require => false
