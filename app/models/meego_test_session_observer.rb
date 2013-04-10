@@ -23,7 +23,12 @@ class MeegoTestSessionObserver < ActiveRecord::Observer
 
   def after_save(test_session)
     return true if not test_session.published
-    ReportExporter::export_test_session(test_session)
+    ReportExporter::export_test_session(ReportShow.new(test_session).as_json(
+      include_db_id:     true,
+      include_dates:     true,
+      include_summaries: true,
+      include_testcases: true
+    ))
     return true
   end
 

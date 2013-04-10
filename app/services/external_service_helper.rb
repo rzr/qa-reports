@@ -29,6 +29,19 @@ module ExternalServiceHelper
     uri
   end
 
+  def self.as_json(id)
+    service = ExternalServiceHelper.get_external_service(id)
+    return {id: id} if service.nil?
+
+    _, id = ExternalServiceHelper.get_prefix_id(id)
+    {
+      id:     id,
+      prefix: service['prefix'],
+      type:   service['type'],
+      url:    service['link_uri'] % id
+    }
+  end
+
   # Convert given CSV representation to markup format
   def self.convert_to_markup(csv, prefix)
     return "" if csv.blank?

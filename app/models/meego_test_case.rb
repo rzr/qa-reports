@@ -91,19 +91,20 @@ class MeegoTestCase < ActiveRecord::Base
     end
   end
 
-  def as_json(options = nil)
-    {
-      name: name,
+  def as_json(options = {})
+    json = {
+      name:   name,
       result: result_name,
-      comment: comment_html,
-      tc_id: tc_id.present? ? tc_id : nil,
-      bugs: comment.scan(/\[\[((?:[A-Z]+\#{1})?\d+)\]\]/).map {|m|
-        {
-          id:  m[0],
-          url: ExternalServiceHelper.get_external_url(m[0])
-        }
+      tc_id:  tc_id.present? ? tc_id : nil,
+      bugs:   comment.scan(/\[\[((?:[A-Z]+\#{1})?\d+)\]\]/).map {|m|
+        ExternalServiceHelper.as_json(m[0])
       }
     }
+
+    json[:qa_id]   = id           if options[:include_db_id]
+    json[:comment] = comment_html if options[:include_text_fields]
+
+    json
   end
 
   def comment_html

@@ -77,13 +77,13 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @report_show.as_json(include_testcases: true), :callback => params[:callback] }
+      format.json { render json: @report_show.as_json(include_testcases: true, include_text_fields: true), :callback => params[:callback] }
     end
   end
 
   def summary
     @report_show = ReportShow.new(MeegoTestSession.find(params[:id]))
-    render json: @report_show, :callback => params[:callback]
+    render json: @report_show.as_json(include_text_fields: true), :callback => params[:callback]
   end
 
   def print

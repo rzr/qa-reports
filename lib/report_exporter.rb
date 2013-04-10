@@ -23,65 +23,34 @@ module ReportExporter
   POST_TIMEOUT       = 8
   POST_RETRIES_LIMIT = 3
 
-  def self.hashify_test_session(test_session)
-    sets = []
-    test_session.features.find(:all, :include => :meego_test_cases).each do |set|
-      cases = []
-      set.meego_test_cases.each do |c|
-        bugs = c.comment.scan(/\[\[(\d+)\]\]/).map {|m| m[0].to_i}
-        data = {
-          "qa_id" => c.id,
-          "name" => c.name,
-
-          "result" => c.result,
-          "comment" => c.comment,
-
-          "bugs" => bugs
-        }
-        cases << data
-      end
-
-      data = {
-        "qa_id" => set.id,
-        "name" => set.name,
-
-        "total_cases" => set.total_cases,
-        "total_pass" => set.total_passed,
-        "total_fail" => set.total_failed,
-        "total_na" => set.total_na,
-        "total_measured" => set.total_measured,
-
-        "comments" => set.comments,
-
-        "cases" => cases
-      }
-      sets << data
-    end
-
-    data = {
-      "qa_id" => test_session.id,
-
-      "title" => test_session.title,
-
-      "hardware" => test_session.product,
-      "profile" => test_session.profile.name,
-      "testtype" => test_session.testset,
-      "release" => test_session.release.name,
-
-      "created_at" => test_session.created_at.utc,
-      "updated_at" => test_session.updated_at.utc,
-      "tested_at" => test_session.tested_at.utc,
-      "weeknum" => Date.parse(test_session.tested_at.to_date.to_s).cweek(),
-
-      "total_cases" => test_session.total_cases,
-      "total_pass" => test_session.total_passed,
-      "total_fail" => test_session.total_failed,
-      "total_na" => test_session.total_na,
-      "total_measured" => test_session.total_measured,
-
-      "features" => sets,
+  def self.fix_summary(summary)
+    {
+      total_cases:    summary['Total'],
+      total_pass:     summary['Passed'] || summary['Pass'],
+      total_fail:     summary['Failed'] || summary['Fail'],
+      total_na:       summary['N/A'],
+      total_measured: summary['Measured']
     }
-    data
+  end
+
+  # Fix the JSON values to match those expected by QA Dashboard. Once QA Dashboard
+  # is updated this can be removed but keep these services compatible for now.
+  # Comments are not set even if they used to be because it seems that QA Dashboard
+  # does not use them currently.
+  def self.fix_values(json)
+    json[:hardware] = json[:product]
+    json[:testtype] = json[:testset]
+
+    json.merge!(ReportExporter.fix_summary(json[:summary]))
+    json[:features].each do |f|
+      f.merge!(ReportExporter.fix_summary(f[:summary]))
+
+      f[:cases] = f[:testcases]
+      f[:cases].each do |tc|
+        tc[:bugs] = tc[:bugs].map {|bug| bug[:id]}
+      end
+    end
+    json
   end
 
   def self.post(data, action)
@@ -112,8 +81,8 @@ module ReportExporter
     return tries > 0
   end
 
-  def self.export_test_session(test_session)
-    post ReportExporter::hashify_test_session(test_session), "update"
+  def self.export_test_session(json)
+    post ReportExporter.fix_values(json), "update"
   end
 
   def self.delete_test_session_export(test_session)
@@ -121,4 +90,3 @@ module ReportExporter
   end
 
 end
-

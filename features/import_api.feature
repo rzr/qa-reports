@@ -162,6 +162,7 @@ Feature: Import API
     When the client sends three CSV files
     And I download a list of sessions without a begin time
     Then result should match the file with oldest date
+    And the result should contain all expected fields
 
   Scenario: Sending custom results when not enabled
     When the client sends file with custom results

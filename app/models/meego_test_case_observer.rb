@@ -25,7 +25,12 @@ class MeegoTestCaseObserver < ActiveRecord::Observer
       test_session = test_case.meego_test_session
       return true unless test_session and test_session.published
 
-      ReportExporter::export_test_session(test_session)
+      ReportExporter::export_test_session(ReportShow.new(test_session).as_json(
+        include_db_id:     true,
+        include_dates:     true,
+        include_summaries: true,
+        include_testcases: true
+      ))
       return true
   end
 
