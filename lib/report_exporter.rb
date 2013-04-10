@@ -38,6 +38,8 @@ module ReportExporter
   # Comments are not set even if they used to be because it seems that QA Dashboard
   # does not use them currently.
   def self.fix_values(json)
+    return nil if json.nil?
+
     json[:hardware] = json[:product]
     json[:testtype] = json[:testset]
 
