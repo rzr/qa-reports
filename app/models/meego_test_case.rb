@@ -98,10 +98,7 @@ class MeegoTestCase < ActiveRecord::Base
       comment: comment_html,
       tc_id: tc_id.present? ? tc_id : nil,
       bugs: comment.scan(/\[\[((?:[A-Z]+\#{1})?\d+)\]\]/).map {|m|
-        {
-          id:  m[0],
-          url: ExternalServiceHelper.get_external_url(m[0])
-        }
+        ExternalServiceHelper.as_json(m[0])
       }
     }
   end
