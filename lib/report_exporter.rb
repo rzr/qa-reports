@@ -53,7 +53,7 @@ module ReportExporter
 
         "comments" => set.comments,
 
-        "cases" => cases
+        "testcases" => cases
       }
       sets << data
     end
@@ -63,10 +63,11 @@ module ReportExporter
 
       "title" => test_session.title,
 
-      "hardware" => test_session.product,
-      "profile" => test_session.profile.name,
-      "testtype" => test_session.testset,
       "release" => test_session.release.name,
+      "profile" => test_session.profile.name,
+      "testset" => test_session.testset,
+      "product" => test_session.product,
+
 
       "created_at" => test_session.created_at.utc,
       "updated_at" => test_session.updated_at.utc,

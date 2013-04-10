@@ -489,6 +489,40 @@ Then "result should match the file with oldest date" do
   step %{resulting JSON should match file "short1.csv"}
 end
 
+# Validate the fields in response, this is used by QA Dashboard
+Then "the result should contain all expected fields" do
+  json = ActiveSupport::JSON.decode(@response.body)
+  session_fields = ["qa_id", "title",
+                    "release", "profile", "testtype", "hardware",
+                    "created_at", "updated_at", "tested_at", "weeknum",
+                    "total_cases", "total_pass", "total_fail", "total_na", "total_measured"]
+  feature_fields = ["qa_id", "name",
+                    "total_cases", "total_pass", "total_fail", "total_na", "total_measured"]
+  tc_fields      = ["qa_id", "name", "result", "bugs"]
+
+  session_fields.each do |f|
+    json[0].keys.should include(f)
+  end
+
+  json[0]['total_cases'].should == 2
+
+  json[0]['features'].length.should == 2
+  json[0]['features'][0]['testcases'].length.should == 1
+  json[0]['features'][1]['testcases'].length.should == 1
+
+  json[0]['features'].each do |feature|
+    feature_fields.each do |f|
+      feature.keys.should include(f)
+    end
+
+    feature['testcases'].each do |tc|
+      tc_fields.each do |f|
+        tc.keys.should include(f)
+      end
+    end
+  end
+end
+
 Then %r/^resulting JSON should match file "([^"]*)"$/ do |file1|
   json = ActiveSupport::JSON.decode(@response.body)
   json[0]['qa_id'].should == get_testsessionid(file1)
