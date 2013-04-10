@@ -44,12 +44,16 @@ module ReportExporter
     json[:testtype] = json[:testset]
 
     json.merge!(ReportExporter.fix_summary(json[:summary]))
-    json[:features].each do |f|
-      f.merge!(ReportExporter.fix_summary(f[:summary]))
+    if json[:features]
+      json[:features].each do |f|
+        f.merge!(ReportExporter.fix_summary(f[:summary]))
 
-      f[:cases] = f[:testcases]
-      f[:cases].each do |tc|
-        tc[:bugs] = tc[:bugs].map {|bug| bug[:id]}
+        f[:cases] = f[:testcases]
+        if f[:cases]
+          f[:cases].each do |tc|
+            tc[:bugs] = tc[:bugs].map {|bug| bug[:id]}
+          end
+        end
       end
     end
     json
