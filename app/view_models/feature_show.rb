@@ -22,8 +22,12 @@ class FeatureShow < SummaryShow
   def as_json(options = {})
     json = {name: name, summary: super}
     if options[:include_testcases]
-      json.merge! testcases: @feature.meego_test_cases.map(&:as_json)
+      json.merge! testcases: @feature.meego_test_cases.map {|tc| tc.as_json(options)}
     end
+
+    json[:qa_id]    = id       if options[:include_db_id]
+    json[:comments] = comments if options[:include_text_fields]
+
     json
   end
 end

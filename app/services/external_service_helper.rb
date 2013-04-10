@@ -38,7 +38,7 @@ module ExternalServiceHelper
       id:     id,
       prefix: service['prefix'],
       type:   service['type'],
-      uri:    service['link_uri'] % id
+      url:    service['link_uri'] % id
     }
   end
 

@@ -174,7 +174,16 @@ class ApiController < ApplicationController
         begin_time = DateTime.parse params[:begin_time]
         sessions = sessions.where('updated_at > ?', begin_time)
       end
-      hashed_sessions = sessions.map { |s| ReportExporter::hashify_test_session(s) }
+      hashed_sessions = sessions.map { |s|
+        ReportExporter.fix_values(
+          ReportShow.new(s).as_json(
+            include_db_id:     true,
+            include_dates:     true,
+            include_summaries: true,
+            include_testcases: true
+          )
+        )
+      }
       render :json => hashed_sessions
     rescue ArgumentError => error
       return send_error(error.message)

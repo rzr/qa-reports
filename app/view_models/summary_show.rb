@@ -43,7 +43,7 @@ class SummaryShow
     ("%+i" % value) + postfix
   end
 
-  def as_json(options = nil)
+  def as_json(options = {})
     json = @counts.merge({'Total' => @total_count})
   end
 end
