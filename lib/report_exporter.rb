@@ -26,8 +26,8 @@ module ReportExporter
   def self.fix_summary(summary)
     {
       total_cases:    summary['Total'],
-      total_pass:     summary['Passed'] || summary['Pass'],
-      total_fail:     summary['Failed'] || summary['Fail'],
+      total_pass:     summary.include?('Passed') ? summary['Passed'] : summary['Pass'],
+      total_fail:     summary.include?('Failed') ? summary['Failed'] : summary['Fail'],
       total_na:       summary['N/A'],
       total_measured: summary['Measured']
     }
