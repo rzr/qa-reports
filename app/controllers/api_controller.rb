@@ -183,7 +183,7 @@ class ApiController < ApplicationController
             include_testcases: true
           )
         )
-      } .compact
+      }
       render :json => hashed_sessions
     rescue ArgumentError => error
       return send_error(error.message)

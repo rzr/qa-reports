@@ -16,11 +16,9 @@ class ReportShow < SummaryShow
   end
 
   def as_json(options = {})
-    return nil if @report.release.nil? || @report.profile.nil?
-
     json = {
-      release:  @report.release.name,
-      profile:  @report.profile.name,
+      release:  @report.release.try(:name) || 'N/A',
+      profile:  @report.profile.try(:name) || 'N/A',
       testset:  @report.testset,
       product:  @report.product,
       title:    @report.title,
