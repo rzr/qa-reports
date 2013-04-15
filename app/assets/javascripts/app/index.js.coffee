@@ -118,8 +118,13 @@ $(document).ready ->
       $("#release_filters a[href='/#{release}']").click()
       $("#report_filters a[href='/#{scope}']").click()
     else
-      $("#release_filters .current a").click()
-      $("#report_filters .current a").click()
+      # On staging set better defaults (current data set is quite old)
+      if location.hostname == 'qa-reports.qa.leonidasoy.fi'
+        $("#release_filters a[href='/1.2']").click()
+        $("#report_filters a[href='/all']").click()
+      else
+        $("#release_filters .current a").click()
+        $("#report_filters .current a").click()
 
   Spine.Route.add "/:release/:scope": (params) ->
     $.get "/#{params.release}/categories.json?scope=#{params.scope}", (view_model) ->
