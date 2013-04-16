@@ -304,11 +304,9 @@ handleCommentFormSubmit = () ->
     $testcase.find('.testcase_notes').click(handleCommentEdit).addClass 'edit'
 
     $form.ajaxSubmit
-        datatype: 'json'
+        datatype: 'xml'
         success: (responseText, statusText, xhr, $form) ->
-            # Remove the form element, others are correct and editing again
-            # also works
-            $testcase.find('form').remove()
+            $testcase.find('.testcase_notes').html responseText
             fetchExternalInfo()
 
     return false

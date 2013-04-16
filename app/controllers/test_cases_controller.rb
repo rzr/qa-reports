@@ -9,7 +9,8 @@ class TestCasesController < ApplicationController
     @test_case = MeegoTestCase.unscoped.find(params[:id])
     @test_case.update_attributes(params[:test_case]) # Doesn't check for failure
 
-    head :ok
+    @editing = true
+    render :partial => 'reports/testcase_comment', :locals => {:testcase => @test_case}
   end
 
   private
