@@ -49,11 +49,6 @@ module ReportExporter
         f.merge!(ReportExporter.fix_summary(f[:summary]))
 
         f[:cases] = f[:testcases]
-        if f[:cases]
-          f[:cases].each do |tc|
-            tc[:bugs] = tc[:bugs].map {|bug| bug[:id]}
-          end
-        end
       end
     end
     json
