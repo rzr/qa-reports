@@ -23,37 +23,6 @@ module ReportExporter
   POST_TIMEOUT       = 8
   POST_RETRIES_LIMIT = 3
 
-  def self.fix_summary(summary)
-    {
-      total_cases:    summary['Total'],
-      total_pass:     summary.include?('Passed') ? summary['Passed'] : summary['Pass'],
-      total_fail:     summary.include?('Failed') ? summary['Failed'] : summary['Fail'],
-      total_na:       summary['N/A'],
-      total_measured: summary['Measured']
-    }
-  end
-
-  # Fix the JSON values to match those expected by QA Dashboard. Once QA Dashboard
-  # is updated this can be removed but keep these services compatible for now.
-  # Comments are not set even if they used to be because it seems that QA Dashboard
-  # does not use them currently.
-  def self.fix_values(json)
-    return nil if json.nil?
-
-    json[:hardware] = json[:product]
-    json[:testtype] = json[:testset]
-
-    json.merge!(ReportExporter.fix_summary(json[:summary]))
-    if json[:features]
-      json[:features].each do |f|
-        f.merge!(ReportExporter.fix_summary(f[:summary]))
-
-        f[:cases] = f[:testcases]
-      end
-    end
-    json
-  end
-
   def self.post(data, action)
     post_data = { "token" => EXPORTER_CONFIG['token'], "report" => data }.to_json
     uri       = EXPORTER_CONFIG['host'] + EXPORTER_CONFIG['uri'] + action
@@ -83,7 +52,7 @@ module ReportExporter
   end
 
   def self.export_test_session(json)
-    post ReportExporter.fix_values(json), "update"
+    post json, "update"
   end
 
   def self.delete_test_session_export(test_session)

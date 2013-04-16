@@ -22,10 +22,15 @@ class ReportShow < SummaryShow
       testset:  @report.testset,
       product:  @report.product,
       title:    @report.title,
-      summary:  super,
       features: features.map {|f| f.as_json(options)},
       prev_session_id: @report.prev_session.nil? == false ? @report.prev_session.id : ''
     }
+
+    if options[:legacy_summary]
+      json.merge! super
+    else
+      json[:summary] = super
+    end
 
     json[:qa_id] = @report.id if options[:include_db_id]
 

@@ -20,7 +20,14 @@ class FeatureShow < SummaryShow
   end
 
   def as_json(options = {})
-    json = {name: name, summary: super}
+    json = {name: name}
+
+    if options[:legacy_summary]
+      json.merge! super
+    else
+      json[:summary] = super
+    end
+
     if options[:include_testcases]
       json.merge! testcases: @feature.meego_test_cases.map {|tc| tc.as_json(options)}
     end

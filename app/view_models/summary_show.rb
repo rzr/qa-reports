@@ -44,6 +44,18 @@ class SummaryShow
   end
 
   def as_json(options = {})
-    json = @counts.merge({'Total' => @total_count})
+    if options[:legacy_summary]
+      json = {
+        total_cases:     @total_count,
+        total_pass:      @counts['Pass'],
+        total_fail:      @counts['Fail'],
+        total_na:        @counts['N/A'],
+        total_measured:  @counts['Measured']
+      }
+    else
+      json = @counts.merge({'Total' => @total_count})
+    end
+
+    json
   end
 end

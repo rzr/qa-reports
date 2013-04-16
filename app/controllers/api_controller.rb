@@ -175,13 +175,12 @@ class ApiController < ApplicationController
         sessions = sessions.where('updated_at > ?', begin_time)
       end
       hashed_sessions = sessions.map { |s|
-        ReportExporter.fix_values(
-          ReportShow.new(s).as_json(
-            include_db_id:     true,
-            include_dates:     true,
-            include_summaries: true,
-            include_testcases: true
-          )
+        ReportShow.new(s).as_json(
+          include_db_id:     true,
+          include_dates:     true,
+          include_summaries: true,
+          include_testcases: true,
+          legacy_summary:    true
         )
       }
       render :json => hashed_sessions

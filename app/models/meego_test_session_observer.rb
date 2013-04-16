@@ -27,7 +27,8 @@ class MeegoTestSessionObserver < ActiveRecord::Observer
       include_db_id:     true,
       include_dates:     true,
       include_summaries: true,
-      include_testcases: true
+      include_testcases: true,
+      legacy_summary:    true
     ))
     return true
   end
