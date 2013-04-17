@@ -493,7 +493,7 @@ end
 Then "the result should contain all expected fields" do
   json = ActiveSupport::JSON.decode(@response.body)
   session_fields = ["qa_id", "title",
-                    "release", "profile", "testtype", "hardware",
+                    "release", "profile", "testset", "product",
                     "created_at", "updated_at", "tested_at", "weeknum",
                     "total_cases", "total_pass", "total_fail", "total_na", "total_measured"]
   feature_fields = ["qa_id", "name",
