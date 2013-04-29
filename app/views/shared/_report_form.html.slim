@@ -10,7 +10,7 @@
   label for="report_test_target" #{APP_CONFIG['group_labels']['target']}:
   - @profiles.each do |profile|
     = radio_button :profile, :name, profile, :class => "target"
-    = label :profile, :name, profile.humanize, :value => profile, :class => "inline_label"
+    = label :profile, :name, profile, :value => profile, :class => "inline_label"
   = error_message_on :profile, :name
 
 .field
