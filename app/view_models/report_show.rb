@@ -53,7 +53,17 @@ class ReportShow < SummaryShow
 
     # Scan external service IDs from all text fields
     if options[:scan_text_fields]
-
+      json[:bugs] = [
+        @report.objective_txt,
+        @report.build_txt,
+        @report.build_id,
+        @report.environment_txt,
+        @report.qa_summary_txt,
+        @report.issue_summary_txt,
+        @report.patches_included_txt
+      ].join(" ").scan(/\[\[((?:[A-Z]+\#{1})?\d+)\]\]/).map {|m|
+        ExternalServiceHelper.as_json(m[0])
+      }
     end
 
     json

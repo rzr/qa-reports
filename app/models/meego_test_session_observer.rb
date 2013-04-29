@@ -26,9 +26,9 @@ class MeegoTestSessionObserver < ActiveRecord::Observer
     ReportExporter::export_test_session(ReportShow.new(test_session).as_json(
       include_db_id:     true,
       include_dates:     true,
-      include_summaries: true,
       include_testcases: true,
-      legacy_summary:    true
+      legacy_summary:    true,
+      scan_text_fields:  true
     ))
     return true
   end
