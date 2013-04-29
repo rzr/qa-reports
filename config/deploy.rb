@@ -213,8 +213,9 @@ namespace :deploy do
       if qadashboard_auth =~ /yes/i
         qadashboard_host  = Capistrano::CLI::ui.ask("Please enter QA Dashboard URL (e.g. http://localhost:3030)")
         qadashboard_token = Capistrano::CLI::ui.ask("Please enter authentication token for report upload")
-        qadashboard_conf["host"]  = qadashboard_host
-        qadashboard_conf["token"] = qadashboard_token
+        qadashboard_conf["enabled"] = true
+        qadashboard_conf["host"]    = qadashboard_host
+        qadashboard_conf["token"]   = qadashboard_token
       end
       put YAML::dump(qadashboard_conf), "#{shared_path}/config/qa-dashboard_config.yml"
     end

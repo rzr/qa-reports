@@ -24,6 +24,8 @@ module ReportExporter
   POST_RETRIES_LIMIT = 3
 
   def self.post(data, action)
+    return true if EXPORTER_CONFIG.has_key?('enabled') && EXPORTER_CONFIG['enabled'] == false
+
     post_data = { "token" => EXPORTER_CONFIG['token'], "report" => data }.to_json
     uri       = EXPORTER_CONFIG['host'] + EXPORTER_CONFIG['uri'] + action
     headers   = { :content_type => :json, :accept => :json }
