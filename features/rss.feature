@@ -8,7 +8,7 @@ Feature: RSS Feed
     And I have created the "1.1/Handset/Sanity/Aava" report using "sim.xml"
     And I have created the "1.1/Handset/Sanity/N900" report using "sim.xml"
     And I have created the "1.1/Handset/Weekly/Aava" report using "sim.xml"
-    And I have created the "1.2/Ivi/Sanity/Aava" report using "sim.xml"
+    And I have created the "1.2/IVI/Sanity/Aava" report using "sim.xml"
 
   Scenario: Fetch RSS feed for leaf level filter
     When I fetch the rss feed for "1.1/Core/Sanity/Aava"
