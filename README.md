@@ -24,6 +24,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 ## Migration Notes
 
+*   29 April 2013: Not compatible with old installations of [QA Dashboard](https://github.com/leonidas/qa-dashboard). If you have been using QA Dashboard you will need to update it as well.
 *   02 April 2013: New external configuration and service support taken in use. This will replace the old `bugzilla.yml` configuration file. Upgrading is not mandatory, `bugzilla.yml` will still work if it exist. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
 *   26 March 2013: [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) taken in use.
     * If you are using a custom stylesheet you should combine it to the main stylesheet (not required though). See [wiki](https://github.com/leonidas/qa-reports/wiki/Customization) for more information.
