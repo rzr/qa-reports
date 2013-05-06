@@ -24,6 +24,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 ## Migration Notes
 
+*   06 May 2013: Added Gerrit integration (link by change ID the same way as Bugzilla)
 *   29 April 2013: Not compatible with old installations of [QA Dashboard](https://github.com/leonidas/qa-dashboard). If you have been using QA Dashboard you will need to update it as well.
 *   02 April 2013: New external configuration and service support taken in use. This will replace the old `bugzilla.yml` configuration file. Upgrading is not mandatory, `bugzilla.yml` will still work if it exist. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
 *   26 March 2013: [Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html) taken in use.
@@ -39,8 +40,8 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 *   `config/config.yml`: General application configuration
     * Application configuration is aimed for enabling customization while keeping your fork compatible with the upstream version.
-*   `config/external.service.yml`: External services integration configuration
-    * QA Reports can show bug information from Bugzilla. Bugzilla server settings are defined in this file. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
+*   `config/external.services.yml`: External services integration configuration
+    * QA Reports can showinformation from Bugzilla and Gerrit, and create links to other services. Settings are defined in this file. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
 *   `config/deploy.rb` and `config/deploy/production.rb`: Deployment settings
 *   `config/environments/production.rb`: Environment specific configuration, e.g. email settings
 
