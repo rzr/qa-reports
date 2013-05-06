@@ -95,7 +95,7 @@ namespace :qareports do
       # Go through all the defined services and ask for credentials if the
       # service is of type bugzilla
       ext_conf.each do |s|
-        if s['type'] == 'bugzilla' || s['type'] == 'gerrit'
+        if s['type'] == 'bugzilla' || s['type'] == 'gerrit'
           bugzilla_http_auth = Capistrano::CLI::ui.ask("Do you want to define HTTP credentials to access #{s['name']}? Note that you should have a separate user account for this since the credentials are stored as plain text. Default: No")
           if bugzilla_http_auth =~ /yes/i
             bugzilla_uname = Capistrano::CLI::ui.ask("Please enter your HTTP username for #{s['name']}")
