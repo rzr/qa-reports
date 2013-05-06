@@ -16,11 +16,11 @@ applyExternalInfo = (node, info) ->
   if info?
     status = info.status
 
-    # Currently only Bugzilla info items have status
+    # Bugzilla and Gerrit have status
     if status?
-      if status in ['RESOLVED', 'VERIFIED']
+      if (info.service == 'bugzilla' && status in ['RESOLVED', 'VERIFIED']) || (info.service == 'gerrit' && status == 'MERGED')
         $node.addClass("resolved")
-        status = info.resolution
+        status = info.resolution||info.status
       else
         $node.addClass("unresolved")
 

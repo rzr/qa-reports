@@ -28,6 +28,8 @@ class ExternalServicesController < ApplicationController
         case service['type']
         when 'bugzilla'
           handler = Bugzilla.new
+        when 'gerrit'
+          handler = Gerrit.new
         when 'link'
           handler = ExternalLink.new
         end

@@ -62,3 +62,23 @@
 #   default:  false
 #   type:     link
 #   link_uri: "http://review.cyanogenmod.org/#/c/%s/"
+
+# Example of Gerrit integration
+# - name:       Cyanogen Gerrit
+#   server:     review.cyanogenmod.org
+#   port:       80
+#   use_ssl:    false
+
+#   prefix:     CM
+#   default:    false
+#   type:       gerrit
+
+#   # Gerrit query URI.
+#   uri: /query?q=%s
+
+#   proxy_server:
+#   proxy_port:
+
+#   # HTTP Basic Authentication credentials
+#   http_username:
+#   http_password:
