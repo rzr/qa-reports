@@ -49,7 +49,7 @@ end
 
 # Check the sprintf formatting of string
 SERVICES.each do |s|
-  if s['type'] == 'bugzilla'
+  if s['type'] == 'bugzilla' || s['type'] == 'gerrit'
     begin
       s['uri'] % 'test'
       s['link_uri'] % 'test'

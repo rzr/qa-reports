@@ -56,25 +56,27 @@
   bugzilla_username:
   bugzilla_password:
 
-# Example of a link only service to e.g. gerrit
-# - name:     Cyanogen Gerrit
+# # Example of a link only service to e.g. gerrit
+# - name:     Gerrit
 #   prefix:   CM
 #   default:  false
 #   type:     link
-#   link_uri: "http://review.cyanogenmod.org/#/c/%s/"
+#   link_uri: http://review.cyanogenmod.org/%s
 
-# Example of Gerrit integration
-# - name:       Cyanogen Gerrit
+# # Example of Gerrit integration
+# - name:       Gerrit Integration
 #   server:     review.cyanogenmod.org
 #   port:       80
 #   use_ssl:    false
 
-#   prefix:     CM
+#   prefix:     CMI
 #   default:    false
 #   type:       gerrit
 
 #   # Gerrit query URI.
 #   uri: /query?q=%s
+#   # Full URI to a single change
+#   link_uri: http://review.cyanogenmod.org/%s
 
 #   proxy_server:
 #   proxy_port:

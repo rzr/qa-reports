@@ -88,8 +88,6 @@ namespace :qareports do
       put "%w{#{email_addresses}}", "#{shared_path}/config/exception_notifier"
     end
 
-    # Notice: since we now support only Bugzilla and plain link services this
-    # task will ask for the settings and then upload the file to remote servers.
     desc "Settings for Bugzilla services"
     task :bugzilla_conf, :roles => :app do
       ext_conf = YAML.load_file("config/external.services.yml")
@@ -97,7 +95,7 @@ namespace :qareports do
       # Go through all the defined services and ask for credentials if the
       # service is of type bugzilla
       ext_conf.each do |s|
-        if s['type'] == 'bugzilla'
+        if s['type'] == 'bugzilla' || s['type'] == 'gerrit'
           bugzilla_http_auth = Capistrano::CLI::ui.ask("Do you want to define HTTP credentials to access #{s['name']}? Note that you should have a separate user account for this since the credentials are stored as plain text. Default: No")
           if bugzilla_http_auth =~ /yes/i
             bugzilla_uname = Capistrano::CLI::ui.ask("Please enter your HTTP username for #{s['name']}")
@@ -106,14 +104,15 @@ namespace :qareports do
             s["http_password"] = bugzilla_passw
           end
 
-          bugzilla_auth = Capistrano::CLI::ui.ask("Do you want to define Bugzilla credentials to access #{s['name']}? Note that you should have a separate user account for this since the credentials are stored as plain text. Default: No")
-          if bugzilla_auth =~ /yes/i
-            bugzilla_uname = Capistrano::CLI::ui.ask("Please enter your Bugzilla username for #{s['name']}")
-            bugzilla_passw = Capistrano::CLI::password_prompt("Please enter your Bugzilla password for #{s['name']}")
-            s["bugzilla_username"] = bugzilla_uname
-            s["bugzilla_password"] = bugzilla_passw
+          if s['type'] == 'bugzilla'
+            bugzilla_auth = Capistrano::CLI::ui.ask("Do you want to define Bugzilla credentials to access #{s['name']}? Note that you should have a separate user account for this since the credentials are stored as plain text. Default: No")
+            if bugzilla_auth =~ /yes/i
+              bugzilla_uname = Capistrano::CLI::ui.ask("Please enter your Bugzilla username for #{s['name']}")
+              bugzilla_passw = Capistrano::CLI::password_prompt("Please enter your Bugzilla password for #{s['name']}")
+              s["bugzilla_username"] = bugzilla_uname
+              s["bugzilla_password"] = bugzilla_passw
+            end
           end
-
         end
       end
 
