@@ -251,6 +251,13 @@ When /^the client sends matching test case without comments$/ do
     step %{the client sends file "features/resources/single_case_without_comment.xml" via the REST API}
 end
 
+When /^the client sends matching test case without comments with comment copy disabled$/ do
+  @response = api_import @default_api_opts.merge({
+    "result_files[]" => Rack::Test::UploadedFile.new("features/resources/single_case_without_comment.xml", "text/xml"),
+    "copy_comments" => false
+  })
+end
+
 When %r/^I view the latest report "([^"]*)"/ do |report_string|
   #TODO: Use scopes
   version, target, test_type, product = report_string.downcase.split('/')
@@ -420,6 +427,10 @@ end
 
 Then /^I should see the comment from previous test report$/ do
   step %{I should see "Comment for simple test case"}
+end
+
+Then /^I should not see the comment from previous test report$/ do
+  step %{I should not see "Comment for simple test case"}
 end
 
 Then "the upload succeeds" do
