@@ -153,6 +153,12 @@ Feature: Import API
     And I should be able to view the latest created report
     And I should see the objective of previous report
 
+  Scenario: Test case comment is copied from previous report if not given
+    Given the client has sent a report with test case comments
+    When the client sends matching test case without comments
+    Then I should be able to view the latest created report
+    And I should see the comment from previous test report
+
   Scenario: Getting a list of sessions from API
     When the client sends three CSV files
     And I download a list of sessions with begin time given

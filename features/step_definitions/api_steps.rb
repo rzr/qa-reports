@@ -15,6 +15,11 @@ Given "the client has sent a request with a defined test objective" do
   sleep 1
 end
 
+Given /^the client has sent a report with test case comments$/ do
+  step %{the client sends file "features/resources/single_case_comment.xml" via the REST API}
+  sleep 1
+end
+
 def api_import( params )
   post "api/import", params
 end
@@ -242,6 +247,10 @@ When "the client sends a request with an ID only in patches included CSV" do
   @response = api_import @default_api_opts.merge({"patches_included_csv" => "1234"})
 end
 
+When /^the client sends matching test case without comments$/ do
+    step %{the client sends file "features/resources/single_case_without_comment.xml" via the REST API}
+end
+
 When %r/^I view the latest report "([^"]*)"/ do |report_string|
   #TODO: Use scopes
   version, target, test_type, product = report_string.downcase.split('/')
@@ -407,6 +416,10 @@ end
 
 Then /^I should see a link to Gerrit$/ do
   step %{I should see link to bug "http://review.cyanogenmod.org/#/c/1234/" within ".editcontent ul li"}
+end
+
+Then /^I should see the comment from previous test report$/ do
+  step %{I should see "Comment for simple test case"}
 end
 
 Then "the upload succeeds" do

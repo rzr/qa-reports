@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="Test Suite">
+    <set name="Test Set">
+      <case name="Simple Test Case" result="FAIL" comment="Comment for simple test case"/>
+    </set>
+  </suite>
+</testresults>
