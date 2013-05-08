@@ -254,7 +254,7 @@ end
 When /^the client sends matching test case without comments with comment copy disabled$/ do
   @response = api_import @default_api_opts.merge({
     "result_files[]" => Rack::Test::UploadedFile.new("features/resources/single_case_without_comment.xml", "text/xml"),
-    "copy_comments" => false
+    "copy_template_values" => false
   })
 end
 

@@ -5,7 +5,7 @@ require 'parse_error'
 
 class ReportFactory
 
-  def build(params)
+  def build(params, no_copy=false)
     @errors = {}
 
     params[:release] ||= Release.find_by_name params.delete(:release_version) if params[:release_version]
@@ -15,7 +15,7 @@ class ReportFactory
       generate_title(params)
       parse_result_files(params)
       test_session = MeegoTestSession.new(params)
-      copy_template_values(test_session)
+      copy_template_values(test_session) unless no_copy
 
     rescue ParseError => e
       Rails.logger.error "ERROR IN FILE PARSING: " + e.filename

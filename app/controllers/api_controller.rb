@@ -52,6 +52,10 @@ class ApiController < ApplicationController
     params.delete(:testtype)
     params.delete(:hardware)
 
+    # Disabled copying template/comments from previous report
+    no_copy = !params[:copy_template_values].blank? && params[:copy_template_values].downcase == "false"
+    params.delete(:copy_template_values)
+
     # Then fix some other possible problems -- if the request contains e.g.
     # parameter release then ReportFactory.build would try to use that
     # instead of getting a model instance
@@ -64,7 +68,7 @@ class ApiController < ApplicationController
     return send_error({:target => "Incorrect target '#{params[:target]}'. Valid ones are: #{Profile.names.join(',')}."}) if not Profile.find_by_name(params[:target])
 
     begin
-      @test_session = ReportFactory.new.build(params.clone)
+      @test_session = ReportFactory.new.build(params.clone, no_copy)
       return send_error(errmsg_invalid_version(params[:release_version])) if not @test_session.release
 
       @test_session.author = current_user
