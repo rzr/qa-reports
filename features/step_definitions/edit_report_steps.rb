@@ -116,6 +116,13 @@ Then /^I disable inlining images$/ do
 end
 
 Given /^I add another Bugzilla service$/ do
+  SERVICES.each do |s|
+    if s['type'] == 'bugzilla'
+      @mozilla_bugzilla['proxy_server'] = s['proxy_server']
+      @mozilla_bugzilla['proxy_port']   = s['proxy_port']
+    end
+  end
+
   SERVICES << @mozilla_bugzilla
 end
 
