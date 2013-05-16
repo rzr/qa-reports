@@ -77,7 +77,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @report_show.as_json(include_testcases: true, include_text_fields: true), :callback => params[:callback] }
+      format.json { render json: @report_show.as_json(include_testcases: true, include_text_fields: true, scan_text_fields: true), :callback => params[:callback] }
     end
   end
 
