@@ -61,4 +61,15 @@ Meegoqa::Application.configure do
   config.assets.digest = true
   # Compress JS
   config.assets.compress = true
+
+  # Enable the below settings if you have SSL enabled server to force
+  # login and related actions to happen over SSL. If using nginx you need
+  # to set proxy_set_header X_FORWARDED_PROTO $scheme; to site configuration.
+  # In addition the SSL and non-SSL servers must be separately defined and
+  # SSL needs to be enabled with the legacy format "ssl on;"
+  #   https://github.com/plataformatec/devise/wiki/How-To:-Use-SSL-(HTTPS)
+
+  #config.to_prepare { Devise::SessionsController.force_ssl }
+  #config.to_prepare { Devise::RegistrationsController.force_ssl }
+  #config.to_prepare { Devise::PasswordsController.force_ssl }
 end
