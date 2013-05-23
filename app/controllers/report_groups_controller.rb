@@ -1,4 +1,5 @@
 require 'graph'
+require 'uri'
 
 class ReportGroupsController < ApplicationController
 
@@ -13,12 +14,15 @@ class ReportGroupsController < ApplicationController
     # version W2 which does not have reports for X/Y/Z. So instead of giving
     # a 404 try if it has reports for X/Y, then Y, and finally redirect to
     # index page of W2.
-    3.downto(1) do |i|
-      begin
-        @group_report = ReportGroupViewModel.new(*args)
-        break
-      rescue ActiveRecord::RecordNotFound => e
-        args[i] = nil
+    begin
+      @group_report = ReportGroupViewModel.new(*args)
+    rescue ActiveRecord::RecordNotFound => e
+      args.compact!
+      args.pop
+      # Do not redirect to /RELEASE_VERSION because ugly URLs will emerge
+      if args.length > 1
+        redirect_to URI.escape("/#{args.join("/")}")
+        return
       end
     end
 
