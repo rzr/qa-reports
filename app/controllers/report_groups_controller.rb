@@ -5,7 +5,28 @@ class ReportGroupsController < ApplicationController
   def show
     @show_rss = true
 
-    @group_report = ReportGroupViewModel.new(release.name, profile.name, testset, product)
+    args = [release.name, profile.name, testset, product]
+
+    # Try to find the closest matching view to show - judging from the user
+    # feedback the most common scenario for getting a 404 is that you're
+    # looking at reports from branch W1/X/Y/Z and clicking to another release
+    # version W2 which does not have reports for X/Y/Z. So instead of giving
+    # a 404 try if it has reports for X/Y, then Y, and finally redirect to
+    # index page of W2.
+    3.downto(1) do |i|
+      begin
+        @group_report = ReportGroupViewModel.new(*args)
+        break
+      rescue ActiveRecord::RecordNotFound => e
+        args[i] = nil
+      end
+    end
+
+    if @group_report.nil?
+      redirect_to root_path
+      return
+    end
+
     @monthly_data = @group_report.report_range_by_month(0..39).to_json
     respond_to do |format|
       format.html
