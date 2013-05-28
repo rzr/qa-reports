@@ -1,3 +1,7 @@
+Then %r/^(?:|I )should see "([^\"]*)" within the first "([^\"]*)"$/ do |text, selector|
+  first(selector).should have_content(text)
+end
+
 Then %r/^show me the response$/ do
   puts page.body.inspect
 end

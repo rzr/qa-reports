@@ -27,7 +27,7 @@ Feature: Manage reports
   Scenario: Editing a report
     When I click to edit the report
 
-    Then I should see "Edit the report information" within ".notification"
+    Then I should see "Edit the report information" within the first ".notification"
     And I should see "Test Objective" within ".editable_text #test_objective"
 
   Scenario: Linking from print view to report view
