@@ -2,6 +2,10 @@ Then %r/^(?:|I )should see "([^\"]*)" within the first "([^\"]*)"$/ do |text, se
   first(selector).should have_content(text)
 end
 
+Then %r/^I should see "(.*?)" within the first hidden "(.*?)"$/ do |text, selector|
+  first(:css, selector, :visible => false).text(:all).should have_content(text)
+end
+
 Then %r/^show me the response$/ do
   puts page.body.inspect
 end
