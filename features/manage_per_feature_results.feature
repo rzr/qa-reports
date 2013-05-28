@@ -26,7 +26,7 @@ Feature: automatically calculating the pass percentage for each features.
   Scenario: Editing feature result comments
     When I edit the report "1.2/Core/automated/N900"
     And I change comment of feature "Contacts" to "This comment is saved"
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I should see "This comment is saved"
 
@@ -34,7 +34,7 @@ Feature: automatically calculating the pass percentage for each features.
   Scenario: Editing feature result grading
     When I edit the report "1.2/Core/automated/N900"
     And I change grading of feature "Contacts" to red
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I should see feature "Contacts" graded as red
 
@@ -43,6 +43,6 @@ Feature: automatically calculating the pass percentage for each features.
     When I edit the report "1.2/Core/automated/N900"
     And I fill in comment "This comment is cancelled" for feature "Audio"
     And I cancel the comment of feature "Audio"
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I should not see "This comment is cancelled"
