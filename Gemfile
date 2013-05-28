@@ -51,6 +51,7 @@ group :development, :test do
   gem 'rspec-rails', '2.13.0'
   gem 'capybara-webkit'
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'spork', '~> 0.9.0.rc'
   gem 'cucumber'
   gem 'cucumber-rails', :require => false
