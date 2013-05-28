@@ -6,7 +6,7 @@ Feature: Passrate between builds
     Given I have created the "1.1/Core/Sanity/FeaturePassRate" report using "sim.xml" and optional build id is "1.2.0.90.0.20050517.1"
     And I have created the "1.1/Core/Sanity/FeaturePassRate" report using "sim_new.xml" and optional build id is "1.2.0.90.0.20050518.1"
 
-  @smoke
+  @javascript
   Scenario: Viewing the feature persentage for the different build
     When I view the report "1.1/Core/Sanity/FeaturePassRate" for build
     And I follow "See build pass%"
