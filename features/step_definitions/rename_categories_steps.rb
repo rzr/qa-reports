@@ -72,11 +72,11 @@ When %r/^I view the group report for "([^"]*)"$/ do |path|
 end
 
 Then %r/^I should see "([^"]*)" in test reports titles$/ do |title|
-  step %{I should see "#{title}" within "#report_filtered_navigation .report_name"}
+  step %{I should see "#{title}" within the first "#report_filtered_navigation .report_name"}
 end
 
 Then %r/^I should not see "([^"]*)" in test reports titles$/ do |title|
-  step %{I should not see "#{title}" within "#report_filtered_navigation .report_name"}
+  step %{I should not see "#{title}"}
 end
 
 Then %r/^I should not see the edit button$/ do
