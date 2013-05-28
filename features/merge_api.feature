@@ -165,4 +165,4 @@ Feature: Merge API
     And I should see "Average CPU load"
     And I should see "Response time under load"
     And I should see "Some new metric"
-    And I should see "25" within "td.value"
+    And I should see "25" within the first "td.value"
