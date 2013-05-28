@@ -6,5 +6,5 @@ Feature: As a Test Engineer I want to export detail test cases from the existed 
 
   Scenario: Download detail test cases as CSV from one report
     When I view the report "1.1/Core/Sanity/ExportTestCases"
-    And I follow "Download as CSV"
+    And I download the exported report CSV for "1.1/Core/Sanity/ExportTestCases"
     Then I should see the imported test cases from "short3.csv" in the exported CSV.

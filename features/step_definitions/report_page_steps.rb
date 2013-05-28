@@ -31,11 +31,26 @@ Then %r/^I should see the download link for the result file "([^"]*)"$/ do |resu
   end
 end
 
+When %r/^I download the exported group CSV for "([^"]*)"$/ do |report_uri|
+  response = get "/#{report_uri}/csv"
+  @csv_str = response.body
+end
+
+When %r/^I download the exported report CSV for "([^"]*)"$/ do |report_string|
+  release, profile, testset, product = report_string.split('/')
+  report = MeegoTestSession.release(release).profile(profile).testset(testset).product_is(product).last
+  raise "report not found with parameters #{release}/#{profile}/#{testset}/#{product}!" unless report
+  response = get "#{show_report_path(release, profile, testset, product, report)}/download"
+  @csv_str = response.body
+end
+
 Then %r/I should see the imported data from "([^"]*)" and "([^"]*)" in the exported CSV.$/ do |file1, file2|
   input = CSV.read('features/resources/' + file1).drop(1) +
           CSV.read('features/resources/' + file2).drop(1)
   expected = input.each{|list| list.insert(4, "0")} # Add Measured result value. It is generated in export even if not given in import
-  result = CSV.parse(page.text, {:col_sep => ';'}).drop(1)
+  # Not using page.text anymore because of
+  # https://github.com/jnicklas/capybara/issues/952
+  result = CSV.parse(@csv_str, {:col_sep => ';'}).drop(1)
   actual = result.map{ |item| (6..12).map{|field| item[field]}}
 
   actual.count.should == expected.count
@@ -47,7 +62,9 @@ end
 Then %r/I should see the imported test cases from "([^"]*)" in the exported CSV.$/ do |file|
   input = CSV.read('features/resources/' + file).drop(1)
   expected = input.each{|list| list.insert(5, nil)} # Add Measured result value. It is generated in export even if not given in import
-  result = CSV.parse(page.text, {:col_sep => ','}).drop(1)
+  # Not using page.text anymore because of
+  # https://github.com/jnicklas/capybara/issues/952
+  result = CSV.parse(@csv_str, {:col_sep => ','}).drop(1)
   actual = result.map{ |item| (0..6).map{|field| item[field]}}
   actual.count.should == expected.count
   difference = actual - expected
