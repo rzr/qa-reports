@@ -197,6 +197,7 @@ Feature: Import API
     And I should be able to view the created report
     And I should see the defined test cases
 
+  @javascript
   Scenario: Sending xUnit result file
     When the client sends xUnit result file
     Then the upload succeeds

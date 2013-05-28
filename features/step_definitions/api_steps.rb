@@ -390,11 +390,11 @@ Then "I should see the defined report title" do
 end
 
 Then "I should see a list of issues in issue summary" do
-  step %{I should see link to bug "9353" within ".editcontent ul li"}
+  step %{I should see link to bug "9353" within "body"}
 end
 
 Then "I should see a list of patches in patches included" do
-  step %{I should see link to bug "5678" within ".editcontent ul li"}
+  step %{I should see link to bug "5678" within "body"}
 end
 
 Then %r/^I should see test cases with result Blocked/ do
@@ -414,15 +414,15 @@ Then "I should see the test cases from xUnit result file" do
 end
 
 Then /^I should see a link to Bugzilla$/ do
-  step %{I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=1234" within ".editcontent ul li"}
+  step %{I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=1234" within "body"}
 end
 
 Then /^I should see a link to Mozilla Bugzilla$/ do
-  step %{I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editcontent ul li"}
+  step %{I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within "body"}
 end
 
 Then /^I should see a link to Gerrit$/ do
-  step %{I should see link to bug "http://review.cyanogenmod.org/#/c/1234/" within ".editcontent ul li"}
+  step %{I should see link to bug "http://review.cyanogenmod.org/#/c/1234/" within "body"}
 end
 
 Then /^I should see the comment from previous test report$/ do
