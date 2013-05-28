@@ -14,8 +14,8 @@ When /submit the form at "([^"]*)" within "([^"]*)"?$/ do |submit_button, select
 end
 
 When %r/^(?:|I )wait until all Ajax requests are complete$/ do
-  wait_until do
-    page.evaluate_script('$.active') == 0
+  while page.evaluate_script('$.active') != 0
+    sleep 0.5
   end
 end
 
@@ -25,15 +25,15 @@ end
 
 Then %r/^I should really see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, locator| #"
   if Capybara.current_driver == :selenium or Capybara.current_driver == :webkit
-    wait_until do
-      script = <<-eos
-      (function () {
-        var containsText = $('#{locator} :contains(#{text}), #{locator}:contains(#{text})');
-        var leaves = containsText.not(containsText.parents()).filter(':visible');
-        return leaves.filter(function() {return !$(this).parents().is(':hidden');}).length > 0;
-      })();
-      eos
-      page.evaluate_script(script).should be_true
+    script = <<-eos
+    (function () {
+      var containsText = $('#{locator} :contains(#{text}), #{locator}:contains(#{text})');
+      var leaves = containsText.not(containsText.parents()).filter(':visible');
+      return leaves.filter(function() {return !$(this).parents().is(':hidden');}).length > 0;
+    })();
+    eos
+    while page.evaluate_script(script) == false
+      sleep 0.5
     end
   else
     with_scope(locator) do
@@ -44,15 +44,15 @@ end
 
 Then %r/^I really should not see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, locator| #"
   if Capybara.current_driver == :selenium or Capybara.current_driver == :webkit
-    wait_until do
-      script = <<-eos
-      (function () {
-        var containsText = $('#{locator} :contains(#{text}), #{locator}:contains(#{text})');
-        var leaves = containsText.not(containsText.parents()).filter(':visible');
-        return leaves.filter(function() {return !$(this).parents().is(':hidden');}).length > 0;
-      })();
-      eos
-      page.evaluate_script(script).should be_false
+    script = <<-eos
+    (function () {
+      var containsText = $('#{locator} :contains(#{text}), #{locator}:contains(#{text})');
+      var leaves = containsText.not(containsText.parents()).filter(':visible');
+      return leaves.filter(function() {return !$(this).parents().is(':hidden');}).length > 0;
+    })();
+    eos
+    while page.evaluate_script(script) == true
+      sleep 0.5
     end
   else
     with_scope(locator) do
@@ -131,4 +131,9 @@ Then %r/^(?:|I )should not find element "([^"]*)"(?: within "([^"]*)")?$/ do |te
       assert page.has_no_selector?(text)
     end
   end
+end
+
+When %r/^(?:|I )follow the first "([^"]*)"$/ do |link|
+  page.should have_content link
+  first(:link, link).click
 end

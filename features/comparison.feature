@@ -51,7 +51,7 @@ Feature: Consolidated reports
     And report files "spec/fixtures/sim2.xml,features/resources/bluetooth.xml" are uploaded to branch "Sanity:Testing" for product "N910"
 
     When I am on the front page
-    And I follow "compare"
+    And I follow the first "compare"
 
     Then I should see "1" within "#changed_to_pass"
     And I should see "2" within "#changed_from_pass"
@@ -63,7 +63,7 @@ Feature: Consolidated reports
     And report files "spec/fixtures/sim2.xml,features/resources/bluetooth.xml" are uploaded to branch "Sanity:Testing" for product "N910"
 
     When I am on the front page
-    And I follow "compare"
+    And I follow the first "compare"
 
     Then I should really see "SMOKE-SIM-Query_SIM_card_status"
     And I really should not see "SMOKE-SIM-Write_read_and_delete_ADN_phonebook_entry"
