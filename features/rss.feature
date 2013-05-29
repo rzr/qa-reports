@@ -65,7 +65,10 @@ Feature: RSS Feed
     When I view the page for "Sanity" testing of "N900" hardware with profile "Handset" in version "1.1"
     Then I should see the page header offer RSS feed for "1.1/Handset/Sanity/N900"
 
+  @javascript
+  Scenario: Verify offered RSS link changes with client side navigation
+    When I go to the front page
+    Then I should see the page header offer RSS feed for "1.2"
 
-
-
-
+    When I follow "1.1"
+    Then I should see the page header offer RSS feed for "1.1"

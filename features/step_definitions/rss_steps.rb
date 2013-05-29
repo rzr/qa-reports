@@ -11,10 +11,5 @@ end
 
 Then %r/^I should see the page header offer RSS feed for "([^"]*)"$/ do |rssfeed|
   rsslink = "/" + rssfeed + "/rss"
-  assert page.has_css?("head link[href=\"#{rsslink}\"]")
+  page.assert_selector(:xpath, "//link[@href='#{rsslink}']", :visible => false)
 end
-
-
-
-
-

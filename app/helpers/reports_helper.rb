@@ -67,7 +67,14 @@ module ReportsHelper
   end
 
   def rss_path
-    request.env['PATH_INFO'] + "/rss"
+    # When on index page there usually is no platform in the PATH_INFO
+    # because of client side routing. Set the initial RSS uri based on
+    # the selected release and adjust on client side when routing.
+    if request.env['PATH_INFO'] == '/'
+      "/" + release.name + "/rss"
+    else
+      request.env['PATH_INFO'] + "/rss"
+    end
   end
 
 

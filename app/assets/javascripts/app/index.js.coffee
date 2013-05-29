@@ -132,6 +132,7 @@ $(document).ready ->
       $.merge($('a[href="/' + params.scope + '"]', '#report_filters'),
               $('a[href="/' + params.release + '"]', '#release_filters')).parent().addClass('current').siblings().removeClass('current').end()
       $navigation.render(view_model, directives).show()
+    $('link[rel="alternate"][type="application/rss+xml"]', 'head').attr 'href', "/#{params.release}/rss"
 
   Spine.Route.setup()
 
