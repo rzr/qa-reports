@@ -58,7 +58,7 @@ Feature: Edit Report
   Scenario: Edit test objective
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" within ".editable_area" with:
+    And fill in "report[objective_txt]" with:
       """
       == Test Header ==
       * testing list
@@ -72,7 +72,7 @@ Feature: Edit Report
   Scenario: Create a dynamic link to bugzilla
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* [[9353]]" within ".editable_area"
+    And fill in "report[objective_txt]" with "* [[9353]]"
     And I press "Save"
 
     Then I should see link to bug "9353" within ".editable_area ul li"
@@ -81,7 +81,7 @@ Feature: Edit Report
   Scenario: Create a dynamic link to bugzilla using a prefix
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* [[BZ#9353]]" within ".editable_area"
+    And fill in "report[objective_txt]" with "* [[BZ#9353]]"
     And I press "Save"
 
     Then I should see link to bug "9353" within ".editable_area ul li"
@@ -91,7 +91,7 @@ Feature: Edit Report
     Given I add another Bugzilla service
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* [[BZ#9353]] [[MOZ#1234]] [[1234]]" within ".editable_area"
+    And fill in "report[objective_txt]" with "* [[BZ#9353]] [[MOZ#1234]] [[1234]]"
     And I press "Save"
 
     Then I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=9353" within ".editable_area ul li"
@@ -104,7 +104,7 @@ Feature: Edit Report
     Given I add another Bugzilla service
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* http://bugs.meego.com/show_bug.cgi?id=9353 https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editable_area"
+    And fill in "report[objective_txt]" with "* http://bugs.meego.com/show_bug.cgi?id=9353 https://bugzilla.mozilla.org/show_bug.cgi?id=1234"
     And I press "Save"
 
     Then I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=9353" within ".editable_area ul li"
@@ -124,7 +124,7 @@ Feature: Edit Report
     Given I add a link only external service
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* [[GER#9353]]" within ".editable_area"
+    And fill in "report[objective_txt]" with "* [[GER#9353]]"
     And I press "Save"
 
     Then I should see link to bug "http://review.cyanogenmod.org/#/c/9353/" within ".editable_area ul li"
@@ -135,7 +135,7 @@ Feature: Edit Report
     Given I add a link only external service
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* http://review.cyanogenmod.org/#/c/9353/" within ".editable_area"
+    And fill in "report[objective_txt]" with "* http://review.cyanogenmod.org/#/c/9353/"
     And I press "Save"
 
     Then I should see link to bug "http://review.cyanogenmod.org/#/c/9353/" within ".editable_area ul li"
@@ -161,7 +161,7 @@ Feature: Edit Report
   Scenario: I modify a test case result
     When I edit the report "1.2/Core/automated/N900"
     And I change the test case result of "SMOKE-SIM-Get_IMSI" to "Pass"
-    And I press "Done"
+    And I follow the first "Done"
     And I follow "See all" within "#detailed_functional_test_results"
 
     Then the result of test case "SMOKE-SIM-Get_IMSI" should be "Pass"
@@ -172,7 +172,7 @@ Feature: Edit Report
 
     And I edit the report "1.2/Core/automated/N900"
     And I change the test case result of "SMOKE-SIM-Get_IMSI" to "Blocked"
-    And I press "Done"
+    And I follow the first "Done"
 
     Then the result of test case "SMOKE-SIM-Get_IMSI" should be "Blocked"
     And I disable custom results
@@ -183,7 +183,7 @@ Feature: Edit Report
 
     And I edit the report "1.2/Core/automated/N900"
     And I change the test case result of "SMOKE-SIM-Get_IMSI" to "Blocked"
-    And I press "Done"
+    And I follow the first "Done"
 
     Then the result of test case "SMOKE-SIM-Get_IMSI" should be "Blocked"
 
@@ -197,7 +197,7 @@ Feature: Edit Report
   Scenario: I modify a NFT test case result
     When I edit the report "1.2/Core/automated/N900"
     And I change the test case result of "Phone Connection time" to "Pass"
-    And I press "Done"
+    And I follow the first "Done"
     And I follow "See all"
 
     Then the result of test case "Phone Connection time" should be "Pass"
@@ -207,7 +207,7 @@ Feature: Edit Report
     When I edit the report "1.2/Core/automated/N900"
     And I change the test case comment of "SMOKE-SIM-Get_IMSI" to "edited comment"
     And I press "Save"
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I should see "edited comment"
 
@@ -216,14 +216,14 @@ Feature: Edit Report
     When I edit the report "1.2/Core/automated/N900"
 
     And I hide the report summary
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I return to view the report "1.2/Core/automated/N900"
     And I should not see "Result Summary"
 
     Then I edit the report "1.2/Core/automated/N900"
     And I enable the report summary
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I return to view the report "1.2/Core/automated/N900"
     And I should see "Result Summary"
@@ -231,17 +231,17 @@ Feature: Edit Report
   @javascript
   Scenario: I hide and reshow report metrics
     Given the report for "xml_with_metrics.xml" exists on the service
-    When I edit the report "1.2/Core/automated/N900"
+    When I edit the report "1.2/Core/automated/N900" with largest ID
 
     And I hide the report metrics
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I return to view the report "1.2/Core/automated/N900"
     And I should not see "Metrics"
 
-    Then I edit the report "1.2/Core/automated/N900"
+    Then I edit the report "1.2/Core/automated/N900" with largest ID
     And I enable the report metrics
-    And I press "Done"
+    And I follow the first "Done"
 
     Then I return to view the report "1.2/Core/automated/N900"
     And I should see "Metrics"

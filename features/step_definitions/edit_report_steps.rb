@@ -12,11 +12,16 @@ Given %r/^the report for "([^"]*)" exists on the service$/ do |file|
 end
 
 
-When %r/^(?:|I )edit the report "([^"]*)"$/ do |report_string|
+When %r/^(?:|I )edit the report "([^"]*)"((?:| with largest ID))?$/ do |report_string, sort_by_id|
   version, target, test_type, product = report_string.downcase.split('/')
+  if sort_by_id.blank?
+    order = "tested_at DESC, created_at DESC"
+  else
+    order = "meego_test_sessions.id DESC"
+  end
   report = MeegoTestSession.first(:conditions =>
    {"releases.name" => version, "profiles.name" => target, :product => product, :testset => test_type}, :include => [:release, :profile],
-   :order => "tested_at DESC, created_at DESC")
+   :order => order)
   raise "report not found with parameters #{version}/#{target}/#{product}/#{test_type}!" unless report
   visit("/#{version}/#{target}/#{test_type}/#{product}/#{report.id}/edit")
 end
@@ -29,7 +34,7 @@ And %r/^(?:|I )delete the test case "([^"]*)"/ do |testcase|
 end
 
 When %r/^(?:|I )click the element "([^"]*)" for the test case "([^"]*)"$/ do |element, test_case|
-  find(:xpath, "//tr[contains(.,'#{test_case}')]").find(element).click
+  find(:xpath, "//tr[contains(.,'#{test_case}')]").first(element).click
 end
 
 When %r/^(?:|I )delete all test cases/ do
@@ -41,6 +46,8 @@ When %r/^(?:|I )delete all test cases/ do
       click_link "Remove"
     end
   end
+
+  step %{I wait until all Ajax requests are complete}
 end
 
 Then %r/^the report should not contain a detailed test results section/ do

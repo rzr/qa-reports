@@ -143,7 +143,7 @@ When %r/^I click to delete the report$/ do
 end
 
 And %r/there should not be a test case "([^"]*)"$/ do |testcase|
-  step %{I should not see "#{testcase}" within ".detailed_results"}
+  step %{I should not see "#{testcase}"}
 end
 
 When %r/^(?:|I )should see "([^"]*)" within the test case "([^"]*)"$/ do |text, test_case|

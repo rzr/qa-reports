@@ -105,6 +105,10 @@ When %r/^fill in "([^"]*)" within "([^"]*)" with:$/ do |field, selector, data|
   end
 end
 
+When %r/^fill in "([^"]*)" with:$/ do |field, data|
+  fill_in(field, :with => data)
+end
+
 When %r/^I view the page for the release version "([^"]*)"$/ do |version|
   visit("/#{version}")
 end
