@@ -3,8 +3,10 @@ source 'http://rubygems.org'
 gem 'rails', '~>3.2.12'
 gem 'mysql2'
 gem 'nokogiri', '~>1.3'
+# TODO: Update, may need stuff
 gem 'devise'
 gem 'slim'
+# TODO: Update, not straightforward
 gem 'paperclip', '~>2.3.15'
 gem 'coffee-script', '~>2.2'
 gem 'rest-client', :require => 'rest_client'
@@ -12,6 +14,7 @@ gem 'activerecord-import'
 gem "rake"
 gem 'ruby-xslt'
 gem 'xml-smart'
+# TODO: Updating needs config changes
 gem 'exception_notification', '~>3.0.1'
 gem "dynamic_form", "~> 1.1.4"
 gem 'celluloid'
@@ -20,7 +23,7 @@ group :assets do
   gem 'therubyracer', '~>0.11.0', :require => false
   gem 'sass-rails', "  ~> 3.2.3"
   gem 'coffee-rails', "~> 3.2.1"
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier', '>= 2.1.2'
 end
 
 group :production do
