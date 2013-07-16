@@ -24,10 +24,6 @@ group :assets do
   gem 'uglifier', '>= 2.1.2'
 end
 
-group :production do
-  gem 'newrelic_rpm'
-end
-
 group :development do
   gem 'guard-rspec'
   gem 'guard-rails'
