@@ -129,7 +129,7 @@ namespace :qareports do
       if write_file =~ /yes/i
         run "cat #{shared_path}/config/logrotate.conf | sudo /usr/bin/tee /etc/logrotate.d/qa-reports"
       else
-        puts "Logrotate config written to #{shared_path}/config/logrotate.conf on remote server. Copy to /etc/logrotate.d by yourself."
+        puts "\033[36mLogrotate config written to #{shared_path}/config/logrotate.conf on remote server. Copy to /etc/logrotate.d by yourself.\033[0m"
       end
     end
   end

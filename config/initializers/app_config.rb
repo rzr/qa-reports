@@ -39,7 +39,7 @@ end
 
 # Check that the xsl file exists
 if !APP_CONFIG['xml_stylesheet'].empty? && !File.exists?(APP_CONFIG['xml_stylesheet'])
-  puts "WARNING: #{APP_CONFIG['xml_stylesheet']} does not exist. Disabling XSLT" # Rails.logger not available yet
+  puts "\033[33mWARNING: #{APP_CONFIG['xml_stylesheet']} does not exist. Disabling XSLT\033[0m" # Rails.logger not available yet
   APP_CONFIG['xml_stylesheet'] = ''
 end
 
