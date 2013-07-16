@@ -29,7 +29,9 @@ FactoryGirl.define do
     name "Bluetooth"
 
     factory :feature do
-      after_build { |feature| feature.meego_test_cases << FactoryGirl.build(:test_case, :feature => feature) }
+      after(:build) do |feature|
+        feature.meego_test_cases << FactoryGirl.build(:test_case, :feature => feature)
+      end
     end
   end
 
@@ -55,7 +57,9 @@ FactoryGirl.define do
     result_files    {|result_files| [result_files.association(:result_file)] }
 
     factory :test_report, :class => MeegoTestSession do
-      after_build { |report| report.features << FactoryGirl.build(:feature, :meego_test_session => report) }
+      after(:build) do |report|
+        report.features << FactoryGirl.build(:feature, :meego_test_session => report)
+      end
     end
   end
 
@@ -83,7 +87,7 @@ FactoryGirl.define do
   end
 
   factory :nft_test_case, :class => MeegoTestCase do
-    after_create { |testcase|
+    after(:create) do |testcase|
       FactoryGirl.create(:meego_measurement,
                          :meego_test_case => testcase)
       FactoryGirl.create(:meego_measurement,
@@ -91,22 +95,22 @@ FactoryGirl.define do
                          :name            => "Latency",
                          :unit            => "ms",
                          :value           => 90)
-    }
+    end
     name   "NFT case"
     result MeegoTestCase::PASS
   end
 
   factory :nft_serial_test_case, :class => MeegoTestCase do
-    after_create{ |testcase|
+    after(:create) do |testcase|
       FactoryGirl.create(:serial_measurement,
                          :meego_test_case => testcase)
-    }
+    end
     name   "NFT Serial case"
     result MeegoTestCase::PASS
   end
 
   factory :nft_feature, :class => Feature do
-    after_create { |feature|
+    after(:create) do |feature|
       FactoryGirl.create(:nft_test_case,
                          :feature => feature,
                          :meego_test_session => feature.meego_test_session,
@@ -120,14 +124,14 @@ FactoryGirl.define do
                          :meego_test_session => feature.meego_test_session,
                          :name => "Serial Case")
 
-    }
+    end
     name "NFT Tests"
   end
 
   factory :nft_test_report, :class => MeegoTestSession do
-    after_create { |report|
+    after(:create) do |report|
       FactoryGirl.create(:nft_feature, :meego_test_session => report)
-    }
+    end
     author
     editor
     release         {Release.where(:name => '1.2').first}
@@ -143,9 +147,9 @@ FactoryGirl.define do
   # Factories for building a report with custom test results
 
   factory :report_with_custom_results, :class => MeegoTestSession do
-    after_create { |report|
+    after(:create) do |report|
       FactoryGirl.create(:custom_result_feature, :meego_test_session => report)
-    }
+    end
     author
     editor
     release         {Release.first}
@@ -159,14 +163,14 @@ FactoryGirl.define do
   end
 
   factory :custom_result_feature, :class => Feature do
-    after_create { |feature|
+    after(:create) do |feature|
       FactoryGirl.create(
         :custom_result_test_case,
         :feature            => feature,
         :meego_test_session => feature.meego_test_session,
         :name               => 'Case with custom result'
       )
-    }
+    end
     name 'Feature'
   end
 
