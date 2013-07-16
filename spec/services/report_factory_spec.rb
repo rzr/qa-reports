@@ -10,17 +10,17 @@ describe ReportFactory do
       @result_file1 = Object.new
       @result_file2 = Object.new
 
-      @result_file1.stub!(:original_filename).and_return("bluetooth.xml")
-      @result_file2.stub!(:original_filename).and_return("wlan.csv")
+      @result_file1.stub(:original_filename).and_return("bluetooth.xml")
+      @result_file2.stub(:original_filename).and_return("wlan.csv")
 
-      @result_file1.stub!(:path).and_return("/var/tmp/bluetooth.xml")
-      @result_file2.stub!(:path).and_return("/var/tmp/wlan.csv")
+      @result_file1.stub(:path).and_return("/var/tmp/bluetooth.xml")
+      @result_file2.stub(:path).and_return("/var/tmp/wlan.csv")
 
-      @result_file1.stub!(:close).and_return(true)
-      @result_file2.stub!(:close).and_return(true)
+      @result_file1.stub(:close).and_return(true)
+      @result_file2.stub(:close).and_return(true)
 
-      @result_file1.stub!(:pos=)
-      @result_file2.stub!(:pos=)
+      @result_file1.stub(:pos=)
+      @result_file2.stub(:pos=)
 
       @result_attachment1 = FileAttachment.new
       @result_attachment2 = FileAttachment.new
@@ -28,8 +28,8 @@ describe ReportFactory do
       @result_attachment1.stub_chain(:file, :to_file).and_return(@result_file1)
       @result_attachment2.stub_chain(:file, :to_file).and_return(@result_file2)
 
-      @result_attachment1.stub!(:filename).and_return(@result_file1.original_filename)
-      @result_attachment2.stub!(:filename).and_return(@result_file2.original_filename)
+      @result_attachment1.stub(:filename).and_return(@result_file1.original_filename)
+      @result_attachment2.stub(:filename).and_return(@result_file2.original_filename)
 
       @report_attributes = {
         :release_version => "1.1",
@@ -59,15 +59,15 @@ describe ReportFactory do
       @xml_parser = Object.new
       @csv_parser = Object.new
 
-      XMLResultFileParser.stub!(:new).and_return(@xml_parser)
-      CSVResultFileParser.stub!(:new).and_return(@csv_parser)
+      XMLResultFileParser.stub(:new).and_return(@xml_parser)
+      CSVResultFileParser.stub(:new).and_return(@csv_parser)
 
-      @xml_parser.stub!(:parse).and_return(@results1)
-      @csv_parser.stub!(:parse).and_return(@results2)
+      @xml_parser.stub(:parse).and_return(@results1)
+      @csv_parser.stub(:parse).and_return(@results2)
 
-      @xml_parser.stub!(:parse_metrics).and_return(nil)
+      @xml_parser.stub(:parse_metrics).and_return(nil)
 
-      FileUtils.stub!(:move)
+      FileUtils.stub(:move)
       @report = ReportFactory.new.build(@report_attributes)
       @report.author = stub_model(User)
       @report.editor = stub_model(User)
@@ -178,7 +178,7 @@ describe ReportFactory do
     author.save!
 
     file = File.new("features/resources/custom_statuses.xml")
-    file.stub!(:original_filename).and_return("custom_statuses.xml")
+    file.stub(:original_filename).and_return("custom_statuses.xml")
     data = {}
 
     data[:release_version] = "1.2"
@@ -218,7 +218,7 @@ describe ReportFactory do
     author.save!
 
     file = File.new("features/resources/custom_statuses.xml")
-    file.stub!(:original_filename).and_return("custom_statuses.xml")
+    file.stub(:original_filename).and_return("custom_statuses.xml")
     data = {}
 
     data[:release_version] = "1.2"

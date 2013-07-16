@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~>3.2.12'
 gem 'mysql2'
-gem 'nokogiri', '~>1.3'
+gem 'nokogiri', '~>1.6'
 gem 'devise'
 gem 'slim'
 # TODO: Update, not straightforward
@@ -47,9 +47,9 @@ end
 
 group :development, :test do
   gem 'launchy'
-  gem 'rspec', '~>2.13.0'
-  gem 'rspec-core','2.13.0'
-  gem 'rspec-rails', '2.13.0'
+  gem 'rspec', '~>2.14.0'
+  gem 'rspec-core','~>2.14.0'
+  gem 'rspec-rails', '~>2.14.0'
   gem 'capybara-webkit'
   gem 'capybara'
   gem 'selenium-webdriver'
