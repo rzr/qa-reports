@@ -28,7 +28,8 @@ h2 id=anchor
           | '''bold'''
         p
           | * bulleted list
-        p [[http://foo.bar/ Link]]
+        p
+          | [[http://foo.bar/ Link]]
         - SERVICES.each do |s|
           p
             - if s['default']
