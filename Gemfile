@@ -14,8 +14,7 @@ gem 'activerecord-import'
 gem "rake"
 gem 'ruby-xslt'
 gem 'xml-smart'
-# TODO: Updating needs config changes
-gem 'exception_notification', '~>3.0.1'
+gem 'exception_notification', '~>4.0.0'
 gem "dynamic_form", "~> 1.1.4"
 gem 'celluloid'
 
