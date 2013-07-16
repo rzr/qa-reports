@@ -22,7 +22,7 @@ Feature: Loading times
     And I select target "Core", test set "Performance" and product "N990" with date "2010-11-22"
     And I attach the report "2000_cases.csv"
     And submit the form at "upload_report_submit"
-    Then the time spent for the "upload report" step should be less than 12 seconds
+    Then the time spent for the "upload report" step should be less than 14 seconds
 
     When I press "Publish"
     Then the time spent for the "publish report" step should be less than 9 seconds

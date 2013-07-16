@@ -17,17 +17,21 @@ Feature: Show only latest test sets and products on front page
   @javascript
   Scenario: See all categories
     When I follow "All"
+    And I wait until all Ajax requests are complete
     Then all categories from release "1.2" should be shown
 
   @javascript
   Scenario: Select all and then recent
     When I follow "All"
+    And I wait until all Ajax requests are complete
     And  I follow "Recent"
+    And I wait until all Ajax requests are complete
     Then only recent categories from release "1.2" should be shown
 
   @javascript
   Scenario: Select all and change release
     When I follow "All"
+    And I wait until all Ajax requests are complete
     Then all categories from release "1.2" should be shown
 
     When  I follow "1.1"
@@ -36,12 +40,14 @@ Feature: Show only latest test sets and products on front page
   @javascript
   Scenario: Select all, change release and select recent
     When I follow "All"
+    And I wait until all Ajax requests are complete
     Then all categories from release "1.2" should be shown
 
     When  I follow "1.1"
     Then all categories from release "1.1" should be shown
 
     When I follow "Recent"
+    And I wait until all Ajax requests are complete
     Then only recent categories from release "1.1" should be shown
 
   @javascript
