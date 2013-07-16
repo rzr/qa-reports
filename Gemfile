@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem 'rails', '~>3.2.12'
 gem 'mysql2'
 gem 'nokogiri', '~>1.3'
-# TODO: Update, may need stuff
 gem 'devise'
 gem 'slim'
 # TODO: Update, not straightforward
