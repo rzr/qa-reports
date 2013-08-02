@@ -6,19 +6,19 @@ describe ReportGroupViewModel do
     #TODO: Don't stub class under test.
 
     @latest_report = MeegoTestSession.new
-    @latest_report.stub!(:passed).and_return(34)
-    @latest_report.stub!(:failed).and_return(12)
-    @latest_report.stub!(:na).and_return(8)
+    @latest_report.stub(:passed).and_return(34)
+    @latest_report.stub(:failed).and_return(12)
+    @latest_report.stub(:na).and_return(8)
 
     @previous_report = MeegoTestSession.new
-    @previous_report.stub!(:passed).and_return(23)
-    @previous_report.stub!(:failed).and_return(8)
-    @previous_report.stub!(:na).and_return(3)
+    @previous_report.stub(:passed).and_return(23)
+    @previous_report.stub(:failed).and_return(8)
+    @previous_report.stub(:na).and_return(3)
 
     @oldest_report = MeegoTestSession.new
-    @oldest_report.stub!(:passed).and_return(23)
-    @oldest_report.stub!(:failed).and_return(15)
-    @oldest_report.stub!(:na).and_return(8)
+    @oldest_report.stub(:passed).and_return(23)
+    @oldest_report.stub(:failed).and_return(15)
+    @oldest_report.stub(:na).and_return(8)
 
     @latest_tc_count = Object.new
     @previous_tc_count = Object.new
@@ -36,7 +36,7 @@ describe ReportGroupViewModel do
     before(:each) do
       MeegoTestSession.stub_chain(:published, :includes, :where, :order).and_return([@latest_report, @previous_report, @oldest_report])
       MeegoTestSession.stub_chain(:published, :includes, :where, :limit, :offset, :order).and_return([@latest_report, @previous_report, @oldest_report])
-      @rgvm.stub!(:find_max_cases).and_return(@latest_tc_count)
+      @rgvm.stub(:find_max_cases).and_return(@latest_tc_count)
     end
 
     it "should have three reports" do
@@ -56,7 +56,7 @@ describe ReportGroupViewModel do
     before(:each) do
       MeegoTestSession.stub_chain(:published, :includes, :where, :order).and_return([@latest_report])
       MeegoTestSession.stub_chain(:published, :includes, :where, :limit, :offset, :order).and_return([@latest_report])
-      @rgvm.stub!(:find_max_cases).and_return(@latest_tc_count)
+      @rgvm.stub(:find_max_cases).and_return(@latest_tc_count)
     end
 
     it "should have one report" do

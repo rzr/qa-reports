@@ -46,7 +46,6 @@ namespace :qareports do
     task :setup, :roles => :app do
       # Note: DB settings are handled by config/deploy/capistrano_database_yml
       qareports.setup.create_shared_folders
-      #qareports.setup.newrelic
       qareports.setup.registeration_token
       qareports.setup.exception_notifier
       qareports.setup.bugzilla_conf
@@ -63,17 +62,6 @@ namespace :qareports do
       run "mkdir -p #{shared_path}/reports"
       run "mkdir -p #{shared_path}/files"
       run "mkdir -p #{shared_path}/reports/tmp"
-    end
-
-    desc "Create newrelic configuration"
-    task :newrelic, :roles => :app do
-      enable_newrelic = Capistrano::CLI::ui.ask("Do you want to enable NewRelic performance monitoring? Please note this sends data to external service. Default: no")
-      newrelic_config = YAML.load_file("config/newrelic.yml")
-      if enable_newrelic =~ /yes/i
-        newrelic_config["production"]["monitor_mode"] = true
-        newrelic_config["staging"]["monitor_mode"] = true
-      end
-      put YAML::dump(newrelic_config), "#{shared_path}/config/newrelic.yml"
     end
 
     desc "Create registration URI token"
@@ -129,7 +117,7 @@ namespace :qareports do
       if write_file =~ /yes/i
         run "cat #{shared_path}/config/logrotate.conf | sudo /usr/bin/tee /etc/logrotate.d/qa-reports"
       else
-        puts "Logrotate config written to #{shared_path}/config/logrotate.conf on remote server. Copy to /etc/logrotate.d by yourself."
+        puts "\033[36mLogrotate config written to #{shared_path}/config/logrotate.conf on remote server. Copy to /etc/logrotate.d by yourself.\033[0m"
       end
     end
   end
@@ -147,10 +135,6 @@ namespace :qareports do
     # Remove empty token file that comes with deployment and symlink to shared
     run "rm -rf #{current_path}/config/registeration_token"
     run "ln -nfs #{shared_path}/config/registeration_token #{current_path}/config/registeration_token"
-
-    # Remove current newrelic config file and symlink to shared
-    run "rm #{current_path}/config/newrelic.yml"
-    run "ln -nfs #{shared_path}/config/newrelic.yml #{current_path}/config/newrelic.yml"
 
     # Symlink exception notifier config to shared
     run "ln -nfs #{shared_path}/config/exception_notifier #{current_path}/config/exception_notifier"

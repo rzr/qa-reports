@@ -5,47 +5,47 @@ describe ReportComparison do
 
   before(:each) do
     @latest_report = mock_model(MeegoTestSession)
-    @latest_report.stub!(:passed).and_return(34)
-    @latest_report.stub!(:failed).and_return(12)
-    @latest_report.stub!(:na).and_return(8)
+    @latest_report.stub(:passed).and_return(34)
+    @latest_report.stub(:failed).and_return(12)
+    @latest_report.stub(:na).and_return(8)
 
     @previous_report = mock_model(MeegoTestSession)
-    @previous_report.stub!(:passed).and_return(23)
-    @previous_report.stub!(:failed).and_return(8)
-    @previous_report.stub!(:na).and_return(3)
+    @previous_report.stub(:passed).and_return(23)
+    @previous_report.stub(:failed).and_return(8)
+    @previous_report.stub(:na).and_return(3)
 
     @new_pass_count = mock_model(ReportComparisonDifference)
-    @new_pass_count.stub!(:result_to).and_return(1)
-    @new_pass_count.stub!(:count).and_return(8)
+    @new_pass_count.stub(:result_to).and_return(1)
+    @new_pass_count.stub(:count).and_return(8)
 
     @new_fail_count = mock_model(ReportComparisonDifference)
-    @new_fail_count.stub!(:result_to).and_return(-1)
-    @new_fail_count.stub!(:count).and_return(4)
+    @new_fail_count.stub(:result_to).and_return(-1)
+    @new_fail_count.stub(:count).and_return(4)
 
     @new_na_count = mock_model(ReportComparisonDifference)
-    @new_na_count.stub!(:result_to).and_return(0)
-    @new_na_count.stub!(:count).and_return(2)
+    @new_na_count.stub(:result_to).and_return(0)
+    @new_na_count.stub(:count).and_return(2)
 
     @changed_pass_count = mock_model(ReportComparisonDifference)
-    @changed_pass_count.stub!(:result_to).and_return(1)
-    @changed_pass_count.stub!(:result_from).and_return(-1)
-    @changed_pass_count.stub!(:count).and_return(3)
+    @changed_pass_count.stub(:result_to).and_return(1)
+    @changed_pass_count.stub(:result_from).and_return(-1)
+    @changed_pass_count.stub(:count).and_return(3)
 
     @changed_pass_count2 = mock_model(ReportComparisonDifference)
-    @changed_pass_count2.stub!(:result_to).and_return(1)
-    @changed_pass_count2.stub!(:result_from).and_return(0)
-    @changed_pass_count2.stub!(:count).and_return(1)
+    @changed_pass_count2.stub(:result_to).and_return(1)
+    @changed_pass_count2.stub(:result_from).and_return(0)
+    @changed_pass_count2.stub(:count).and_return(1)
 
     @changed_fail_count = mock_model(ReportComparisonDifference)
-    @changed_fail_count.stub!(:result_to).and_return(-1)
-    @changed_fail_count.stub!(:result_from).and_return(1)
-    @changed_fail_count.stub!(:count).and_return(5)
+    @changed_fail_count.stub(:result_to).and_return(-1)
+    @changed_fail_count.stub(:result_from).and_return(1)
+    @changed_fail_count.stub(:count).and_return(5)
   end
 
 
   describe "with new na cases" do
     before(:each) do
-      ReportComparisonDifference.stub!(:find_by_sql).and_return([@new_na_count])
+      ReportComparisonDifference.stub(:find_by_sql).and_return([@new_na_count])
       @comparison = ReportComparison.new(@latest_report, @previous_report)
     end
 
@@ -64,7 +64,7 @@ describe ReportComparison do
 
   describe "with changed cases" do
     before(:each) do
-      ReportComparisonDifference.stub!(:find_by_sql).
+      ReportComparisonDifference.stub(:find_by_sql).
         and_return([@changed_pass_count, @changed_pass_count2, @changed_fail_count])
       @comparison = ReportComparison.new(@latest_report, @previous_report)
     end
@@ -84,7 +84,7 @@ describe ReportComparison do
 
   describe "with new passed, failed and na cases" do
     before(:each) do
-      ReportComparisonDifference.stub!(:find_by_sql).and_return([@new_pass_count, @new_na_count, @new_fail_count])
+      ReportComparisonDifference.stub(:find_by_sql).and_return([@new_pass_count, @new_na_count, @new_fail_count])
       @comparison = ReportComparison.new(@latest_report, @previous_report)
     end
 
@@ -120,8 +120,8 @@ end
 #
 #      @file1 = File.new("spec/fixtures/sim1.xml")
 #      @file2 = File.new("spec/fixtures/sim2.xml")
-#      @file1.stub!(:original_filename).and_return("sim1.xml")
-#      @file2.stub!(:original_filename).and_return("sim2.xml")
+#      @file1.stub(:original_filename).and_return("sim1.xml")
+#      @file2.stub(:original_filename).and_return("sim2.xml")
 #
 #      user = User.new({
 #          :email => "test@test.com",
