@@ -34,7 +34,11 @@ class Bugzilla
         end
 
         response = http.request(req)
-        cookie   = response.to_hash['set-cookie'].collect{|ea|ea[/^.*?;/]}.join(" ")
+        if response.to_hash['set-cookie'].nil?
+          Rails.logger.error("Bugzilla login failed, no cookie returned. Check credentials.")
+        else
+          cookie = response.to_hash['set-cookie'].collect{|ea|ea[/^.*?;/]}.join(" ")
+        end
 
         # If bugzilla set us a redirect URI, use that instead of the original one
         if response.header['location']
