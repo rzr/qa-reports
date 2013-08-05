@@ -5,6 +5,9 @@
     - if flash[:alert]
       .error
         = flash[:alert]
+    - if flash[:notice]
+      .error
+        = flash[:notice]
     .field.last
       = f.label :email
       = f.text_field :email, :autofocus => true, :class => "text"
@@ -18,6 +21,12 @@
     #wizard_actions
       = f.submit "Login", :class =>"big_btn login"
 
-      - if APP_CONFIG['show_registration_link']
-        p.registration_url
-          a(href="#{new_user_registration_path}") Need an account? Register here.
+      - if APP_CONFIG['show_registration_link'] || APP_CONFIG['enable_password_recovery']
+        .login_extras
+          - if APP_CONFIG['show_registration_link']
+            p
+              a(href="#{new_user_registration_path}") Need an account? Register here.
+
+          - if APP_CONFIG['enable_password_recovery']
+            p
+              a(href="#{new_password_path(resource_name)}") Forgot your password? Reset here.

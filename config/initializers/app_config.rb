@@ -1,9 +1,10 @@
 APP_CONFIG = YAML.load_file("#{::Rails.root.to_s}/config/config.yml")
 
-APP_CONFIG['allow_empty_files']      ||= false
-APP_CONFIG['hide_empty_targets']     ||= false
-APP_CONFIG['inline_images']          ||= false
-APP_CONFIG['show_registration_link'] ||= false
+APP_CONFIG['allow_empty_files']        ||= false
+APP_CONFIG['hide_empty_targets']       ||= false
+APP_CONFIG['inline_images']            ||= false
+APP_CONFIG['show_registration_link']   ||= false
+APP_CONFIG['enable_password_recovery'] ||= false
 
 APP_CONFIG['custom_results']     ||= []
 APP_CONFIG['app_name']           ||= "MeeGo QA Reports"

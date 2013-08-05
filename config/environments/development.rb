@@ -28,5 +28,14 @@ Meegoqa::Application.configure do
 
   # Serve asset files separately in development
   config.assets.debug = true
-end
 
+  config.action_mailer.default_url_options = {
+    host: 'localhost:3000'
+  }
+
+  # config.action_mailer.delivery_method = :smtp
+  # ActionMailer::Base.smtp_settings = {
+  #   address: '',
+  #   port: 25
+  # }
+end

@@ -1,0 +1,12 @@
+.page_content
+  = form_for(resource, :as => resource_name, :url => password_path(resource_name), html: { :method => :post }) do |f|
+
+    h1 Forgot your password?
+    - if flash[:alert]
+      .error
+        = flash[:alert]
+    .field.last
+      = f.label :email
+      = f.text_field :email, :autofocus => true, :class => "text"
+    #wizard_actions
+      = f.submit "Send instructions", :class =>"big_btn login"

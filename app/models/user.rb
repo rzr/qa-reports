@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :recoverable, :lockable, and :timeoutable
   devise :database_authenticatable, :rememberable, :trackable, :registerable, :validatable, :token_authenticatable
+  if APP_CONFIG['enable_password_recovery']
+    devise :recoverable
+  end
 
   validates_uniqueness_of :email
   validates_presence_of :name

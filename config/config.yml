@@ -18,6 +18,11 @@ inline_images: false
 # a link to login page.
 show_registration_link: false
 
+# Enable password recovery. You will need to set valid email settings
+# to your environment file(s). See wiki for more information:
+# https://github.com/leonidas/qa-reports/wiki/Setting-up-the-production-environment#wiki-email
+enable_password_recovery: false
+
 # QA Reports accepts Pass, Fail, N/A, and Measured as valid results for
 # a test case by default. It can be configured to accept additional ones
 # as well by defining them here. Notice that currently all tests with
