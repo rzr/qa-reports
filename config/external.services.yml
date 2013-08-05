@@ -19,8 +19,8 @@
 #         numeric only
 
 # Name is shown on the UI to help users decide how to define the ID
-- name:     MeeGo Bugzilla
-  server:   bugs.meego.com
+- name:     Mer Bugzilla
+  server:   bugs.merproject.org
   port:     443
   use_ssl:  true
 
@@ -35,7 +35,7 @@
   uri: /buglist.cgi?bugidtype=include&columnlist=short_desc%%2Cbug_status%%2Cresolution&query_format=advanced&ctype=csv&bug_id=%s
 
   # The URL used to link to bugs (bug id appended)
-  link_uri: http://bugs.meego.com/show_bug.cgi?id=%s
+  link_uri: https://bugs.merproject.org/show_bug.cgi?id=%s
 
   # Proxy server for accessing the service from the application server.
   # Leave empty if not needed

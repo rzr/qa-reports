@@ -63,7 +63,7 @@ end
 
 When "the client sends file with URIs to bugs in two services in issue summary" do
   @response = api_import @default_api_opts.merge({"issue_summary_txt" =>
-    "* http://bugs.meego.com/show_bug.cgi?id=1234 https://bugzilla.mozilla.org/show_bug.cgi?id=1234"})
+    "* https://bugs.merproject.org/show_bug.cgi?id=1234 https://bugzilla.mozilla.org/show_bug.cgi?id=1234"})
 end
 
 When "the client sends file patch ID in issue summary" do
@@ -414,7 +414,7 @@ Then "I should see the test cases from xUnit result file" do
 end
 
 Then /^I should see a link to Bugzilla$/ do
-  step %{I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=1234" within "body"}
+  step %{I should see link to bug "https://bugs.merproject.org/show_bug.cgi?id=1234" within "body"}
 end
 
 Then /^I should see a link to Mozilla Bugzilla$/ do

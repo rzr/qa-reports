@@ -94,8 +94,8 @@ Feature: Edit Report
     And fill in "report[objective_txt]" with "* [[BZ#9353]] [[MOZ#1234]] [[1234]]"
     And I press "Save"
 
-    Then I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=9353" within ".editable_area ul li"
-    And I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=1234" within ".editable_area ul li"
+    Then I should see link to bug "https://bugs.merproject.org/show_bug.cgi?id=9353" within ".editable_area ul li"
+    And I should see link to bug "https://bugs.merproject.org/show_bug.cgi?id=1234" within ".editable_area ul li"
     And I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editable_area ul li"
     And I remove the other Bugzilla service
 
@@ -104,10 +104,10 @@ Feature: Edit Report
     Given I add another Bugzilla service
     When I edit the report "1.2/Core/automated/N900"
     And I click the element "#test_objective"
-    And fill in "report[objective_txt]" with "* http://bugs.meego.com/show_bug.cgi?id=9353 https://bugzilla.mozilla.org/show_bug.cgi?id=1234"
+    And fill in "report[objective_txt]" with "* https://bugs.merproject.org/show_bug.cgi?id=9353 https://bugzilla.mozilla.org/show_bug.cgi?id=1234"
     And I press "Save"
 
-    Then I should see link to bug "http://bugs.meego.com/show_bug.cgi?id=9353" within ".editable_area ul li"
+    Then I should see link to bug "https://bugs.merproject.org/show_bug.cgi?id=9353" within ".editable_area ul li"
     And I should see link to bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1234" within ".editable_area ul li"
     And I remove the other Bugzilla service
 

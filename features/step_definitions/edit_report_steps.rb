@@ -153,7 +153,7 @@ end
 
 Then "I should see markup help for both Bugzilla service" do
   with_scope('.markuphelp') do
-    page.should have_content "[[1234]] or [[BZ#1234]] (MeeGo Bugzilla link)"
+    page.should have_content "[[1234]] or [[BZ#1234]] (Mer Bugzilla link)"
     page.should have_content "[[MOZ#1234]] (Mozilla Bugzilla link)"
   end
 end
