@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   def record_not_found
-    render :file => "#{Rails.root}/public/404.html", :status => :not_found, :layout => false
+    render :file => "#{Rails.root}/public/404", :formats => [:html], :status => :not_found, :layout => false
   end
 
   def release
@@ -58,7 +58,7 @@ private
   end
 
   def render_error
-    render :file => "#{Rails.root}/public/500.html", :status => :internal_server_error, :layout => false
+    render :file => "#{Rails.root}/public/500", :formats => [:html], :status => :internal_server_error, :layout => false
   end
 
 end
