@@ -25,6 +25,15 @@
                 a.name
                 input.inplace-edit style="display:none;"
 
+  - if APP_CONFIG['hide_empty_targets']
+    // Show a note about reports not found if using hide_empty_targets. The
+    // page looks confusing when hiding empty targets means hiding all targets.
+    p.no_reports
+      ' No
+      span.recent_reports
+        ' recent
+      ' reports for selected
+      = APP_CONFIG['group_labels']['release_version']
   - if user_signed_in?
     a#home_edit_link href='#'
     a#home_edit_done_link.small_btn href='#' Done

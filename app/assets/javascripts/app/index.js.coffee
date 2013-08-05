@@ -103,6 +103,13 @@ $(document).ready ->
     $(product_titles).live 'mouseout', ->
       $(product_titles).removeClass('to_be_edited')
 
+  showNoReports = (l, scope) ->
+    if l == 0
+      $('.no_reports').show()
+      $('.recent_reports', '.no_reports').toggle(scope == 'recent')
+    else
+      $('.no_reports').hide().find('.recent_reports').hide()
+
   initTabs = ->
     $('.tabs').click (event) ->
       event.preventDefault()
@@ -114,10 +121,7 @@ $(document).ready ->
       Spine.Route.navigate release_path + scope_path
 
     [_, release, scope] = location.hash.split '/'
-    if release and scope
-      $("#release_filters a[href='/#{release}']").click()
-      $("#report_filters a[href='/#{scope}']").click()
-    else
+    unless release and scope
       # On staging set better defaults (current data set is quite old)
       if location.hostname == 'qa-reports.qa.leonidasoy.fi'
         $("#release_filters a[href='/1.2']").click()
@@ -131,7 +135,13 @@ $(document).ready ->
       # Set active tab
       $.merge($('a[href="/' + params.scope + '"]', '#report_filters'),
               $('a[href="/' + params.release + '"]', '#release_filters')).parent().addClass('current').siblings().removeClass('current').end()
+      # Also set the data-selected attributes so they're correct if
+      # initial page load is done with a hash fragment.
+      $("#release_filters").attr('data-selected', "/#{params.release}")
+      $("#report_filters").attr('data-selected', "/#{params.scope}")
+
       $navigation.render(view_model, directives).show()
+      showNoReports(view_model['profiles'].length, params.scope)
     $('link[rel="alternate"][type="application/rss+xml"]', 'head').attr 'href', "/#{params.release}/rss"
 
   Spine.Route.setup()
