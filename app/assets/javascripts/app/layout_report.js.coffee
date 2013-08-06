@@ -1,5 +1,13 @@
 on_ready_steps = ->
-    renderSeriesGraphs ".serial_canvas"
+    # IE... the NFT history charts (the small ones) are not drawn if the
+    # containing element is hidden when calling renderSeriesGraph. So,
+    # show them while drawing. Not pretty but seems to work OK for now.
+    if typeof G_vmlCanvasManager != 'undefined'
+      $('table.non-functional_results.detailed_results.history').show()
+      renderSeriesGraphs ".serial_canvas"
+      $('table.non-functional_results.detailed_results.history').hide()
+    else
+      renderSeriesGraphs ".serial_canvas"
 
     updateTemplateImage = (params) ->
         attachment_url = params.t.text
@@ -33,6 +41,11 @@ on_ready_steps = ->
 
     $('#test_result_overview tr:odd').addClass('odd')
     $('#test_result_overview tr:even').addClass('even')
+
+    $(document).bind 'keydown', (e) ->
+      if e.which == 27 and $('.modal_close:visible').length > 0
+        e.preventDefault()
+        $('.modal_close:visible').click()
 
 # IE hack
 if typeof G_vmlCanvasManager != 'undefined'
