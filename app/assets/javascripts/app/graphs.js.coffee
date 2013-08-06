@@ -124,6 +124,7 @@
       # needs to match with the CSV columns
       $modal.find(":checkbox").each (i, node) ->
         visibility[parseInt(node.value)] = node.checked
+        true
 
       dyg.updateOptions visibility: visibility
 
