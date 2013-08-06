@@ -2,12 +2,20 @@
 # NFT graphs (serial, modals, history)
 #
 
+# Notice: the dygraphs here do not work on IE8. They are now properly initiated
+# and the mouse over value showing thingie works but the data lines or grid
+# are not shown. This could be fixed by using
+# <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+# in the report but we could lose some other JS/CSS functionality so it is
+# not taken in use.
+
 @renderNftTrendGraph = (m_id) ->
   $modal = $("#nft_trend_dialog")
   $elem  = $("#nft-trend-data-#{m_id}")
 
   # Set zeroes if no data exists so the modal works
   data  = $elem.children(".nft_trend_graph_data").text() || "Date,Value\n0,0"
+  data  = data.replace(/\r\n?/g, "\n")
   title = $elem.find(".nft_trend_graph_title").text()
   graph = document.getElementById("nft_trend_graph")
 
@@ -67,7 +75,8 @@
       g.data("values", values, "#8888dd")
       g.draw()
 
-      $canvas.click ->
+      $canvas.click (e) ->
+        e.preventDefault()
         # Render NftTrendGraph, the same that is shown in See latest
         # -mode when clickin the measurement value
         if $div.hasClass('nft_history')
@@ -139,6 +148,7 @@
 
     # Again some data must exist for modal to work
     data ||= "Date,Max. value,Avg. value,Med. value,Min. value\n0,0,0,0,0"
+    data   = data.replace(/\r\n?/g, "\n")
 
     graph = document.getElementById("nft_series_history_graph")
     dyg   = new Dygraph graph, data,
