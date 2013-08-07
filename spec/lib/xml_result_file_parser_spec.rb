@@ -414,4 +414,31 @@ END
     end
   end
 
+  # XML result file parser needs to be able to group serial measurement groups
+  # together in same data series so that multi series charts can be drawn
+  describe "Parsing result XML with grouped serial measurements" do
+    FEATURE = 'grouped-serial-measurements'
+    CASE1   = 'Grouped serial measurements - interval'
+    CASE2   = 'Grouped serial measurements - timestamp'
+
+    before(:each) do
+      File.open('features/resources/grouped-serial-measurements.xml', 'r') do |f|
+        serial_cases = XMLResultFileParser.new.parse(f)
+        @tc1 = serial_cases[FEATURE][CASE1][:serial_measurements_attributes]
+        @tc2 = serial_cases[FEATURE][CASE2][:serial_measurements_attributes]
+      end
+    end
+
+    it "should return measurements grouped together" do
+      @tc1.count.should == 2
+      @tc2.count.should == 1
+    end
+
+
+    # TODO
+    # What about min/avg/med/max?
+    # What about unit per series?
+
+  end
+
 end
