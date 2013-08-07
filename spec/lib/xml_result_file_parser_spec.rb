@@ -422,7 +422,7 @@ END
     CASE1   = 'Grouped serial measurements - interval'
     CASE2   = 'Grouped serial measurements - timestamp'
 
-    before(:each) do
+    before(:all) do
       File.open('features/resources/grouped-serial-measurements.xml', 'r') do |f|
         serial_cases = XMLResultFileParser.new.parse(f)
         @tc1 = serial_cases[FEATURE][CASE1][:serial_measurements_attributes]
@@ -452,6 +452,18 @@ END
       long_json.each do |measurement|
         # "Timestamp" and two data values
         measurement.count.should == 3
+      end
+    end
+
+    it "should contain all the measurement values due to short series" do
+      File.open('features/resources/grouped-serial-measurements.xml', 'r') do |f|
+        # Check the first test case's measurements agains the JSON output
+        Nokogiri::XML(f).css('case').first.css('series[@group]').each_with_index do |s, i|
+          long_json = JSON.parse(@tc1[0][:long_json])
+          long_json.each_with_index do |m, j|
+            m[i + 1].should.to_s == s.element_children[j]['value']
+          end
+        end
       end
     end
 

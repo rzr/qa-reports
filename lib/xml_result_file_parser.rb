@@ -33,12 +33,12 @@ class XMLResultFileParser
       # grouped measurements with more than one series separately, and those
       # that don't define a group or the group consists of only one series
       # separately.
-      series         = test_case.css('series')
-      grouped_series = series
+      all_series     = test_case.css('series')
+      grouped_series = all_series
         .reject   { |i| i['group'].blank? }
         .group_by { |i| i['group'] }
 
-      serial_measurements = series
+      serial_measurements = all_series
         .select { |i| i['group'].blank? } # Series without group attribute
         .concat(grouped_series
           .select { |k, v| v.count < 2 }
@@ -66,26 +66,33 @@ class XMLResultFileParser
           }
         end ,
         :serial_measurements_attributes => grouped_serial_mesurements.map do |group_name, series|
-            {
-              name: group_name
-            }
-          end .concat(serial_measurements.map do |series|
-            outline = calculate_outline(series.css('measurement'), series['interval'])
-            {
-              :name          => series['name'],
-              :short_json    => series_json(series.element_children, maxsize=40),
-              :long_json     => series_json_withx(series, outline.interval_unit, maxsize=200),
-              :unit          => series['unit'],
-              :interval_unit => outline.interval_unit,
-              :min_value     => outline.minval,
-              :max_value     => outline.maxval,
-              :avg_value     => outline.avgval,
-              :median_value  => outline.median,
+          # For now, limit the amount of series
+          raise Nokogiri::XML::SyntaxError.new("More than two series grouped as #{group_name}") if series.count > 2
+          # Get the outline from the first series. At least for now the assumption
+          # is that the grouped series use the same method (interval/timestamp)
+          # and are matching, i.e. they use the exact same X axis
+          outline = calculate_outline(series[0].css('measurement'), series[0]['interval'])
+          {
+            name:       group_name,
+            long_json:  series_json_withx(series, outline.interval_unit, maxsize=200)
+          }
+        end .concat(serial_measurements.map do |series|
+          outline = calculate_outline(series.css('measurement'), series['interval'])
+          {
+            :name          => series['name'],
+            :short_json    => series_json(series.element_children, maxsize=40),
+            :long_json     => series_json_withx(series, outline.interval_unit, maxsize=200),
+            :unit          => series['unit'],
+            :interval_unit => outline.interval_unit,
+            :min_value     => outline.minval,
+            :max_value     => outline.maxval,
+            :avg_value     => outline.avgval,
+            :median_value  => outline.median,
 
-              #TODO: Throw away and order by id
-              :sort_index    => 0
-            }
-          end)
+            #TODO: Throw away and order by id
+            :sort_index    => 0
+          }
+        end)
       }
     end .index_by { |test_case| test_case[:name] }
   end
