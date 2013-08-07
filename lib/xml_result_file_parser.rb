@@ -29,6 +29,23 @@ class XMLResultFileParser
 
       status_code, custom_result = MeegoTestSession.map_result(result)
 
+      # Collect the serial measurements separately because we want to handle
+      # grouped measurements with more than one series separately, and those
+      # that don't define a group or the group consists of only one series
+      # separately.
+      series         = test_case.css('series')
+      grouped_series = series
+        .reject   { |i| i['group'].blank? }
+        .group_by { |i| i['group'] }
+
+      serial_measurements = series
+        .select { |i| i['group'].blank? } # Series without group attribute
+        .concat(grouped_series
+          .select { |k, v| v.count < 2 }
+          .map {|k, v| v[0] }) # Groups with only one series
+      grouped_serial_mesurements = grouped_series
+        .reject { |k, v| v.count < 2 } # Groups with two or more series
+
       {
         :name                               => test_case['name'],
         :result                             => status_code,
@@ -48,23 +65,27 @@ class XMLResultFileParser
             :sort_index => 0
           }
         end ,
-        :serial_measurements_attributes     => test_case.css('series').map do | series |
-          outline = calculate_outline(series.css('measurement'), series['interval'])
-          {
-            :name          => series['name'],
-            :short_json    => series_json(series.element_children, maxsize=40),
-            :long_json     => series_json_withx(series, outline.interval_unit, maxsize=200),
-            :unit          => series['unit'],
-            :interval_unit => outline.interval_unit,
-            :min_value     => outline.minval,
-            :max_value     => outline.maxval,
-            :avg_value     => outline.avgval,
-            :median_value  => outline.median,
+        :serial_measurements_attributes => grouped_serial_mesurements.map do |group_name, series|
+            {
+              name: group_name
+            }
+          end .concat(serial_measurements.map do |series|
+            outline = calculate_outline(series.css('measurement'), series['interval'])
+            {
+              :name          => series['name'],
+              :short_json    => series_json(series.element_children, maxsize=40),
+              :long_json     => series_json_withx(series, outline.interval_unit, maxsize=200),
+              :unit          => series['unit'],
+              :interval_unit => outline.interval_unit,
+              :min_value     => outline.minval,
+              :max_value     => outline.maxval,
+              :avg_value     => outline.avgval,
+              :median_value  => outline.median,
 
-            #TODO: Throw away and order by id
-            :sort_index    => 0
-          }
-        end
+              #TODO: Throw away and order by id
+              :sort_index    => 0
+            }
+          end)
       }
     end .index_by { |test_case| test_case[:name] }
   end
