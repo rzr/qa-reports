@@ -30,12 +30,9 @@
   renderGraph = (index, div) ->
     $div        = $(div)
     $modal_info = $div.prev()
-    values      = eval($div.text())
+    values      = $.parseJSON($div.text())
 
     if values.length > 0
-      # WOT?
-      # values[1] = values[0] if values.length == 1
-
       id      = $div.attr("id")
       canvas  = document.createElement("canvas")
       $canvas = $(canvas)
@@ -74,6 +71,9 @@
         background_colors: [bg, bg]
 
       for v in values
+        # Don't draw just a dot, add a second point with the same value
+        # if we have only one data point to show
+        v.values[1] = v.values[0] if v.values.length == 1
         g.data v.name, v.values, "#8888dd"
       g.draw()
 

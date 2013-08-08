@@ -45,7 +45,7 @@ class NftHistory
             WHERE  meego_test_case_id=meego_test_cases.id)
      OR
      EXISTS(SELECT id
-            FROM   serial_measurements
+            FROM   serial_measurement_groups
             WHERE  meego_test_case_id=meego_test_cases.id)
     )
     ORDER BY meego_test_sessions.tested_at ASC
@@ -56,6 +56,7 @@ class NftHistory
     SELECT
     features.name                 AS feature,
     meego_test_cases.name         AS test_case,
+    NULL                          AS group_name,
     meego_measurements.name       AS measurement,
     meego_measurements.unit       AS unit,
     meego_measurements.value      AS value,
@@ -83,6 +84,7 @@ class NftHistory
     SELECT
     features.name                    AS feature,
     meego_test_cases.name            AS test_case,
+    smg.name                         AS group_name,
     serial_measurements.name         AS measurement,
     serial_measurements.unit         AS unit,
     serial_measurements.min_value    AS min_value,
@@ -91,9 +93,11 @@ class NftHistory
     serial_measurements.median_value AS med_value,
     meego_test_sessions.tested_at    AS tested_at
     FROM
-    serial_measurements, meego_test_cases, features, meego_test_sessions
+    serial_measurements, serial_measurement_groups AS smg,
+    meego_test_cases, features, meego_test_sessions
     WHERE
-    serial_measurements.meego_test_case_id = meego_test_cases.id AND
+    serial_measurements.serial_measurement_group_id = smg.id AND
+    smg.meego_test_case_id                 = meego_test_cases.id AND
     meego_test_cases.feature_id            = features.id AND
     features.meego_test_session_id         = meego_test_sessions.id AND
     meego_test_sessions.release_id         = ? AND
@@ -105,6 +109,7 @@ class NftHistory
     ORDER BY
     features.name ASC,
     meego_test_cases.name ASC,
+    smg.name ASC,
     serial_measurements.name ASC,
     meego_test_sessions.tested_at ASC
     END
@@ -189,6 +194,7 @@ class NftHistory
 
     feature     = ""
     testcase    = ""
+    group       = ""
     measurement = ""
     csv         = nil
     csvstr      = ""
@@ -198,11 +204,12 @@ class NftHistory
     # what is eventually returned from this method.
     hash = Hash.new
     db_data.each do |db_row|
+      new_group = db_row.group_name.nil? ? "" : db_row.group_name
       # Start a new measurement
-      if [feature, testcase, measurement] != [db_row.feature, db_row.test_case, db_row.measurement]
+      if [feature, testcase, measurement, group] != [db_row.feature, db_row.test_case, db_row.measurement, new_group]
         # The method creates a FasterCSV and returns it to us
         csv = begin_new_measurement(hash, db_row,
-                                    feature, testcase, measurement,
+                                    feature, testcase, group, measurement,
                                     csvstr, json, mode)
       end
 
@@ -227,8 +234,8 @@ class NftHistory
     end
 
     # Last measurement data was not written in the loop above
-    add_value(hash, feature, testcase, measurement, "csv", csvstr)
-    add_value(hash, feature, testcase, measurement, "json", json)
+    add_value(hash, feature, testcase, group, measurement, "csv", csvstr)
+    add_value(hash, feature, testcase, group, measurement, "json", json)
 
     count_key_figures(hash)
 
@@ -236,11 +243,11 @@ class NftHistory
   end
 
   def begin_new_measurement(hash, db_row,
-                            feature, testcase, measurement,
+                            feature, testcase, group, measurement,
                             csvstr, json, mode)
 
-    add_value(hash, feature, testcase, measurement, "csv", csvstr)
-    add_value(hash, feature, testcase, measurement, "json", json)
+    add_value(hash, feature, testcase, group, measurement, "csv", csvstr)
+    add_value(hash, feature, testcase, group, measurement, "json", json)
 
     unit = (db_row.unit || "Value").strip
 
@@ -261,24 +268,31 @@ class NftHistory
 
     feature.replace(db_row.feature)
     testcase.replace(db_row.test_case)
+    group.replace(db_row.group_name.nil? ? "" : db_row.group_name)
     measurement.replace(db_row.measurement)
 
     csv
   end
 
   # Construct the hash that holds all data in previously described structure
-  def add_value(container, feature, testcase, measurement, format, data)
+  def add_value(container, feature, testcase, group, measurement, format, data)
     return if data.empty?
 
     container[feature] ||= Hash.new
     container[feature][testcase] ||= Hash.new
-    container[feature][testcase][measurement] ||= Hash.new
-    container[feature][testcase][measurement][format] = data.dup
+    if group.blank?
+      container[feature][testcase][measurement] ||= Hash.new
+      container[feature][testcase][measurement][format] = data.dup
+    else
+      container[feature][testcase][group] ||= Hash.new
+      container[feature][testcase][group][measurement] ||= Hash.new
+      container[feature][testcase][group][measurement][format] = data.dup
+    end
   end
 
   # Count the key figures that are shown below the small Bluff graphs
   # in history view (min, max, avg, med) and add them to the hash given.
-  def count_key_figures(data)
+  def count_key_figures(data, key=nil)
     return if data.nil?
 
     # If we have measurement data (JSON), get/calculate the key figures
@@ -305,9 +319,13 @@ class NftHistory
         data['med'] = format_value(median, 3)
         data['avg'] = format_value(raw_data.inject{|sum,el| sum + el}.to_f / size, 3)
       end
+
+      # Reformat the JSON data to the same format as SerialMeasurement does
+      # when we wish to draw the small chart from short_json
+      data['json'] = "{\"name\": \"#{key}\", \"values\": [#{data['json'].map{|v| v.to_s}.join(",")}]}"
     else
       # Keep going until the level where the key figures are is found
-      data.each do |m, h| count_key_figures(h) end
+      data.each do |m, h| count_key_figures(h, m) end
     end
   end
 

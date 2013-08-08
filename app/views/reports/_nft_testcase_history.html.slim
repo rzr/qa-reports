@@ -21,40 +21,45 @@
         div.modal_graph id="nft-serial-trend-data-#{m.id}" style="display:none"
           span.nft_serial_trend_graph_title
             = testcase.name
-            | : 
+            | :
             = m.name
           span.nft_serial_trend_graph_data.pre
-            = @nft_trends.serial_measurements[feature][testcase.name][m.name]['csv']
+            - m.serial_measurements.each do |sm|
+              = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['csv']
 
         div.serial_canvas.nft_serial_history id="serial-history-graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"
-          = ints2js @nft_trends.serial_measurements[feature][testcase.name][m.name]['json']
+          | [
+          - @nft_trends.serial_measurements[feature][testcase.name][m.name].keys.each do |sm|
+            = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm]['json']
+          | ]
 
         table.nft_graph_key_figures
-          tr
-            td.unit= m.unit
-            td
-              span.unit min.
-              '  
-              = @nft_trends.serial_measurements[feature][testcase.name][m.name]['min']
-            td
-              span.unit avg.
-              '  
-              = @nft_trends.serial_measurements[feature][testcase.name][m.name]['avg']
-            td
-              span.unit max.
-              '  
-              = @nft_trends.serial_measurements[feature][testcase.name][m.name]['max']
-            td
-              span.unit med.
-              '  
-              = @nft_trends.serial_measurements[feature][testcase.name][m.name]['med']
+          - m.serial_measurements.each do |sm|
+            tr
+              td.unit= sm.unit
+              td
+                span.unit min.
+                '
+                = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['min']
+              td
+                span.unit avg.
+                '
+                = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['avg']
+              td
+                span.unit max.
+                '
+                = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['max']
+              td
+                span.unit med.
+                '
+                = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['med']
     - else
       td.testcase_measurement= m.name
       td.testcase_graph
         div.modal_graph id="nft-trend-data-#{m.id}" style="display:none"
           span.nft_trend_graph_title
             = testcase.name
-            | : 
+            | :
             = m.name
           span.nft_trend_graph_unit
             = m.unit
@@ -62,7 +67,9 @@
             = @nft_trends.measurements[feature][testcase.name][m.name]['csv']
 
         div.serial_canvas.nft_history id="nft-history-graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"
-            = ints2js @nft_trends.measurements[feature][testcase.name][m.name]['json']
+          | [
+          = @nft_trends.measurements[feature][testcase.name][m.name]['json']
+          | ]
         table.nft_graph_key_figures
           tr
             td.unit= m.unit
