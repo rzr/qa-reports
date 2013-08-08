@@ -9,13 +9,12 @@ class MeegoTestCase < ActiveRecord::Base
 
   belongs_to :custom_result
 
-  has_many :measurements,        :dependent => :destroy, :class_name => "MeegoMeasurement"
-  has_many :serial_measurements, :dependent => :destroy
+  has_many :measurements,              :dependent => :destroy, :class_name => "MeegoMeasurement"
   has_many :serial_measurement_groups, :dependent => :destroy
   has_one  :attachment, :as => :attachable, :dependent => :destroy, :class_name => "FileAttachment",
     :conditions => {:attachment_type => :attachment}
 
-  accepts_nested_attributes_for :measurements, :serial_measurements, :serial_measurement_groups, :attachment
+  accepts_nested_attributes_for :measurements, :serial_measurement_groups, :attachment
 
   validate :custom_result_should_be_in_configuration, :on => :create
 

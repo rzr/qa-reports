@@ -24,7 +24,7 @@
 require "nft"
 
 class SerialMeasurement < ActiveRecord::Base
-  belongs_to :meego_test_case
+  belongs_to :serial_measurement_group
 
   include MeasurementUtils
 
