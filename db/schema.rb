@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130805072912) do
+ActiveRecord::Schema.define(:version => 20130808054935) do
 
   create_table "custom_results", :force => true do |t|
     t.string "name"
@@ -118,6 +118,14 @@ ActiveRecord::Schema.define(:version => 20130805072912) do
   end
 
   add_index "releases", ["name"], :name => "index_releases_on_name", :unique => true
+
+  create_table "serial_measurement_groups", :force => true do |t|
+    t.string  "name"
+    t.text    "long_json"
+    t.integer "meego_test_case_id"
+  end
+
+  add_index "serial_measurement_groups", ["meego_test_case_id"], :name => "index_serial_measurement_groups_on_meego_test_case_id"
 
   create_table "serial_measurements", :force => true do |t|
     t.integer "meego_test_case_id",                :null => false
