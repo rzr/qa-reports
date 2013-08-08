@@ -26,7 +26,7 @@ module MeasurementUtils
     values = []
     s.each do |v|
       val = v['value'].try(:to_f)
-      o.minval = unless o.minval.nil? then [o.minval, val].min else val end
+      o.minval = unless o.minval.nil? then [o.minval, val].min else val end 
       o.maxval = unless o.maxval.nil? then [o.maxval, val].max else val end
       total += val
       values << val
@@ -39,7 +39,7 @@ module MeasurementUtils
     else
       o.median = values[size/2]
     end
-
+    
     if interval
       # Time span from intervals (only ms used, thus dividing to get seconds)
       timespan = (s.length-1) * interval.to_f / 1000
@@ -83,9 +83,6 @@ module MeasurementUtils
     end
   end
 
-  # Filter out the indices of the original data that will be stored
-  # to the database. These indices are used in constructing the JSON
-  # series for representation
   def shortened_indices(size, maxsize)
     indices = (0..size-1)
     if size <= maxsize
@@ -118,39 +115,19 @@ module MeasurementUtils
   end
 
   def series_json_withx(m, interval_unit, maxsize=200)
-    # Notice again when having grouped series they must be matching in all
-    # aspects (timing, size). Just take the first one to calculate xaxis
-    # and indices.
-    if m.kind_of?(Array)
-      s        = m[0].element_children
-      interval = m[0]['interval']
-    else
-      s        = m.element_children
-      interval = m['interval']
-    end
-
+    s = m.element_children
     indices = shortened_indices(s.size, maxsize)
 
     factor = XAXIS_FACTORS[interval_unit]
-    if interval
+    if m['interval']
       # Dividing since interval is currently always in milliseconds and
       # the factors are for seconds
-      xaxis = (0..s.size-1).map {|i| i * interval.to_f * factor / 1000}
+      xaxis = (0..s.size-1).map {|i| i * m['interval'].to_f * factor / 1000}
     else
       xaxis = (0..s.size-1).map {|i| ((Time.parse(s[i]['timestamp'])-Time.parse(s[0]['timestamp']))*factor).to_i}
     end
 
-    "[" + indices.map do |i|
-      values = if m.kind_of?(Array)
-        # Get the values of each series
-        m.map do |series|
-          series.element_children[i]['value']
-        end .join(',')
-      else
-        s[i]['value']
-      end
-      "[#{xaxis[i]},#{values}]"
-    end .join(",") + "]"
+    "[" + indices.map{|i| "[#{xaxis[i]},#{s[i]['value']}]"}.join(",") + "]"
   end
 
   def shorten_value(v)
