@@ -18,7 +18,7 @@
       td.testcase_measurement= m.name
       td.testcase_graph colspan="4"
         .modal_graph style="display:none"
-          span.modal_graph_title= testcase.name
+          span.modal_graph_title= "#{testcase.name}: #{m.name}"
           span.modal_graph_data= m.long_json
 
         .serial_canvas id="graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"

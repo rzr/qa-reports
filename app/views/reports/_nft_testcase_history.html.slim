@@ -20,9 +20,7 @@
       td.testcase_graph
         div.modal_graph id="nft-serial-trend-data-#{m.id}" style="display:none"
           span.nft_serial_trend_graph_title
-            = testcase.name
-            | :
-            = m.name
+            = "#{testcase.name}: #{m.name}"
           span.nft_serial_trend_graph_data.pre
             - m.serial_measurements.each do |sm|
               = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['csv']
@@ -58,9 +56,7 @@
       td.testcase_graph
         div.modal_graph id="nft-trend-data-#{m.id}" style="display:none"
           span.nft_trend_graph_title
-            = testcase.name
-            | :
-            = m.name
+            = "#{testcase.name}: #{m.name}"
           span.nft_trend_graph_unit
             = m.unit
           span.nft_trend_graph_data.pre
