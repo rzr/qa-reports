@@ -171,7 +171,16 @@ module ReportSummary
   end
 
   def total_nft
-    @total_nft ||= total_non_serial_nft + total_serial_nft
+    # We cannot just add together total_serial_nft and total_non_serial_nft
+    # because single test case can contain both and the result would then
+    # be incorrect
+    @total_nft ||= MeegoMeasurement.select('DISTINCT meego_test_case_id')
+        .where(:meego_test_case_id => meego_test_cases)
+        .map(&:meego_test_case_id)
+      .concat(SerialMeasurementGroup.select('DISTINCT meego_test_case_id')
+        .where(:meego_test_case_id => meego_test_cases)
+        .map(&:meego_test_case_id))
+      .uniq.count
   end
 
   def total_non_nft
