@@ -244,6 +244,7 @@ Then %r/^I should find data for the other report from the database$/ do
   # Three reports left, each with one testcase containing a serial measurement
   # and two test cases with two meego measurements each.
   SerialMeasurement.count.should == 3
+  SerialMeasurementGroup.count.should == 3
   MeegoMeasurement.count.should  == 3 * 2 * 2
 
   # Three reports left but the first one has two attachments
