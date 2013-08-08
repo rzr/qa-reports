@@ -26,7 +26,7 @@ module MeasurementUtils
     values = []
     s.each do |v|
       val = v['value'].try(:to_f)
-      o.minval = unless o.minval.nil? then [o.minval, val].min else val end 
+      o.minval = unless o.minval.nil? then [o.minval, val].min else val end
       o.maxval = unless o.maxval.nil? then [o.maxval, val].max else val end
       total += val
       values << val
@@ -39,7 +39,7 @@ module MeasurementUtils
     else
       o.median = values[size/2]
     end
-    
+
     if interval
       # Time span from intervals (only ms used, thus dividing to get seconds)
       timespan = (s.length-1) * interval.to_f / 1000
@@ -117,17 +117,24 @@ module MeasurementUtils
   def series_json_withx(m, interval_unit, maxsize=200)
     s = m.element_children
     indices = shortened_indices(s.size, maxsize)
-
-    factor = XAXIS_FACTORS[interval_unit]
-    if m['interval']
-      # Dividing since interval is currently always in milliseconds and
-      # the factors are for seconds
-      xaxis = (0..s.size-1).map {|i| i * m['interval'].to_f * factor / 1000}
-    else
-      xaxis = (0..s.size-1).map {|i| ((Time.parse(s[i]['timestamp'])-Time.parse(s[0]['timestamp']))*factor).to_i}
-    end
-
+    xaxis = get_x_axis(m['interval'], interval_unit, s)
     "[" + indices.map{|i| "[#{xaxis[i]},#{s[i]['value']}]"}.join(",") + "]"
+  end
+
+  def long_json_for_group(series, interval_unit, maxsize=200)
+    # NOTE: currently expecting the grouped series to be of same length
+    s       = series.first.element_children
+    indices = shortened_indices(s.size, maxsize)
+    xaxis   = get_x_axis(series.first['interval'], interval_unit, s)
+
+    units = series.map {|serie| "\"#{serie['unit']}\""} .join(",")
+    # Data will be array of arrays
+    data  = indices.map do |i|
+      values = series.map {|serie| serie.element_children[i]['value']}.join(",")
+      "[#{xaxis[i]},#{values}]"
+    end .join(",")
+
+    "{\"units\": [#{units}], \"interval_unit\": \"#{interval_unit||'null'}\", \"data\": [#{data}]}"
   end
 
   def shorten_value(v)
@@ -139,6 +146,18 @@ module MeasurementUtils
     else
       s
     end
+  end
+
+  def get_x_axis(interval, interval_unit, s)
+    factor = XAXIS_FACTORS[interval_unit]
+    if interval
+      # Dividing since interval is currently always in milliseconds and
+      # the factors are for seconds
+      xaxis = (0..s.size-1).map {|i| i * interval.to_f * factor / 1000}
+    else
+      xaxis = (0..s.size-1).map {|i| ((Time.parse(s[i]['timestamp'])-Time.parse(s[0]['timestamp']))*factor).to_i}
+    end
+    xaxis
   end
 end
 

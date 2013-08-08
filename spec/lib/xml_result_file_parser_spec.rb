@@ -425,8 +425,8 @@ END
     before(:all) do
       File.open('features/resources/grouped-serial-measurements.xml', 'r') do |f|
         serial_cases = XMLResultFileParser.new.parse(f)
-        @tc1 = serial_cases[FEATURE][CASE1][:serial_measurements_attributes]
-        @tc2 = serial_cases[FEATURE][CASE2][:serial_measurements_attributes]
+        @tc1 = serial_cases[FEATURE][CASE1][:serial_measurement_groups_attributes]
+        @tc2 = serial_cases[FEATURE][CASE2][:serial_measurement_groups_attributes]
       end
     end
 
@@ -435,22 +435,25 @@ END
       @tc2.count.should == 1
     end
 
-    it "should produce long_json with values from both data series" do
-      # The grouped measurements are first due to how they're handled
+    it "should produce long_json with units and interval_unit" do
       long_json = JSON.parse(@tc1[0][:long_json])
-      long_json.each do |measurement|
+      long_json.should include('interval_unit')
+      long_json.should include('units')
+      long_json["units"].count.should == 2
+    end
+
+    it "should produce long_json with values from both data series" do
+      long_json = JSON.parse(@tc1[0][:long_json])
+      long_json['data'].each do |measurement|
         # "Timestamp" and two data values
         measurement.count.should == 3
       end
-      # Ungrouped has only timestamp and single value
       long_json = JSON.parse(@tc1[1][:long_json])
-      long_json.each do |measurement|
+      long_json['data'].each do |measurement|
         measurement.count.should == 2
       end
-      # Case with timestamps instead of intervals
       long_json = JSON.parse(@tc2[0][:long_json])
-      long_json.each do |measurement|
-        # "Timestamp" and two data values
+      long_json['data'].each do |measurement|
         measurement.count.should == 3
       end
     end
@@ -468,10 +471,7 @@ END
     end
 
     # TODO
-    # What about min/avg/med/max?
-    # What about unit per series?
     # What to do when the interval/timestamps of grouped series do not match?
-    # How to create short_json? We need many of them
 
   end
 
