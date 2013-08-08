@@ -32,7 +32,11 @@ class SerialMeasurement < ActiveRecord::Base
     DELETE  serial_measurements
     FROM    serial_measurements
 
-    INNER JOIN meego_test_cases ON meego_test_cases.id = serial_measurements.meego_test_case_id
+    INNER JOIN serial_measurement_groups ON
+      serial_measurement_groups.id = serial_measurements.serial_measurement_group_id
+
+    INNER JOIN meego_test_cases ON
+      meego_test_cases.id = serial_measurement_groups.meego_test_case_id
 
     WHERE meego_test_cases.meego_test_session_id = ?;
   END
