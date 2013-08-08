@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130808054935) do
+ActiveRecord::Schema.define(:version => 20130808065833) do
 
   create_table "custom_results", :force => true do |t|
     t.string "name"
@@ -128,17 +128,18 @@ ActiveRecord::Schema.define(:version => 20130808054935) do
   add_index "serial_measurement_groups", ["meego_test_case_id"], :name => "index_serial_measurement_groups_on_meego_test_case_id"
 
   create_table "serial_measurements", :force => true do |t|
-    t.integer "meego_test_case_id",                :null => false
-    t.string  "name",                              :null => false
-    t.integer "sort_index",                        :null => false
-    t.string  "short_json",         :limit => 256, :null => false
-    t.text    "long_json",                         :null => false
-    t.string  "unit",               :limit => 32,  :null => false
-    t.float   "min_value",                         :null => false
-    t.float   "max_value",                         :null => false
-    t.float   "avg_value",                         :null => false
-    t.float   "median_value",                      :null => false
-    t.string  "interval_unit",      :limit => 32
+    t.integer "meego_test_case_id",                         :null => false
+    t.string  "name",                                       :null => false
+    t.integer "sort_index",                                 :null => false
+    t.string  "short_json",                  :limit => 256, :null => false
+    t.text    "long_json",                                  :null => false
+    t.string  "unit",                        :limit => 32,  :null => false
+    t.float   "min_value",                                  :null => false
+    t.float   "max_value",                                  :null => false
+    t.float   "avg_value",                                  :null => false
+    t.float   "median_value",                               :null => false
+    t.string  "interval_unit",               :limit => 32
+    t.integer "serial_measurement_group_id"
   end
 
   add_index "serial_measurements", ["meego_test_case_id"], :name => "index_serial_measurements_on_meego_test_case_id"
