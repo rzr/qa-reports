@@ -33,7 +33,8 @@
     values      = eval($div.text())
 
     if values.length > 0
-      values[1] = values[0] if values.length == 1
+      # WOT?
+      # values[1] = values[0] if values.length == 1
 
       id      = $div.attr("id")
       canvas  = document.createElement("canvas")
@@ -72,7 +73,8 @@
         font_color:   '#6f6f6f',
         background_colors: [bg, bg]
 
-      g.data("values", values, "#8888dd")
+      for v in values
+        g.data v.name, v.values, "#8888dd"
       g.draw()
 
       $canvas.click (e) ->
@@ -91,9 +93,9 @@
   renderModalGraph = (elem) ->
       $elem = $(elem)
       title = $elem.find(".modal_graph_title").text()
-      xunit = $elem.find(".modal_graph_x_unit").text()
-      yunit = $elem.find(".modal_graph_y_unit").text()
-      data  = eval($elem.find(".modal_graph_data").text())
+
+      data   = $.parseJSON $elem.find(".modal_graph_data").text()
+      labels = [data.interval_unit||""].concat(data.units)
 
       $modal = $(".nft_drilldown_dialog")
       $close = $modal.find(".modal_close")
@@ -105,21 +107,23 @@
 
       graph = document.getElementById("nft_drilldown_graph")
 
+      # NOTE: This formats labels so that they contain the unit as well.
+      # This needs to be changed when we have two axes.
       updateLabels = ->
         $(graph).find("div.dygraph-axis-label-x").each (idx, e) ->
           $e = $(e)
           $e.parent().css("width", parseInt($e.css("width"))+15)
-          $e.text($e.text() + xunit)
+          $e.text($e.text() + labels[0])
 
         $(graph).find("div.dygraph-axis-label-y").each (idx, e) ->
           $e = $(e)
           $e.parent()
             .css("width", parseInt($e.css("width"))+10)
             .css("left", -10)
-          $e.text($e.text() + yunit)
+          $e.text($e.text() + labels[1])
 
-      dyg = new Dygraph graph, data,
-        labels:       [xunit, yunit],
+      dyg = new Dygraph graph, data.data,
+        labels:       labels,
         drawCallback: updateLabels,
         includeZero:  true
 

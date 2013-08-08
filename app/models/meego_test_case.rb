@@ -63,12 +63,12 @@ class MeegoTestCase < ActiveRecord::Base
   end
 
   def all_measurements
-    a = (measurements + serial_measurements)
-    a.sort!{|x,y| x.sort_index <=> y.sort_index}
+    a = (measurements + serial_measurement_groups)
+    a.sort!{|x,y| x.id <=> y.id}
   end
 
   def has_measurements?
-    return !(measurements.empty? and serial_measurements.empty?)
+    return !(measurements.empty? and serial_measurement_groups.empty?)
   end
 
   def find_change_class(prev_session)

@@ -186,7 +186,7 @@ module ReportSummary
 
   def total_serial_nft
     @total_serial_nft ||=
-      SerialMeasurement.select('DISTINCT meego_test_case_id').
+      SerialMeasurementGroup.select('DISTINCT meego_test_case_id').
         where(:meego_test_case_id => meego_test_cases).count
   end
 

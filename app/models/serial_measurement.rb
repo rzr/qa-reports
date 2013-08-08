@@ -63,6 +63,10 @@ class SerialMeasurement < ActiveRecord::Base
     format_value(median_value, 3)
   end
 
+  def small_chart_series
+    "{\"name\": \"#{name}\", \"values\": #{short_json}}"
+  end
+
   def self.delete_by_report_id(id)
     ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DELETE_BY_REPORT_ID, id]))
   end

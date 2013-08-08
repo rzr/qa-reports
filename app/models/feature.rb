@@ -87,7 +87,7 @@ class Feature < ActiveRecord::Base
     meego_test_cases.each do |test_case|
       test_case.feature_id = id
       test_case.meego_test_session_id = meego_test_session_id
-      if !test_case.measurements.empty? or !test_case.serial_measurements.empty?
+      if !test_case.measurements.empty? or !test_case.serial_measurement_groups.empty?
         test_case.save!
       else
         test_cases << test_case
