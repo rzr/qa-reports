@@ -27,10 +27,16 @@
 @renderSeriesGraphs = (selector) ->
   $selector = $(selector)
 
+  # http://stackoverflow.com/a/11455508
+  uniq_array = (arr) -> $.grep arr, (v, k) -> $.inArray(v, arr) == k
+
   renderGraph = (index, div) ->
     $div        = $(div)
     $modal_info = $div.prev()
     values      = $.parseJSON($div.text())
+
+    # TODO: we should scale if we have a two-axis chart to have the same
+    # appearance on the small chart as it will be on the larger one
 
     if values.length > 0
       id      = $div.attr("id")
@@ -107,25 +113,35 @@
 
       graph = document.getElementById("nft_drilldown_graph")
 
-      # NOTE: This formats labels so that they contain the unit as well.
-      # This needs to be changed when we have two axes.
-      updateLabels = ->
-        $(graph).find("div.dygraph-axis-label-x").each (idx, e) ->
-          $e = $(e)
-          $e.parent().css("width", parseInt($e.css("width"))+15)
-          $e.text($e.text() + labels[0])
+      uniq_units = uniq_array data.units
 
-        $(graph).find("div.dygraph-axis-label-y").each (idx, e) ->
-          $e = $(e)
-          $e.parent()
-            .css("width", parseInt($e.css("width"))+10)
-            .css("left", -10)
-          $e.text($e.text() + labels[1])
-
-      dyg = new Dygraph graph, data.data,
-        labels:       labels,
-        drawCallback: updateLabels,
+      opts =
+        labels:       labels
         includeZero:  true
+        axes:
+          x:
+            axisLabelFormatter: (x) -> "#{x}#{labels[0]}"
+            valueFormatter:     (x) -> "#{x}#{labels[0]}"
+          y:
+            axisLabelFormatter: (y) -> "#{y} #{uniq_units[0]}"
+
+      # Two unique units, use two axes
+      #
+      # TODO: What if we have two series with same unit?!?!
+      #
+      if uniq_units.length == 2
+        opts[uniq_units[1]] = axis: {}
+        opts.series = {}
+        for i in [0..data.units.length]
+          if data.units[i] == uniq_units[1]
+            opts.series[uniq_units[1]] = axis: 'y2'
+        opts.axes['y2'] =
+          drawGrid:           true
+          independentTicks:   true
+          gridLinePattern:    [2,2]
+          axisLabelFormatter: (y2) -> "#{y2} #{uniq_units[1]}"
+
+      dyg = new Dygraph graph, data.data, opts
 
   renderNftSerialTrendGraph = (elem) ->
     updateNftSerialTrendGraphData = (dyg) ->

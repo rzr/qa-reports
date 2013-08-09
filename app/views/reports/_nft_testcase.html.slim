@@ -22,10 +22,7 @@
           span.modal_graph_data= m.long_json
 
         .serial_canvas id="graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"
-          | [
-          - m.serial_measurements.each do |single_measurement|
-            = single_measurement.small_chart_series
-          | ]
+          = m.small_chart_series
 
         table.nft_graph_key_figures
           - m.serial_measurements.each do |single_measurement|

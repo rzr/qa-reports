@@ -18,6 +18,10 @@ class SerialMeasurementGroup < ActiveRecord::Base
     true
   end
 
+  def small_chart_series
+    "[" + serial_measurements.map{|s| s.small_chart_series}.join(",") + "]"
+  end
+
   def self.delete_by_report_id(id)
     ActiveRecord::Base.connection.execute(ActiveRecord::Base.send(:sanitize_sql_array, [DELETE_BY_REPORT_ID, id]))
   end
