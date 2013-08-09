@@ -126,13 +126,11 @@
             axisLabelFormatter: (y) -> "#{y} #{uniq_units[0]}"
 
       # Two unique units, use two axes
-      #
-      # TODO: What if we have two series with same unit?!?!
-      #
-      if uniq_units.length == 2
+      if uniq_units.length > 1
         opts[uniq_units[1]] = axis: {}
         opts.series = {}
         for i in [0..data.units.length]
+          # Just select the second item from to array to use a separate axis
           if data.units[i] == uniq_units[1]
             opts.series[uniq_units[1]] = axis: 'y2'
         opts.axes['y2'] =
