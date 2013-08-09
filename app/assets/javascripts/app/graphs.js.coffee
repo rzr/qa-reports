@@ -32,7 +32,8 @@
   dyg = new Dygraph(graph, data, opts)
 
 @renderSeriesGraphs = (selector) ->
-  $selector = $(selector)
+  bluff_colors = ["#8888dd", "rgb(64,128,0)", "rgb(64,0,128)", "rgb(0,128,128)"]
+  $selector    = $(selector)
 
   renderGraph = (index, div) ->
     $div        = $(div)
@@ -95,11 +96,13 @@
         for i in [0..values.length - 1]
           values[i].values = (v * ratio for v in values[i].values) if values[i].unit == cunit
 
+      c_index = 0
       for v in values
         # Don't draw just a dot, add a second point with the same value
         # if we have only one data point to show
         v.values[1] = v.values[0] if v.values.length == 1
-        g.data v.name, v.values, "#8888dd"
+        g.data v.name, v.values, bluff_colors[c_index]
+        c_index = (c_index + 1) % bluff_colors.length
       g.draw()
 
       $canvas.click (e) ->

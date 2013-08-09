@@ -253,6 +253,8 @@ class NftHistory
     add_value(hash, feature, testcase, group, measurement, "json", json)
     add_value(hash, feature, testcase, group, measurement, "unit", unit)
 
+    unit.replace(db_row.unit || " value").strip
+
     # Clear the output buffer
     csvstr.replace("")
     csv = CSV.new(csvstr, :col_sep => ',')
@@ -272,7 +274,6 @@ class NftHistory
     testcase.replace(db_row.test_case)
     group.replace(db_row.group_name.nil? ? "" : db_row.group_name)
     measurement.replace(db_row.measurement)
-    unit.replace(db_row.unit || " value").strip
     csv
   end
 
