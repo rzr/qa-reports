@@ -7,6 +7,7 @@
 //= require bluff/js-class
 //= require bluff/bluff-min
 //= require dygraph-combined
+//= require lodash.compat.min
 //= require app/shared
 //= require app/external_services
 //= require app/test_results

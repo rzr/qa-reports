@@ -17,26 +17,27 @@
   data  = $elem.children(".nft_trend_graph_data").text() || "Date,Value\n0,0"
   data  = data.replace(/\r\n?/g, "\n")
   title = $elem.find(".nft_trend_graph_title").text()
+  unit  = $elem.find(".nft_trend_graph_unit").text()
   graph = document.getElementById("nft_trend_graph")
 
   $modal.find("h1").text(title)
   $modal.jqmShow()
 
-  dyg = new Dygraph(graph, data)
+  opts =
+    labels: ['Date', unit]
+    axes:
+      y:
+        axisLabelFormatter: (y) -> "#{y} #{unit}"
+
+  dyg = new Dygraph(graph, data, opts)
 
 @renderSeriesGraphs = (selector) ->
   $selector = $(selector)
-
-  # http://stackoverflow.com/a/11455508
-  uniq_array = (arr) -> $.grep arr, (v, k) -> $.inArray(v, arr) == k
 
   renderGraph = (index, div) ->
     $div        = $(div)
     $modal_info = $div.prev()
     values      = $.parseJSON($div.text())
-
-    # TODO: we should scale if we have a two-axis chart to have the same
-    # appearance on the small chart as it will be on the larger one
 
     if values.length > 0
       id      = $div.attr("id")
@@ -76,6 +77,24 @@
         font_color:   '#6f6f6f',
         background_colors: [bg, bg]
 
+      # Scale if we have exactly two units.
+      uniq_units = _.uniq (v.unit for v in values)
+      if uniq_units.length == 2
+        # Maximum values for the unique units
+        max_1st = _(values).filter((v) -> v.unit == uniq_units[0]).map((v) -> _.max v.values).max().valueOf()
+        max_2nd = _(values).filter((v) -> v.unit == uniq_units[1]).map((v) -> _.max v.values).max().valueOf()
+        # Scale up just in case Bluff happens to have problems drawing very
+        # small values
+        if max_1st < max_2nd
+          ratio = max_2nd / max_1st
+          cunit = uniq_units[0]
+        else
+          ratio = max_1st / max_2nd
+          cunit = uniq_units[1]
+
+        for i in [0..values.length - 1]
+          values[i].values = (v * ratio for v in values[i].values) if values[i].unit == cunit
+
       for v in values
         # Don't draw just a dot, add a second point with the same value
         # if we have only one data point to show
@@ -113,7 +132,7 @@
 
       graph = document.getElementById("nft_drilldown_graph")
 
-      uniq_units = uniq_array data.units
+      uniq_units = _.uniq data.units
 
       opts =
         labels:       labels

@@ -196,6 +196,7 @@ class NftHistory
     testcase    = ""
     group       = ""
     measurement = ""
+    unit        = ""
     csv         = nil
     csvstr      = ""
     json        = []
@@ -209,7 +210,7 @@ class NftHistory
       if [feature, testcase, measurement, group] != [db_row.feature, db_row.test_case, db_row.measurement, new_group]
         # The method creates a FasterCSV and returns it to us
         csv = begin_new_measurement(hash, db_row,
-                                    feature, testcase, group, measurement,
+                                    feature, testcase, group, measurement, unit,
                                     csvstr, json, mode)
       end
 
@@ -236,6 +237,7 @@ class NftHistory
     # Last measurement data was not written in the loop above
     add_value(hash, feature, testcase, group, measurement, "csv", csvstr)
     add_value(hash, feature, testcase, group, measurement, "json", json)
+    add_value(hash, feature, testcase, group, measurement, "unit", unit)
 
     count_key_figures(hash)
 
@@ -243,13 +245,13 @@ class NftHistory
   end
 
   def begin_new_measurement(hash, db_row,
-                            feature, testcase, group, measurement,
+                            feature, testcase, group, measurement, unit,
                             csvstr, json, mode)
+
 
     add_value(hash, feature, testcase, group, measurement, "csv", csvstr)
     add_value(hash, feature, testcase, group, measurement, "json", json)
-
-    unit = (db_row.unit || "Value").strip
+    add_value(hash, feature, testcase, group, measurement, "unit", unit)
 
     # Clear the output buffer
     csvstr.replace("")
@@ -270,7 +272,7 @@ class NftHistory
     testcase.replace(db_row.test_case)
     group.replace(db_row.group_name.nil? ? "" : db_row.group_name)
     measurement.replace(db_row.measurement)
-
+    unit.replace(db_row.unit || " value").strip
     csv
   end
 
@@ -299,7 +301,6 @@ class NftHistory
     # (min, max, avg, med) needed for Bluff graphs
     if data.has_key?('json')
       raw_data = data['json'].select &:present?
-
       data['min'] = 'N/A'
       data['max'] = 'N/A'
       data['avg'] = 'N/A'
@@ -322,7 +323,7 @@ class NftHistory
 
       # Reformat the JSON data to the same format as SerialMeasurement does
       # when we wish to draw the small chart from short_json
-      data['json'] = "{\"name\": \"#{key}\", \"values\": [#{data['json'].map{|v| v.to_s}.join(",")}]}"
+      data['json'] = "{\"name\": \"#{key}\", \"unit\": \"#{data['unit']}\", \"values\": [#{data['json'].map{|v| v.to_s}.join(",")}]}"
     else
       # Keep going until the level where the key figures are is found
       data.each do |m, h| count_key_figures(h, m) end

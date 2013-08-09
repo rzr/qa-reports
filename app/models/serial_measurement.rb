@@ -68,7 +68,7 @@ class SerialMeasurement < ActiveRecord::Base
   end
 
   def small_chart_series
-    "{\"name\": \"#{name}\", \"values\": #{short_json}}"
+    "{\"name\": \"#{name}\", \"unit\": \"#{unit}\", \"values\": #{short_json}}"
   end
 
   def self.delete_by_report_id(id)
