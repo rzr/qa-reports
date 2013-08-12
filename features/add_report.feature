@@ -251,3 +251,15 @@ Feature:
     And I press "Publish"
 
     Then I should see 2 instances of "tr.metrics_chart"
+
+  Scenario: Serial measurements are grouped
+    When I follow "Add report"
+    And I select target "Handset", test set "Custom Results" and product "N990"
+    And I attach the report "grouped-serial-measurements.xml"
+    And I press "Next"
+    And I press "Publish"
+
+    Then I should see "Load measurements"
+    And I should see "min. 2.00" within the first ".nft_graph_key_figures"
+    And I should see "min. 200" within the first ".nft_graph_key_figures"
+
