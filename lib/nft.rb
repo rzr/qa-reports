@@ -127,14 +127,14 @@ module MeasurementUtils
     indices = shortened_indices(s.size, maxsize)
     xaxis   = get_x_axis(series.first['interval'], interval_unit, s)
 
-    units = series.map {|serie| "\"#{serie['unit']}\""} .join(",")
+    json_series = series.map {|s| "{\"unit\": \"#{s['unit']}\", \"name\": \"#{s['name']}\"}" } .join(",")
     # Data will be array of arrays
     data  = indices.map do |i|
       values = series.map {|serie| serie.element_children[i]['value']}.join(",")
       "[#{xaxis[i]},#{values}]"
     end .join(",")
 
-    "{\"units\": [#{units}], \"interval_unit\": \"#{interval_unit||'null'}\", \"data\": [#{data}]}"
+    "{\"series\": [#{json_series}], \"interval_unit\": \"#{interval_unit||'null'}\", \"data\": [#{data}]}"
   end
 
   def shorten_value(v)

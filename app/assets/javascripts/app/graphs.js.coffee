@@ -9,6 +9,8 @@
 # in the report but we could lose some other JS/CSS functionality so it is
 # not taken in use.
 
+series_label = (s) -> "#{s.name} (#{s.unit})"
+
 @renderNftTrendGraph = (m_id) ->
   $modal = $("#nft_trend_dialog")
   $elem  = $("#nft-trend-data-#{m_id}")
@@ -16,16 +18,17 @@
   data      = $.parseJSON $elem.children(".nft_trend_graph_data").text()
   data.data = _.map data.data, (d) -> d[0] = new Date(d[0]); d
   title     = $elem.find(".nft_trend_graph_title").text()
+  labels    = ['Date'].concat(_.map data.series, series_label)
 
   graph = document.getElementById("nft_trend_graph")
   $modal.find("h1").text(title)
   $modal.jqmShow()
 
   opts =
-    labels: data.units
+    labels: labels
     axes:
       y:
-        axisLabelFormatter: (y) -> "#{y} #{data.units[1]}"
+        axisLabelFormatter: (y) -> "#{y} #{data.series[0].unit}"
 
   dyg = new Dygraph(graph, data.data, opts)
 
@@ -121,7 +124,7 @@
       title = $elem.find(".modal_graph_title").text()
 
       data   = $.parseJSON $elem.find(".modal_graph_data").text()
-      labels = [data.interval_unit||""].concat(data.units)
+      labels = [data.interval_unit||""].concat(_.map data.series, series_label)
 
       $modal = $(".nft_drilldown_dialog")
       $close = $modal.find(".modal_close")
@@ -133,7 +136,7 @@
 
       graph = document.getElementById("nft_drilldown_graph")
 
-      uniq_units = _.uniq data.units
+      uniq_units = _(data.series).pluck('unit').uniq().valueOf()
 
       opts =
         labels:       labels
@@ -148,7 +151,9 @@
       # Two unique units, use two axes
       if uniq_units.length > 1
         opts.series = {}
-        opts.series[uniq_units[1]] = axis: 'y2'
+        for s in data.series
+          if s.unit == uniq_units[1]
+            opts.series[series_label(s)] = axis: 'y2'
         opts.axes['y2'] =
           drawGrid:           true
           independentTicks:   true
@@ -161,9 +166,9 @@
     updateNftSerialTrendGraphData = (dyg) ->
       $modal     = $("#nft_series_history_dialog")
       # Each data series has min/max/med/avg, i.e. 4 value. We need thus
-      # a visiblity array of num of series * 4. Create this from the show_units
+      # a visiblity array of num of series * 4. Create this from the labels
       # by slicing off the date
-      visibility = (true for d in show_units.slice(1))
+      visibility = (true for d in labels.slice(1))
 
       $modal.find(":checkbox").each (i, node) ->
         idx = parseInt node.value
@@ -188,10 +193,13 @@
     # First, collect dates in an array of arrays. The data values will be
     # concatenated to each nested array as are the units.
     show_data  = ([new Date(d[0])] for d in data[0].data)
-    show_units = ['Date']
-    uniq_units = _(data).pluck('unit').uniq().valueOf()
+    labels     = ['Date']
+    # As said, each hash in the array represents single series so the unit
+    # is the same for all series (min/max...) of a hash
+    uniq_units = _(data).map((d) -> d.series[0].unit).uniq().valueOf()
+
     for d in data
-      show_units = show_units.concat(d.units.slice(1))
+      labels = labels.concat(_.map d.series, series_label)
       for i in [0..d.data.length-1]
         show_data[i] = show_data[i].concat(d.data[i].slice(1))
 
@@ -199,7 +207,7 @@
     $modal.jqmShow()
 
     opts =
-      labels: show_units
+      labels: labels
       colors: ["#2a7438", "#6c3d0f", "#233a84", "#bb2825"]
       axes:
         y:
@@ -208,10 +216,11 @@
     # Two axes
     if uniq_units.length > 1
       opts.series = {}
-      opts.series["Max #{uniq_units[1]}"] = axis: 'y2'
-      opts.series["Avg #{uniq_units[1]}"] = axis: 'y2'
-      opts.series["Med #{uniq_units[1]}"] = axis: 'y2'
-      opts.series["Min #{uniq_units[1]}"] = axis: 'y2'
+      for d in data
+        if d.series[0].unit == uniq_units[1]
+          for s in d.series
+            opts.series[series_label(s)] = axis: 'y2'
+
       opts.axes['y2'] =
         drawGrid:           true
         independentTicks:   true

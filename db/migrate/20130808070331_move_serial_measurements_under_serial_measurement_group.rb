@@ -13,7 +13,8 @@ class MoveSerialMeasurementsUnderSerialMeasurementGroup < ActiveRecord::Migratio
       # includes the units of the series and the interval unit. The original
       # long_json of a single measurement is not changed.
       interval_unit = s.interval_unit.nil? ? "null" : "\"#{s.interval_unit}\""
-      long_json = "{\"units\": [\"#{s.unit}\"], \"interval_unit\": #{interval_unit}, \"data\": #{s.long_json}}"
+      serie     = "{\"unit\": \"#{s.unit}\", \"name\": \"#{s.name}\"}"
+      long_json = "{\"series\": [#{serie}], \"interval_unit\": #{interval_unit}, \"data\": #{s.long_json}}"
 
       g.long_json = long_json
       g.save!

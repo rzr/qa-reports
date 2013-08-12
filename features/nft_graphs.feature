@@ -9,16 +9,14 @@ Feature: Check NFT graphs from the web page
 
   Scenario: Should see JSON data in view mode
     When I view the report "1.2/Handset/NFT/N900"
-    Then I should see "Date" within the first hidden ".nft_trend_graph_data"
     And  I should see "bps" within the first hidden ".nft_trend_graph_data"
 
   Scenario: Should see serial measurement JSON data in view mode
     When I view the report "1.2/Handset/NFT/N900"
-    Then I should see "Date" within the first hidden ".nft_serial_trend_graph_data"
-    Then I should see "Max bps" within the first hidden ".nft_serial_trend_graph_data"
-    Then I should see "Min bps" within the first hidden ".nft_serial_trend_graph_data"
-    Then I should see "Med bps" within the first hidden ".nft_serial_trend_graph_data"
-    Then I should see "Avg bps" within the first hidden ".nft_serial_trend_graph_data"
+    Then I should see "Max Data rate" within the first hidden ".nft_serial_trend_graph_data"
+    Then I should see "Min Data rate" within the first hidden ".nft_serial_trend_graph_data"
+    Then I should see "Med Data rate" within the first hidden ".nft_serial_trend_graph_data"
+    Then I should see "Avg Data rate" within the first hidden ".nft_serial_trend_graph_data"
 
   Scenario: Should see "See history" link
     When I view the report "1.2/Handset/NFT/N900"
@@ -27,8 +25,8 @@ Feature: Check NFT graphs from the web page
   #TODO: Instead of verifying that DOM contains the data, the actual view should be verified with Selenium
   Scenario: Viewing NFT history
     When I view the report "1.2/Handset/NFT/N900"
-    Then I should see "2011-08-08" within the first hidden ".nft_trend_graph_data"
-    And I should see "2011-08-09" within the first hidden ".nft_trend_graph_data"
+    Then I should see "2011/08/08" within the first hidden ".nft_trend_graph_data"
+    And I should see "2011/08/09" within the first hidden ".nft_trend_graph_data"
     And I should see "150" within the first hidden ".nft_trend_graph_data"
 
   # Note: the Selenium cases below are based on the JavaScript code updating

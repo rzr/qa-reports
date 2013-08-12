@@ -156,7 +156,7 @@ class NftHistory
   # given session (included) and return the data as in a multidimensional
   # hash that has keys as follows:
   # hash[feature_name][testcase_name][group_name][measurement_name]['long_json'] =
-  #   A hash with keys name, units, unit, and data. This is used for the modal graphs
+  #   A hash with keys name, series, and data. This is used for the modal graphs
   # hash[feature_name][testcase_name][group_name][measurement_name]['json'] =
   #   A hash with keys name, unit, and data. This is used for the inline graphs
   #
@@ -196,8 +196,8 @@ class NftHistory
     testcase    = ""
     group       = ""
     measurement = ""
-    long_json   = {name: "", units: [], data: []}
-    json        = {name: "", unit: "",  data: []}
+    long_json   = {name: "", series: [], data: []}
+    json        = {name: "", unit: "",   data: []}
 
     # This will contain the actual structural measurement data and is
     # what is eventually returned from this method.
@@ -250,23 +250,23 @@ class NftHistory
     add_value(hash, feature, testcase, group, measurement, "json", json)
 
     unit = (db_row.unit || " value").strip
-    if mode == :serial
-      units = ["Date",
-               "Max #{unit}",
-               "Avg #{unit}",
-               "Med #{unit}",
-               "Min #{unit}"]
-    else
-      units = ["Date", unit.dup]
-    end
-
     feature.replace(db_row.feature)
     testcase.replace(db_row.test_case)
     # When handling non-serial NFT there is no group name.
     group.replace(db_row.group_name.nil? ? "" : db_row.group_name)
     measurement.replace(db_row.measurement)
+
+    if mode == :serial
+      series = [{name: "Max #{measurement}", unit: unit.dup},
+                {name: "Avg #{measurement}", unit: unit.dup},
+                {name: "Med #{measurement}", unit: unit.dup},
+                {name: "Min #{measurement}", unit: unit.dup}]
+    else
+      series = [{name: measurement.dup, unit: unit.dup}]
+    end
+
     json.replace({name: measurement.dup, unit: unit.dup, data: []})
-    long_json.replace({name:  measurement.dup, units: units.dup, unit: unit.dup, data: []})
+    long_json.replace({name:  measurement.dup, series: series.dup, data: []})
   end
 
   # Construct the hash that holds all data in previously described structure
