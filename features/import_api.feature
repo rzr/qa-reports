@@ -291,3 +291,8 @@ Feature: Import API
     And I should see a link to Gerrit
     And I remove the default prefix for patches included CSV shortcut
     And I remove the link only external service
+
+  Scenario: Upload report with grouped measurements
+    When the client sends result file with grouped serial measurements
+    Then the upload succeeds
+    And all measurement groups and series are found

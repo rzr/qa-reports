@@ -166,6 +166,9 @@ When "the client sends result file with metrics" do
   step %{the client sends file "features/resources/xml_with_metrics.xml" via the REST API}
 end
 
+When(/^the client sends result file with grouped serial measurements$/) do
+  step %{the client sends file "features/resources/grouped-serial-measurements.xml" via the REST API}
+end
 
 When %r/^the client sends a request with string value instead of a file$/ do
     @response = api_import @default_api_opts.merge("report.1" => "Foo!")
@@ -581,4 +584,14 @@ end
 
 Then "I disable mapping of API parameters" do
   APP_CONFIG['api_mapping'] = {'release_version' => '', 'target' => '', 'testset' => '', 'product' => ''}
+end
+
+Then(/^all measurement groups and series are found$/) do
+  SerialMeasurementGroup.all.count.should == 9
+  SerialMeasurement.all.count.should == 16
+
+  tc = MeegoTestCase.find_by_name("Grouped serial measurements - interval")
+  sg = SerialMeasurementGroup.where(meego_test_case_id: tc)
+  sg[0].name.should == "Load measurements"
+  SerialMeasurement.where(serial_measurement_group_id: sg[0]).count.should == 2
 end
