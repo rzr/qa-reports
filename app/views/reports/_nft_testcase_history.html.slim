@@ -22,12 +22,18 @@
           span.nft_serial_trend_graph_title
             = "#{testcase.name}: #{m.name}"
           span.nft_serial_trend_graph_data.pre
-            - m.serial_measurements.each do |sm|
-              = @nft_trends.serial_measurements[feature][testcase.name][m.name][sm.name]['csv']
+            / Modal chart gets now an array of JSON objects which the chart
+            / code reformats. This should be changed so that the data is
+            / properly formatted already
+            | [
+            = @nft_trends.serial_measurements[feature][testcase.name][m.name].keys.map{|sm|@nft_trends.serial_measurements[feature][testcase.name][m.name][sm]['long_json'].to_json}.join(",")
+            | ]
 
         div.serial_canvas.nft_serial_history id="serial-history-graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"
+          / Small chart gets an array of JSON objects. Each item in the array
+          / creates a single data series line on the chart
           | [
-          = @nft_trends.serial_measurements[feature][testcase.name][m.name].keys.map{|sm| @nft_trends.serial_measurements[feature][testcase.name][m.name][sm]['json']}.join(",")
+          = @nft_trends.serial_measurements[feature][testcase.name][m.name].keys.map{|sm|@nft_trends.serial_measurements[feature][testcase.name][m.name][sm]['json'].to_json}.join(",")
           | ]
 
         table.nft_graph_key_figures
@@ -59,11 +65,11 @@
           span.nft_trend_graph_unit
             = m.unit
           span.nft_trend_graph_data.pre
-            = @nft_trends.measurements[feature][testcase.name][m.name]['csv']
+            = @nft_trends.measurements[feature][testcase.name][m.name]['long_json'].to_json
 
         div.serial_canvas.nft_history id="nft-history-graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"
           | [
-          = @nft_trends.measurements[feature][testcase.name][m.name]['json']
+          = @nft_trends.measurements[feature][testcase.name][m.name]['json'].to_json
           | ]
         table.nft_graph_key_figures
           tr
