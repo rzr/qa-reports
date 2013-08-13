@@ -73,9 +73,18 @@ FactoryGirl.define do
     failure     115
   end
 
+  factory :serial_measurement_group do
+    after(:create) do |group|
+      FactoryGirl.create(:serial_measurement,
+                         :serial_measurement_group => group)
+    end
+    name      "Data rate"
+    long_json "{\"interval_unit\":\"h\", \"units\": [\"bps\"], \"data\": [[0,1730.364014],[695,3238.187012],[1462,3238.187012]]}"
+  end
+
   factory :serial_measurement do
     name          "Data rate"
-    short_json    "1.7e+03,3.2e+03,3.2e+03"
+    short_json    "[1.7e+03,3.2e+03,3.2e+03]"
     long_json     "[[0,1730.364014],[695,3238.187012],[1462,3238.187012]]"
     unit          "bps"
     min_value     1730.36
@@ -102,7 +111,7 @@ FactoryGirl.define do
 
   factory :nft_serial_test_case, :class => MeegoTestCase do
     after(:create) do |testcase|
-      FactoryGirl.create(:serial_measurement,
+      FactoryGirl.create(:serial_measurement_group,
                          :meego_test_case => testcase)
     end
     name   "NFT Serial case"

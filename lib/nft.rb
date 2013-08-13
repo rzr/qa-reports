@@ -26,7 +26,7 @@ module MeasurementUtils
     values = []
     s.each do |v|
       val = v['value'].try(:to_f)
-      o.minval = unless o.minval.nil? then [o.minval, val].min else val end 
+      o.minval = unless o.minval.nil? then [o.minval, val].min else val end
       o.maxval = unless o.maxval.nil? then [o.maxval, val].max else val end
       total += val
       values << val
@@ -39,7 +39,7 @@ module MeasurementUtils
     else
       o.median = values[size/2]
     end
-    
+
     if interval
       # Time span from intervals (only ms used, thus dividing to get seconds)
       timespan = (s.length-1) * interval.to_f / 1000
@@ -117,17 +117,84 @@ module MeasurementUtils
   def series_json_withx(m, interval_unit, maxsize=200)
     s = m.element_children
     indices = shortened_indices(s.size, maxsize)
+    xaxis = get_x_axis(m['interval'], interval_unit, s)
+    "[" + indices.map{|i| "[#{xaxis[i]},#{s[i]['value']}]"}.join(",") + "]"
+  end
 
-    factor = XAXIS_FACTORS[interval_unit]
-    if m['interval']
-      # Dividing since interval is currently always in milliseconds and
-      # the factors are for seconds
-      xaxis = (0..s.size-1).map {|i| i * m['interval'].to_f * factor / 1000}
+  def group_json_withx(series, group, interval_unit, maxsize=200)
+    validate_series(series, group)
+
+    # Create an X axis that will contain all values aligned. For interval
+    # based this just means that get the axis from the series with most
+    # measurements (since interval unit and interval must be the same). For
+    # timestamp based series this means finding the earliest timestamp and
+    # calculating X axis values for all measurements against that.
+    # Also map the measurements of series to a hash that can be indexed with
+    # values from the xaxis array, i.e. set the hash key to the "timestamp"
+    # of the particular measurement
+    factor   = XAXIS_FACTORS[interval_unit]
+    interval = series.first['interval']
+    if interval
+      xaxis = get_x_axis(interval,
+                         interval_unit,
+                         get_longest_series(series).element_children)
+
+      mapped_series = series.map do |s|
+        mapped = { series: s, measurements: {} }
+        s.element_children.each_with_index do |m, i|
+          timestamp = get_interval_xaxis_value(factor, interval, i)
+          mapped[:measurements][timestamp] = m
+        end
+        mapped
+      end
+
     else
-      xaxis = (0..s.size-1).map {|i| ((Time.parse(s[i]['timestamp'])-Time.parse(s[0]['timestamp']))*factor).to_i}
+      earliest = series.map do |s|
+        s.element_children.sort_by {|m| Time.parse(m['timestamp'])} .first
+      end .sort_by {|m| Time.parse(m['timestamp'])} .first
+
+      xaxis = series.map do |s|
+        get_timestamp_xaxis(factor, earliest, s.element_children)
+      end .flatten .sort .uniq
+
+      mapped_series = series.map do |s|
+        mapped = { series: s, measurements: {} }
+        s.element_children.each do |m|
+          timestamp = get_timestamp_xaxis_value(factor, earliest, m)
+          # TODO (maybe): If there are more than one value with the same timestamp,
+          # only one will survive. This is probably not a problem because we
+          # may end up leaving out measurements anyway due to shortened index
+          mapped[:measurements][timestamp] = m
+        end
+        mapped
+      end
     end
 
-    "[" + indices.map{|i| "[#{xaxis[i]},#{s[i]['value']}]"}.join(",") + "]"
+    # Use the xaxis for getting the shortened indices. It is possible that the
+    # outcome will not contain any data points from some of the series due to
+    # dropping indices (if more than maxsize measurements) but that's quite unlikely
+    indices = shortened_indices(xaxis.size, maxsize)
+
+    # Collect the data for the "series" field of the resulting json
+    json_series = mapped_series.map do |s|
+      "{\"unit\": \"#{s[:series]['unit']}\", \"name\": \"#{s[:series]['name']}\"}"
+    end .join(",")
+
+    data = indices.map do |i|
+      # Index the xaxis with these indices, and the mapped_series with the xaxis
+      # values from the indices.
+      ts = xaxis[i]
+      values = mapped_series.map do |s|
+        if s[:measurements][ts].blank?
+          "null"
+        else
+          s[:measurements][ts]['value']
+        end
+      end .join(",")
+      "[#{ts},#{values}]"
+    end .join(",")
+
+    "{\"series\": [#{json_series}], \"interval_unit\": \"#{interval_unit||'null'}\", \"data\": [#{data}]}"
   end
 
   def shorten_value(v)
@@ -139,6 +206,72 @@ module MeasurementUtils
     else
       s
     end
+  end
+
+  def get_x_axis(interval, interval_unit, s)
+    factor = XAXIS_FACTORS[interval_unit]
+    if interval
+      # Dividing since interval is currently always in milliseconds and
+      # the factors are for seconds
+      xaxis = (0..s.size-1).map {|i| get_interval_xaxis_value(factor, interval, i)}
+    else
+      xaxis = get_timestamp_xaxis(factor, s[0], s)
+    end
+    xaxis
+  end
+
+  def get_timestamp_xaxis(factor, ref, s)
+    (0..s.size-1).map {|i| get_timestamp_xaxis_value(factor, ref, s[i]) }
+  end
+
+  # Get the X axis value of given measurement
+  def get_timestamp_xaxis_value(factor, ref, measurement)
+    ((Time.parse(measurement['timestamp'])-Time.parse(ref['timestamp']))*factor).to_i
+  end
+
+  # Get the X axis value for a interval series measurement
+  def get_interval_xaxis_value(factor, interval, index)
+    index * interval.to_f * factor / 1000
+  end
+
+  # Basic validation of the series in a group
+  def validate_series(series, group)
+    intervals    = 0
+    timestamps   = 0
+    intervals_ok = true
+
+    series.each do |s|
+      if s['interval']
+        intervals += 1
+        if s['interval'] != series.first['interval'] || s['interval_unit'] != series.first['interval_unit']
+          intervals_ok = false
+        end
+      else
+        timestamps += 1
+      end
+    end
+
+    if intervals != 0 && timestamps != 0
+      raise Nokogiri::XML::SyntaxError.new("Invalid series group #{group}: both interval and non-interval series grouped.")
+    end
+
+    unless intervals_ok
+      raise Nokogiri::XML::SyntaxError.new("Invalid series group #{group}: not all series use the same interval")
+    end
+  end
+
+  def get_longest_series(series)
+    l = series.first
+    # For interval series get the one with most elements
+    # TODO: Can we enable unmatching series using timestamps?
+    if l['interval']
+      series.each do |s|
+        if s.element_children.count > l.element_children.count
+          l = s
+        end
+      end
+    end
+    l
   end
 end
 

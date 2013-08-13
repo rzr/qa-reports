@@ -142,10 +142,6 @@ module ApplicationHelper
     "<div class=\"htmlgraph\"><div class=\"passed\" width=\"#{pw}\"/><div class=\"failed\ width=\"#{fw}\"/><div class=\"na\" width=\"#{nw}\"/></div>"
   end
 
-  def ints2js(ints)
-    ('[' + ints.map{|v| v.to_s}.join(",") + ']').html_safe
-  end
-
   def form_ajax_error_msg(cls)
     "<div style=\"display:none\" class=\"error #{cls}\">&nbsp;</div>".html_safe
   end

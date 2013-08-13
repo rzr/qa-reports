@@ -9,12 +9,12 @@ class MeegoTestCase < ActiveRecord::Base
 
   belongs_to :custom_result
 
-  has_many :measurements,        :dependent => :destroy, :class_name => "MeegoMeasurement"
-  has_many :serial_measurements, :dependent => :destroy
+  has_many :measurements,              :dependent => :destroy, :class_name => "MeegoMeasurement"
+  has_many :serial_measurement_groups, :dependent => :destroy
   has_one  :attachment, :as => :attachable, :dependent => :destroy, :class_name => "FileAttachment",
     :conditions => {:attachment_type => :attachment}
 
-  accepts_nested_attributes_for :measurements, :serial_measurements, :attachment
+  accepts_nested_attributes_for :measurements, :serial_measurement_groups, :attachment
 
   validate :custom_result_should_be_in_configuration, :on => :create
 
@@ -63,12 +63,12 @@ class MeegoTestCase < ActiveRecord::Base
   end
 
   def all_measurements
-    a = (measurements + serial_measurements)
-    a.sort!{|x,y| x.sort_index <=> y.sort_index}
+    a = (measurements + serial_measurement_groups)
+    a.sort!{|x,y| x.id <=> y.id}
   end
 
   def has_measurements?
-    return !(measurements.empty? and serial_measurements.empty?)
+    return !(measurements.empty? and serial_measurement_groups.empty?)
   end
 
   def find_change_class(prev_session)

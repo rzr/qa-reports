@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="grouped-serial-measurements">
+    <set name="grouped-serial-measurements">
+      <case name="Grouped serial measurements - interval" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+          <measurement value="57"/>
+          <measurement value="62"/>
+          <measurement value="80"/>
+          <measurement value="74"/>
+          <measurement value="50"/>
+          <measurement value="50"/>
+          <measurement value="26"/>
+          <measurement value="4"/>
+          <measurement value="4"/>
+          <measurement value="2"/>
+          <measurement value="2"/>
+        </series>
+        <series name="Mem consumption" group="Load measurements" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+          <measurement value="1840"/>
+          <measurement value="1920"/>
+          <measurement value="1502"/>
+          <measurement value="1490"/>
+          <measurement value="1220"/>
+          <measurement value="1190"/>
+          <measurement value="920"/>
+          <measurement value="890"/>
+          <measurement value="892"/>
+        </series>
+        <series name="Ungrouped" unit="mA" interval="100" interval_unit="ms">
+          <measurement value="486.800000"/>
+          <measurement value="478.400000"/>
+          <measurement value="488.600000"/>
+          <measurement value="489.800000"/>
+          <measurement value="480.200000"/>
+          <measurement value="484.400000"/>
+          <measurement value="490.400000"/>
+          <measurement value="483.800000"/>
+          <measurement value="480.800000"/>
+          <measurement value="492.200000"/>
+          <measurement value="500.000000"/>
+        </series>
+      </case>
+
+      <case name="Grouped serial measurements - timestamp" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%">
+          <measurement timestamp="2013-08-07T10:53:26.000000" value="12"/>
+          <measurement timestamp="2013-08-07T10:53:26.003000" value="53"/>
+          <measurement timestamp="2013-08-07T10:53:26.005000" value="57"/>
+          <measurement timestamp="2013-08-07T10:53:26.008000" value="62"/>
+          <measurement timestamp="2013-08-07T10:53:27.001000" value="80"/>
+          <measurement timestamp="2013-08-07T10:53:27.004000" value="74"/>
+          <measurement timestamp="2013-08-07T10:53:27.008000" value="50"/>
+          <measurement timestamp="2013-08-07T10:53:28.000000" value="50"/>
+          <measurement timestamp="2013-08-07T10:53:28.002000" value="26"/>
+          <measurement timestamp="2013-08-07T10:53:28.006000" value="4"/>
+          <measurement timestamp="2013-08-07T10:53:28.009000" value="4"/>
+          <measurement timestamp="2013-08-07T10:53:29.002000" value="2"/>
+          <measurement timestamp="2013-08-07T10:53:29.005000" value="2"/>
+        </series>
+        <series name="Mem consumption" group="Load measurements" unit="MB">
+          <measurement timestamp="2013-08-07T10:53:26.000000" value="200"/>
+          <measurement timestamp="2013-08-07T10:53:26.003000" value="590"/>
+          <measurement timestamp="2013-08-07T10:53:26.005000" value="1053"/>
+          <measurement timestamp="2013-08-07T10:53:26.008000" value="1250"/>
+          <measurement timestamp="2013-08-07T10:53:27.001000" value="1840"/>
+          <measurement timestamp="2013-08-07T10:53:27.004000" value="1920"/>
+          <measurement timestamp="2013-08-07T10:53:27.008000" value="1502"/>
+          <measurement timestamp="2013-08-07T10:53:28.000000" value="1490"/>
+          <measurement timestamp="2013-08-07T10:53:28.002000" value="1220"/>
+          <measurement timestamp="2013-08-07T10:53:28.006000" value="1190"/>
+          <measurement timestamp="2013-08-07T10:53:28.009000" value="920"/>
+          <measurement timestamp="2013-08-07T10:53:29.002000" value="890"/>
+          <measurement timestamp="2013-08-07T10:53:29.005000" value="892"/>
+        </series>
+      </case>
+
+      <case name="Three different units in a group" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+          <measurement value="57"/>
+          <measurement value="62"/>
+          <measurement value="80"/>
+          <measurement value="74"/>
+          <measurement value="50"/>
+          <measurement value="50"/>
+          <measurement value="26"/>
+          <measurement value="4"/>
+          <measurement value="4"/>
+          <measurement value="2"/>
+          <measurement value="2"/>
+        </series>
+        <series name="Mem consumption" group="Load measurements" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+          <measurement value="1840"/>
+          <measurement value="1920"/>
+          <measurement value="1502"/>
+          <measurement value="1490"/>
+          <measurement value="1220"/>
+          <measurement value="1190"/>
+          <measurement value="920"/>
+          <measurement value="890"/>
+          <measurement value="892"/>
+        </series>
+        <series name="CPU temp" group="Load measurements" unit="C" interval="100" interval_unit="ms">
+          <measurement value="20"/>
+          <measurement value="45"/>
+          <measurement value="55"/>
+          <measurement value="56"/>
+          <measurement value="62"/>
+          <measurement value="61"/>
+          <measurement value="58"/>
+          <measurement value="40"/>
+          <measurement value="36"/>
+          <measurement value="36"/>
+          <measurement value="36"/>
+          <measurement value="32"/>
+          <measurement value="30"/>
+        </series>
+      </case>
+
+      <case name="Two same units in a group" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+          <measurement value="57"/>
+          <measurement value="62"/>
+          <measurement value="80"/>
+          <measurement value="74"/>
+          <measurement value="50"/>
+          <measurement value="50"/>
+          <measurement value="26"/>
+          <measurement value="4"/>
+          <measurement value="4"/>
+          <measurement value="2"/>
+          <measurement value="2"/>
+        </series>
+        <series name="GPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="2"/>
+          <measurement value="4"/>
+          <measurement value="3"/>
+          <measurement value="25"/>
+          <measurement value="27"/>
+          <measurement value="23"/>
+          <measurement value="15"/>
+          <measurement value="14"/>
+          <measurement value="10"/>
+          <measurement value="2"/>
+          <measurement value="1"/>
+          <measurement value="0.3"/>
+          <measurement value="0.2"/>
+        </series>
+      </case>
+
+      <case name="Three series in a group with two units" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+          <measurement value="57"/>
+          <measurement value="62"/>
+          <measurement value="80"/>
+          <measurement value="74"/>
+          <measurement value="50"/>
+          <measurement value="50"/>
+          <measurement value="26"/>
+          <measurement value="4"/>
+          <measurement value="4"/>
+          <measurement value="2"/>
+          <measurement value="2"/>
+        </series>
+        <series name="GPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="2"/>
+          <measurement value="4"/>
+          <measurement value="3"/>
+          <measurement value="25"/>
+          <measurement value="27"/>
+          <measurement value="23"/>
+          <measurement value="15"/>
+          <measurement value="14"/>
+          <measurement value="10"/>
+          <measurement value="2"/>
+          <measurement value="1"/>
+          <measurement value="0.3"/>
+          <measurement value="0.2"/>
+        </series>
+        <series name="Mem consumption" group="Load measurements" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+          <measurement value="1840"/>
+          <measurement value="1920"/>
+          <measurement value="1502"/>
+          <measurement value="1490"/>
+          <measurement value="1220"/>
+          <measurement value="1190"/>
+          <measurement value="920"/>
+          <measurement value="890"/>
+          <measurement value="892"/>
+        </series>
+      </case>
+
+      <case name="Many measurements without group" result="PASS">
+        <series name="CPU load" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+          <measurement value="57"/>
+          <measurement value="62"/>
+          <measurement value="80"/>
+          <measurement value="74"/>
+          <measurement value="50"/>
+          <measurement value="50"/>
+          <measurement value="26"/>
+          <measurement value="4"/>
+          <measurement value="4"/>
+          <measurement value="2"/>
+          <measurement value="2"/>
+        </series>
+        <series name="Mem consumption" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+          <measurement value="1840"/>
+          <measurement value="1920"/>
+          <measurement value="1502"/>
+          <measurement value="1490"/>
+          <measurement value="1220"/>
+          <measurement value="1190"/>
+          <measurement value="920"/>
+          <measurement value="890"/>
+          <measurement value="892"/>
+        </series>
+        <series name="CPU temp" unit="C" interval="100" interval_unit="ms">
+          <measurement value="20"/>
+          <measurement value="45"/>
+          <measurement value="55"/>
+          <measurement value="56"/>
+          <measurement value="62"/>
+          <measurement value="61"/>
+          <measurement value="58"/>
+          <measurement value="40"/>
+          <measurement value="36"/>
+          <measurement value="36"/>
+          <measurement value="36"/>
+          <measurement value="32"/>
+          <measurement value="30"/>
+        </series>
+      </case>
+
+      <case name="Grouped serial measurements, amount not matching" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+          <measurement value="57"/>
+          <measurement value="62"/>
+          <measurement value="80"/>
+          <measurement value="74"/>
+          <measurement value="50"/>
+          <measurement value="50"/>
+          <measurement value="26"/>
+          <measurement value="4"/>
+        </series>
+        <series name="Mem consumption" group="Load measurements" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+          <measurement value="1840"/>
+          <measurement value="1920"/>
+          <measurement value="1502"/>
+          <measurement value="1490"/>
+          <measurement value="1220"/>
+          <measurement value="1190"/>
+          <measurement value="920"/>
+          <measurement value="890"/>
+          <measurement value="892"/>
+        </series>
+      </case>
+
+      <case name="Grouped timestamped series, non-matching timestamps" result="PASS">
+        <series name="CPU load" group="Load measurements" unit="%">
+          <measurement timestamp="2013-08-07T10:53:26.008000" value="62"/>
+          <measurement timestamp="2013-08-07T10:53:27.008000" value="50"/>
+        </series>
+        <series name="Mem consumption" group="Load measurements" unit="MB">
+          <measurement timestamp="2013-08-07T10:53:26.000000" value="200"/>
+          <measurement timestamp="2013-08-07T10:53:27.001000" value="1840"/>
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>

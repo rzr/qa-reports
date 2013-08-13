@@ -18,33 +18,32 @@
       td.testcase_measurement= m.name
       td.testcase_graph colspan="4"
         .modal_graph style="display:none"
-          span.modal_graph_title= testcase.name
+          span.modal_graph_title= "#{testcase.name}: #{m.name}"
           span.modal_graph_data= m.long_json
-          span.modal_graph_x_unit= m.interval_unit or ""
-          span.modal_graph_y_unit= m.unit
 
         .serial_canvas id="graph-#{m.id}" style="visibility:hidden;width:287px;height:46px"
-          = m.short_json
+          = m.small_chart_series
 
         table.nft_graph_key_figures
-          tr
-            td.unit= m.unit
-            td
-              span.unit min.
-              '
-              = m.min_html
-            td
-              span.unit avg.
-              '
-              = m.avg_html
-            td
-              span.unit max.
-              '
-              = m.max_html
-            td
-              span.unit med.
-              '
-              = m.med_html
+          - m.serial_measurements.each do |single_measurement|
+            tr
+              td.unit= single_measurement.unit
+              td
+                span.unit min.
+                '
+                = single_measurement.min_html
+              td
+                span.unit avg.
+                '
+                = single_measurement.avg_html
+              td
+                span.unit max.
+                '
+                = single_measurement.max_html
+              td
+                span.unit med.
+                '
+                = single_measurement.med_html
     - else
       td.testcase_measurement= m.name
       td.testcase_value

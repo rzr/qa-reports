@@ -29,6 +29,9 @@ class XMLResultFileParser
 
       status_code, custom_result = MeegoTestSession.map_result(result)
 
+      # We need serial_measurement_groups that withold the serial measurements
+      groups = test_case.css('series').group_by {|s| s['group'] || s['name']}
+
       {
         :name                               => test_case['name'],
         :result                             => status_code,
@@ -48,22 +51,32 @@ class XMLResultFileParser
             :sort_index => 0
           }
         end ,
-        :serial_measurements_attributes     => test_case.css('series').map do | series |
-          outline = calculate_outline(series.css('measurement'), series['interval'])
+        :serial_measurement_groups_attributes => groups.map do |group, series|
+          # The interval unit needs to be the same for the series in a group
+          # so get it from the first series
+          outline = calculate_outline(series.first.css('measurement'), series.first['interval'])
           {
-            :name          => series['name'],
-            :short_json    => series_json(series.element_children, maxsize=40),
-            :long_json     => series_json_withx(series, outline.interval_unit, maxsize=200),
-            :unit          => series['unit'],
-            :interval_unit => outline.interval_unit,
-            :min_value     => outline.minval,
-            :max_value     => outline.maxval,
-            :avg_value     => outline.avgval,
-            :median_value  => outline.median,
+            :name      => group,
+            :long_json => group_json_withx(series, group, outline.interval_unit, maxsize=200),
+            :serial_measurements_attributes => series.map do |s|
+              outline = calculate_outline(s.css('measurement'), s['interval'])
+              {
+                :name          => s['name'],
+                :short_json    => series_json(s.element_children, maxsize=40),
+                :long_json     => series_json_withx(s, outline.interval_unit, maxsize=200),
+                :unit          => s['unit'],
+                :interval_unit => outline.interval_unit,
+                :min_value     => outline.minval,
+                :max_value     => outline.maxval,
+                :avg_value     => outline.avgval,
+                :median_value  => outline.median,
 
-            #TODO: Throw away and order by id
-            :sort_index    => 0
+                #TODO: Throw away and order by id
+                :sort_index    => 0
+              }
+            end
           }
+
         end
       }
     end .index_by { |test_case| test_case[:name] }

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'xml_result_file_parser'
+require 'json'
 
 describe XMLResultFileParser do
 
@@ -412,6 +413,206 @@ END
     it "should have two test cases" do
      @test_cases2['Feature 1'].keys.should == ["case 1"]
     end
+  end
+
+  # XML result file parser needs to be able to group serial measurement groups
+  # together in same data series so that multi series charts can be drawn
+  describe "Parsing result XML with grouped serial measurements" do
+    FEATURE = 'grouped-serial-measurements'
+    CASE1   = 'Grouped serial measurements - interval'
+    CASE2   = 'Grouped serial measurements - timestamp'
+
+    before(:all) do
+      File.open('features/resources/grouped-serial-measurements.xml', 'r') do |f|
+        serial_cases = XMLResultFileParser.new.parse(f)
+        @tc1 = serial_cases[FEATURE][CASE1][:serial_measurement_groups_attributes]
+        @tc2 = serial_cases[FEATURE][CASE2][:serial_measurement_groups_attributes]
+      end
+    end
+
+    it "should return measurements grouped together" do
+      @tc1.count.should == 2
+      @tc2.count.should == 1
+    end
+
+    it "should produce long_json with units and interval_unit" do
+      long_json = JSON.parse(@tc1[0][:long_json])
+      long_json.should include('interval_unit')
+      long_json.should include('series')
+      long_json["series"].count.should == 2
+    end
+
+    it "should produce long_json with values from both data series" do
+      long_json = JSON.parse(@tc1[0][:long_json])
+      long_json['data'].each do |measurement|
+        # "Timestamp" and two data values
+        measurement.count.should == 3
+      end
+      long_json = JSON.parse(@tc1[1][:long_json])
+      long_json['data'].each do |measurement|
+        measurement.count.should == 2
+      end
+      long_json = JSON.parse(@tc2[0][:long_json])
+      long_json['data'].each do |measurement|
+        measurement.count.should == 3
+      end
+    end
+
+    it "should contain all the measurement values due to short series" do
+      File.open('features/resources/grouped-serial-measurements.xml', 'r') do |f|
+        # Check the first test case's measurements agains the JSON output
+        Nokogiri::XML(f).css('case').first.css('series[@group]').each_with_index do |s, i|
+          long_json = JSON.parse(@tc1[0][:long_json])
+          long_json.each_with_index do |m, j|
+            m[i + 1].should.to_s == s.element_children[j]['value']
+          end
+        end
+      end
+    end
+
+    # TODO
+    # What to do when the interval/timestamps of grouped series do not match?
+
+  end
+
+  describe "Parsing non-matching grouped serial measurements" do
+
+    it "should manage interval series with non-matching amount of measurements" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      c = nil
+      expect { c = XMLResultFileParser.new.parse(StringIO.new(f))}.to_not raise_error
+      data = JSON.parse(c['set']['case'][:serial_measurement_groups_attributes][0][:long_json])
+      # Should have 4 measurements as the the longer series has 4
+      data['data'].count.should == 4
+      # All measurements should have 3 values. Last and second-to-last should
+      # have a nil instead of a value since the first series is shorter
+      data['data'].each_with_index do |m, i|
+        m.count.should == 3
+        if i > 1
+          m[1].should be_nil
+        end
+      end
+    end
+
+    it "should raise if the series use different intervals" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB" interval="1000" interval_unit="ms">
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
+    end
+
+    it "should raise if the series use different interval unit" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB" interval="100" interval_unit="s">
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
+    end
+
+    it "should raise if the not all series in a group use interval" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB">
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
+    end
+
+    it "should manage timestamp series with non-matching timestamps" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%">
+          <measurement timestamp="2013-08-07T10:53:26.008000" value="62"/>
+          <measurement timestamp="2013-08-07T10:53:27.008000" value="50"/>
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB">
+          <measurement timestamp="2013-08-07T10:53:26.000000" value="200"/>
+          <measurement timestamp="2013-08-07T10:53:27.001000" value="1840"/>
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      c = nil
+      expect { c = XMLResultFileParser.new.parse(StringIO.new(f))}.to_not raise_error
+      data = JSON.parse(c['set']['case'][:serial_measurement_groups_attributes][0][:long_json])
+      # Should have 4 measurements since all the four measurements have
+      # different timestamp
+      data['data'].count.should == 4
+      # All measurements should have 3 values and one of them should be nil
+      data['data'].each_with_index do |m, i|
+        m.count.should == 3
+        if i % 2 == 0
+          m[1].should be_nil
+        else
+          m[2].should be_nil
+        end
+      end
+    end
+
   end
 
 end

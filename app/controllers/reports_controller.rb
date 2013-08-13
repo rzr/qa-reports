@@ -125,6 +125,7 @@ class ReportsController < ApplicationController
     # Delete measurements
     MeegoMeasurement.delete_by_report_id(report.id)
     SerialMeasurement.delete_by_report_id(report.id)
+    SerialMeasurementGroup.delete_by_report_id(report.id)
 
     # Then we have nothing left that relates to a test case, so delete
     # the test cases from the report. With this we can skip massive
