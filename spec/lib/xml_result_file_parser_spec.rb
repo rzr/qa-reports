@@ -575,6 +575,44 @@ END
       expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
     end
 
+    it "should manage timestamp series with non-matching timestamps" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%">
+          <measurement timestamp="2013-08-07T10:53:26.008000" value="62"/>
+          <measurement timestamp="2013-08-07T10:53:27.008000" value="50"/>
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB">
+          <measurement timestamp="2013-08-07T10:53:26.000000" value="200"/>
+          <measurement timestamp="2013-08-07T10:53:27.001000" value="1840"/>
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      c = nil
+      expect { c = XMLResultFileParser.new.parse(StringIO.new(f))}.to_not raise_error
+      data = JSON.parse(c['set']['case'][:serial_measurement_groups_attributes][0][:long_json])
+      # Should have 4 measurements since all the four measurements have
+      # different timestamp
+      data['data'].count.should == 4
+      # All measurements should have 3 values and one of them should be nil
+      data['data'].each_with_index do |m, i|
+        m.count.should == 3
+        if i % 2 == 0
+          m[1].should be_nil
+        else
+          m[2].should be_nil
+        end
+      end
+    end
+
   end
 
 end

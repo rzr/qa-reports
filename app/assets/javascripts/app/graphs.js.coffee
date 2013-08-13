@@ -141,6 +141,7 @@ series_label = (s) -> "#{s.name} (#{s.unit})"
       opts =
         labels:       labels
         includeZero:  true
+        connectSeparatedPoints: true
         axes:
           x:
             axisLabelFormatter: (x) -> "#{x}#{labels[0]}"

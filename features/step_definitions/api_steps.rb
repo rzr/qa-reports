@@ -587,8 +587,8 @@ Then "I disable mapping of API parameters" do
 end
 
 Then(/^all measurement groups and series are found$/) do
-  SerialMeasurementGroup.all.count.should == 9
-  SerialMeasurement.all.count.should == 16
+  SerialMeasurementGroup.all.count.should == 11
+  SerialMeasurement.all.count.should == 20
 
   tc = MeegoTestCase.find_by_name("Grouped serial measurements - interval")
   sg = SerialMeasurementGroup.where(meego_test_case_id: tc)
