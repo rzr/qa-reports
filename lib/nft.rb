@@ -121,16 +121,22 @@ module MeasurementUtils
     "[" + indices.map{|i| "[#{xaxis[i]},#{s[i]['value']}]"}.join(",") + "]"
   end
 
-  def long_json_for_group(series, interval_unit, maxsize=200)
-    # NOTE: currently expecting the grouped series to be of same length
-    s       = series.first.element_children
+  def group_json_withx(series, group, interval_unit, maxsize=200)
+    validate_series(series, group)
+    s       = get_longest_series(series).element_children
     indices = shortened_indices(s.size, maxsize)
     xaxis   = get_x_axis(series.first['interval'], interval_unit, s)
 
     json_series = series.map {|s| "{\"unit\": \"#{s['unit']}\", \"name\": \"#{s['name']}\"}" } .join(",")
     # Data will be array of arrays
     data  = indices.map do |i|
-      values = series.map {|serie| serie.element_children[i]['value']}.join(",")
+      values = series.map do |serie|
+        if serie.element_children[i].blank?
+          "null"
+        else
+          serie.element_children[i]['value']
+        end
+      end .join(",")
       "[#{xaxis[i]},#{values}]"
     end .join(",")
 
@@ -158,6 +164,46 @@ module MeasurementUtils
       xaxis = (0..s.size-1).map {|i| ((Time.parse(s[i]['timestamp'])-Time.parse(s[0]['timestamp']))*factor).to_i}
     end
     xaxis
+  end
+
+  # Basic validation of the series in a group
+  def validate_series(series, group)
+    intervals    = 0
+    timestamps   = 0
+    intervals_ok = true
+
+    series.each do |s|
+      if s['interval']
+        intervals += 1
+        if s['interval'] != series.first['interval'] || s['interval_unit'] != series.first['interval_unit']
+          intervals_ok = false
+        end
+      else
+        timestamps += 1
+      end
+    end
+
+    if intervals != 0 && timestamps != 0
+      raise Nokogiri::XML::SyntaxError.new("Invalid series group #{group}: both interval and non-interval series grouped.")
+    end
+
+    unless intervals_ok
+      raise Nokogiri::XML::SyntaxError.new("Invalid series group #{group}: not all series use the same interval")
+    end
+  end
+
+  def get_longest_series(series)
+    l = series.first
+    # For interval series get the one with most elements
+    # TODO: Can we enable unmatching series using timestamps?
+    if l['interval']
+      series.each do |s|
+        if s.element_children.count > l.element_children.count
+          l = s
+        end
+      end
+    end
+    l
   end
 end
 

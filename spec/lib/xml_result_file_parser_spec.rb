@@ -438,8 +438,8 @@ END
     it "should produce long_json with units and interval_unit" do
       long_json = JSON.parse(@tc1[0][:long_json])
       long_json.should include('interval_unit')
-      long_json.should include('units')
-      long_json["units"].count.should == 2
+      long_json.should include('series')
+      long_json["series"].count.should == 2
     end
 
     it "should produce long_json with values from both data series" do
@@ -472,6 +472,108 @@ END
 
     # TODO
     # What to do when the interval/timestamps of grouped series do not match?
+
+  end
+
+  describe "Parsing non-matching grouped serial measurements" do
+
+    it "should manage interval series with non-matching amount of measurements" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+          <measurement value="12"/>
+          <measurement value="53"/>
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB" interval="100" interval_unit="ms">
+          <measurement value="200"/>
+          <measurement value="590"/>
+          <measurement value="1053"/>
+          <measurement value="1250"/>
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      c = nil
+      expect { c = XMLResultFileParser.new.parse(StringIO.new(f))}.to_not raise_error
+      data = JSON.parse(c['set']['case'][:serial_measurement_groups_attributes][0][:long_json])
+      # Should have 4 measurements as the the longer series has 4
+      data['data'].count.should == 4
+      # All measurements should have 3 values. Last and second-to-last should
+      # have a nil instead of a value since the first series is shorter
+      data['data'].each_with_index do |m, i|
+        m.count.should == 3
+        if i > 1
+          m[1].should be_nil
+        end
+      end
+    end
+
+    it "should raise if the series use different intervals" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB" interval="1000" interval_unit="ms">
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
+    end
+
+    it "should raise if the series use different interval unit" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB" interval="100" interval_unit="s">
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
+    end
+
+    it "should raise if the not all series in a group use interval" do
+      f = <<-END
+<?xml version="1.0" encoding="utf-8"?>
+<testresults>
+  <suite name="suite">
+    <set name="set">
+      <case name="case" result="PASS">
+        <series name="CPU load" group="tg" unit="%" interval="100" interval_unit="ms">
+        </series>
+        <series name="Mem consumption" group="tg" unit="MB">
+        </series>
+      </case>
+    </set>
+  </suite>
+</testresults>
+END
+
+      expect { c XMLResultFileParser.new.parse(StringIO.new(f))}.to raise_error
+    end
 
   end
 

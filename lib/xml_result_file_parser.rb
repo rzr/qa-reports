@@ -57,7 +57,7 @@ class XMLResultFileParser
           outline = calculate_outline(series.first.css('measurement'), series.first['interval'])
           {
             :name      => group,
-            :long_json => long_json_for_group(series, outline.interval_unit, maxsize=200),
+            :long_json => group_json_withx(series, group, outline.interval_unit, maxsize=200),
             :serial_measurements_attributes => series.map do |s|
               outline = calculate_outline(s.css('measurement'), s['interval'])
               {
