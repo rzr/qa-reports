@@ -1,4 +1,4 @@
-![QA Reports](http://qa-reports.meego.com/images/meego_logo_hover.png)
+![QA Reports](https://raw.github.com/leonidas/qa-reports/master/app/assets/images/meego_logo.png)
 
 QA Reports is a web based test result reporting application originally developed for
 [MeeGo](http://en.wikipedia.org/wiki/MeeGo). For basic features demonstration
@@ -24,6 +24,7 @@ For very thorough documentation see the instructions in [wiki](https://github.co
 
 ## Migration Notes
 
+*   13 Aug 2013: Added support for grouped serial measurements. If you have been using serial measurements, and the `group` attribute for `series` elements, you may see unexpected behavior. From now on if two or more `series` within a `case` have the same `group` attribute the series are grouped together.
 *   06 May 2013: Added Gerrit integration (link by change ID the same way as Bugzilla)
 *   29 April 2013: Not compatible with old installations of [QA Dashboard](https://github.com/leonidas/qa-dashboard). If you have been using QA Dashboard you will need to update it as well.
 *   02 April 2013: New external configuration and service support taken in use. This will replace the old `bugzilla.yml` configuration file. Upgrading is not mandatory, `bugzilla.yml` will still work if it exist. See [wiki](https://github.com/leonidas/qa-reports/wiki/External-Services) for more information.
