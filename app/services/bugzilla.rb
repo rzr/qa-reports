@@ -67,9 +67,9 @@ class Bugzilla
       # Don't parse headers
       csv = CSV.parse(content, :headers => true)
     rescue CSV::MalformedCSVError => e
-      logger.error e.message
-      logger.info  "ERROR: MALFORMED BUGZILLA DATA"
-      logger.info  content
+      Rails.logger.error e.message
+      Rails.logger.info  "ERROR: MALFORMED BUGZILLA DATA"
+      Rails.logger.info  content
       csv = nil
     end
 
