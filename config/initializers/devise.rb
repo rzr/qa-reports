@@ -142,4 +142,6 @@ Devise.setup do |config|
   #   end
   #   manager.default_strategies(:scope => :user).unshift :twitter_oauth
   # end
+
+  config.secret_key = '82mdkAdm#=fd'
 end

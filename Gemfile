@@ -3,6 +3,8 @@ source 'http://rubygems.org'
 gem 'rails', '~>3.2.12'
 gem 'mysql2'
 gem 'nokogiri', '~>1.6'
+# TODO: When upgrading to 3.2 fix authentication_token:
+# http://blog.plataformatec.com.br/2013/08/devise-3-1-now-with-more-secure-defaults/
 gem 'devise'
 gem 'slim'
 # TODO: Update, not straightforward
