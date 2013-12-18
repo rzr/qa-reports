@@ -31,7 +31,7 @@ enable_password_recovery: false
 custom_results: []
 
 # Name of the application, used in HTML titles etc.
-app_name: "MeeGo QA Reports"
+app_name: "Tizen QA Reports"
 
 # Custom CSS file to include. To reduce the need to touch the default
 # stylsheet users may defined an URL to a custom stylesheet that
