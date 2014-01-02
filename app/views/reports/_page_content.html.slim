@@ -50,6 +50,7 @@
           strong Loading history data, please wait…
         thead
           tr
+			th#th_case_id CaseId
             th#th_test_case
               span.sort
                 a.see_only_failed_button.sort_btn.non_nft_button#detailed_case.active href="#" See only failed
@@ -67,7 +68,8 @@
       - if @history
         table.detailed_results.history style="display:none;"
           thead
-            tr
+			tr
+			  th#th_case_id CaseId
               th#th_history_test_case
                 span.sort
                   a.see_only_failed_button.sort_btn.non_nft_button#detailed_case href="#" See only failed
@@ -107,6 +109,7 @@
       table.non-functional_results.detailed_results
         thead
           tr
+			th#th_case_id CaseId
             th#th_nft_test_case
               - if @history
                 span.sort
