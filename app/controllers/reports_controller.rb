@@ -210,6 +210,7 @@ class ReportsController < ApplicationController
         end
 
         tcs[:comment]     = tc.comment_html
+        tcs[:purpose]     = tc.purpose_html
         tcs[:tc_id]       = tc.tc_id
         tcs[:last_report] = session.title
       end
@@ -278,6 +279,7 @@ class ReportsController < ApplicationController
         tc_id: tc[:tc_id],
         result: tc[:result],
         comment: tc[:comment],
+        purpose: tc[:purpose],
         last_report: tc[:last_report],
         prev_result: tc[:prev_result],
         last_executed: tc[:last_executed]

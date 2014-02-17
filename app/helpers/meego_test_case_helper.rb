@@ -53,4 +53,8 @@ module MeegoTestCaseHelper
   def comment_html(model)
     (model.present? && model.comment) ? MeegoTestReport::format_txt(model.comment).html_safe : nil
   end
+
+  def purpose_html(model)
+    (model.present? && model.purpose) ? MeegoTestReport::format_txt(model.purpose).html_safe : nil
+  end
 end

@@ -36,6 +36,7 @@ class XMLResultFileParser
         :name                               => test_case['name'],
         :result                             => status_code,
         :custom_result                      => custom_result,
+	:purpose			    => test_case['purpose'] || "",
         :comment                            => test_case['comment'] || test_case.css('notes').text || test_case.css('failure, error').map {|f| f['message']}.join(', ') || "",
         :source_link                        => test_case['vcsurl']  || "",
         :tc_id                              => test_case['TC_ID'],

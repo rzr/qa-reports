@@ -7,6 +7,11 @@ tr class="testcase #{result_class(testcase, 'result_')}" id="testcase-#{testcase
       a.dl_link href=(testcase.source_link)
     - if not testcase.binary_link.blank?
       a.dl_link href=(testcase.binary_link)
+  td class="testcase_purpose #{'edit' if @editing}" 
+    .content
+      = purpose_html(testcase)
+    - if @editing
+      .comment_markup style="display:none;" #{testcase.purpose}
   td class="testcase_result #{result_class(testcase)} #{'edit' if @editing} #{testcase.find_change_class(@report.prev_session)} "
     span.content #{result_html(testcase)}
     form.result_form.float_container action="/test_cases/#{testcase.id}" method="post" style="display:none"

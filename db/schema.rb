@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20130808070331) do
     t.string  "name",                                                     :null => false
     t.integer "result",                                                   :null => false
     t.string  "comment",               :limit => 1000, :default => "",    :null => false
+    t.string  "purpose",               :limit => 1000, :default => "",    :null => false
     t.integer "meego_test_session_id",                                    :null => false
     t.string  "source_link"
     t.string  "binary_link"

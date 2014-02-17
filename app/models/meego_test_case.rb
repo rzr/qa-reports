@@ -103,11 +103,16 @@ class MeegoTestCase < ActiveRecord::Base
 
     json[:qa_id]   = id           if options[:include_db_id]
     json[:comment] = comment_html if options[:include_text_fields]
+    json[:purpose] = purpose_html if options[:include_text_fields]
 
     json
   end
 
   def comment_html
     comment ? MeegoTestReport::format_txt(comment).html_safe : ""
+  end
+
+  def purpose_html
+    purpose ? MeegoTestReport::format_txt(purpose).html_safe : ""
   end
 end
