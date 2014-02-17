@@ -10,6 +10,13 @@
 			</STYLE>
 			<head>
 				<script type="text/javascript" src="/jquery.min.js" />
+				<script type="text/javascript">
+				//<![CDATA[
+					 $(document).ready(function(){
+					$("td").each(function(){this.innerHTML = this.innerHTML.split('\\n').join("<br/>").replace(/&amp;/g,"&"); });
+				});
+				//]]>
+				</script>
 			</head>
 			<body>
 				<div id="testcasepage">
@@ -381,7 +388,7 @@
 														</td>
 
 														<td>
-															<xsl:value-of select=".//result_info/stdout" />
+															<xsl:value-of select=".//result_info/stdout" disable-output-escaping="yes"/>
 															<xsl:if test=".//result_info/stdout = ''">
 																N/A
 															</xsl:if>
@@ -476,7 +483,7 @@
 												</xsl:otherwise>
 											</xsl:choose>
 											<td>
-												<xsl:value-of select=".//result_info/stdout" />
+												<xsl:value-of select=".//result_info/stdout" disable-output-escaping="yes"/>
 												<xsl:if test=".//result_info/stdout = ''">
 													N/A
 												</xsl:if>
